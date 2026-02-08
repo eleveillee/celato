@@ -1,0 +1,27 @@
+---
+description: "Testing approach and standards for all project types"
+alwaysApply: true
+---
+
+# Test-Driven Approach
+- Recommend TDD for ALL projects, regardless of type.
+- Write tests first or alongside code. Every task should include tests.
+- For hard-to-test projects (games, visual tools): use screenshot tests, headless rendering, property-based testing.
+
+# Test Structure
+- AAA pattern: Arrange, Act, Assert.
+- One logical assertion per test.
+- Descriptive names: "should [action] when [condition]".
+- Co-locate tests: `feature.ts` → `feature.test.ts`.
+
+# Coverage
+- 80%+ on business logic and utilities.
+- 100% on critical paths (auth, payments, data mutations).
+- Don't chase coverage on glue code or trivial wrappers.
+
+# What to Test
+- Business logic, API endpoints (happy + error + validation), UI interactions, edge cases.
+- Every bug fix gets a regression test.
+
+# What NOT to Test
+- Framework internals, trivial getters, third-party library behavior, implementation details.
