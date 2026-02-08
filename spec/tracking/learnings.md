@@ -7,15 +7,15 @@ this file is committed and shared, serving as institutional knowledge for the pr
 
 ## Technical Learnings
 
-| Date | Learning | Context |
-|------|----------|---------|
-| | | |
+| ID | Date | Learning | Context | Related |
+|----|------|----------|---------|---------|
+| L-001 | | | | |
 
 ## Process Learnings
 
-| Date | Learning | Context |
-|------|----------|---------|
-| | | |
+| ID | Date | Learning | Context |
+|----|------|----------|---------|
+| | | | |
 
 ## What Worked Well
 

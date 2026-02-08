@@ -135,6 +135,22 @@ Each feature gets its own file at `spec/features/feature-name.md`:
 
 ---
 
+## ID Conventions
+
+All tracking items use prefixed IDs for cross-referencing:
+
+| Prefix | File | Example |
+|--------|------|---------|
+| **F-###** | `milestone.md` / feature specs | `F-001: User Auth` |
+| **B-###** | `bugs.md` | `B-003: Login timeout` |
+| **L-###** | `learnings.md` | `L-012: Prisma v7 gotcha` |
+| **D-###** | `decisions.md` | `D-005: Auth provider` |
+| **BL-###** | `backlog.md` | `BL-008: Dark mode` |
+| **TD-###** | `tech-debt.md` | `TD-002: Hardcoded timeout` |
+| **UP-###** | `version-matrix.md` | `UP-001: React 19 upgrade` |
+
+Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Related: L-005`.
+
 ## Tracking Files Reference
 
 | File | Purpose | Update Frequency |
@@ -144,6 +160,8 @@ Each feature gets its own file at `spec/features/feature-name.md`:
 | `spec/tracking/bugs.md` | Known bugs with repro steps | When bugs are found or fixed |
 | `spec/tracking/decisions.md` | Open and resolved technical decisions | When decisions are made or needed |
 | `spec/tracking/learnings.md` | Project-specific lessons learned | After significant discoveries |
+| `spec/tracking/tech-debt.md` | Technical debt with priority and proposed fixes | When debt is found or resolved |
+| `spec/tracking/version-matrix.md` | Dependency versions and upgrade plan | When deps change |
 
 ## Status Icons
 

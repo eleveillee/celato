@@ -38,6 +38,17 @@
 - Added `spec/api-contracts.md` as single source of truth for API shapes
 - Added API contract enforcement rules to both .claude/ and .cursor/ rules
 
+### v0.5 - TagExpert/Helix Learnings (2026-02-08)
+- Moved `docs/architecture.md` → `spec/architecture.md` (AI-facing, not human-facing)
+- Removed empty `docs/` directory — everything lives in `spec/` now
+- Added `spec/tracking/tech-debt.md` template (from TagExpert pattern)
+- Added `spec/tracking/version-matrix.md` template (from TagExpert pattern)
+- Added `spec/research/.gitkeep` for optional competitive/market research
+- Added consistent ID conventions across ALL tracking files (F-###, B-###, L-###, D-###, BL-###, TD-###, UP-###)
+- Replaced CLAUDE.md "Key References" with full spec lookup table
+- Added ID conventions section to workflow.md
+- Updated all cross-references for architecture move
+
 ## Design Decisions
 
 | Decision | Rationale |
@@ -48,10 +59,13 @@
 | stacks/ as guides not templates | AI regenerates configs; guides encode rationale |
 | Progressive tracking (3 phases) | Don't force feature spec overhead before it's needed |
 | api-contracts.md as single source | Prevents shape drift between frontend/backend/tests/docs |
+| Prefixed IDs on all tracking items | Enables cross-referencing between bugs, learnings, decisions, features |
+| architecture.md in spec/ not docs/ | Architecture is AI-facing; docs/ was left with nothing useful |
+| tech-debt.md + version-matrix.md | Every real project needs these; validated by TagExpert usage |
 
 ## What To Watch
 
-- Does the `docs/` folder justify existing with only `architecture.md`?
+- ~~Does the `docs/` folder justify existing with only `architecture.md`?~~ Resolved: moved to spec/, deleted docs/
 - Are stacks/ guides too long? (365-662 lines each)
 - Does the setup wizard flow actually work end-to-end?
 - Do the merged rule files stay readable as they grow?

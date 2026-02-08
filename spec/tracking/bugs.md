@@ -1,14 +1,14 @@
 # Bugs
 
-Known bugs with reproduction steps and status.
+Known bugs with reproduction steps and status. Each bug has an ID for cross-referencing.
 
 ---
 
 ## Open Bugs
 
-| Severity | Bug | Repro Steps | Found | Status |
-|----------|-----|-------------|-------|--------|
-| | | | | |
+| ID | Severity | Bug | Repro Steps | Found | Related |
+|----|----------|-----|-------------|-------|---------|
+| B-001 | | | | | |
 
 ### Severity Levels
 - 🔴 **Critical**: Blocks usage, data loss, security vulnerability
@@ -17,6 +17,6 @@ Known bugs with reproduction steps and status.
 
 ## Resolved Bugs
 
-| Bug | Root Cause | Fix | Resolved |
-|-----|-----------|-----|----------|
-| | | | |
+| ID | Bug | Root Cause | Fix | Resolved |
+|----|-----|-----------|-----|----------|
+| | | | | |

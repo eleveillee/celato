@@ -17,10 +17,9 @@
 - Never read/output .env files, API keys, or credentials.
 
 ## Project Structure
-- `docs/` - Human-facing documentation
-- `spec/` - AI-facing specifications and tracking
+- `spec/` - Architecture, standards, tracking, and feature specs
 - `spec/features/` - Feature deep-dives with task breakdowns
-- `spec/tracking/` - Milestones, backlog, bugs, decisions, learnings
+- `spec/tracking/` - Milestones, backlog, bugs, decisions, learnings, tech-debt, versions
 - `src/` - Source code (feature-based organization)
 
 ## Key Files

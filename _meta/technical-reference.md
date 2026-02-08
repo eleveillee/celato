@@ -18,22 +18,24 @@ _Base/
 ├── README.md                      # Template: project overview
 ├── .gitignore                     # Template: version control ignores
 │
-├── docs/                          # Template: human-facing documentation
-│   └── architecture.md            #   System architecture patterns
-│
-├── spec/                          # Template: agent-facing specifications
+├── spec/                          # Architecture, standards, tracking, features
+│   ├── architecture.md            #   Architecture patterns & decision framework
 │   ├── coding-standards.md        #   Parseable code rules
 │   ├── workflow.md                #   Progressive tracking + feature spec templates
 │   ├── api-contracts.md           #   API contracts single source of truth
 │   ├── setup-wizard.md            #   Base → project transformation guide
 │   ├── features/                  #   Feature deep-dives (per-project)
 │   │   └── .gitkeep
+│   ├── research/                  #   Competitive/market research (optional)
+│   │   └── .gitkeep
 │   └── tracking/                  #   Living project state
 │       ├── milestone.md           #   Inline tasks (Phase 1) or index (Phase 2+)
-│       ├── backlog.md             #   Ideas & future work
-│       ├── bugs.md                #   Known bugs
-│       ├── decisions.md           #   Technical decisions (open & resolved)
-│       └── learnings.md           #   Project-specific lessons
+│       ├── backlog.md             #   Ideas & future work (BL-###)
+│       ├── bugs.md                #   Known bugs (B-###)
+│       ├── decisions.md           #   Technical decisions (D-###)
+│       ├── learnings.md           #   Project-specific lessons (L-###)
+│       ├── tech-debt.md           #   Technical debt tracking (TD-###)
+│       └── version-matrix.md     #   Dependency versions & upgrades (UP-###)
 │
 ├── stacks/                        # Reference: language best-practice guides
 │   ├── typescript/guide.md
@@ -69,7 +71,7 @@ _Base/
 | `AGENTS.md` | Universal AI instructions, thin pointer to spec/ |
 | `README.md` | Project philosophy and getting started |
 | `.gitignore` | Covers TS/Python/C#/AI tools |
-| `docs/architecture.md` | Architecture patterns and decision framework |
+| `spec/architecture.md` | Architecture patterns and decision framework |
 | `spec/coding-standards.md` | Code rules with language-specific sections |
 | `spec/workflow.md` | Progressive tracking system + feature spec template |
 | `spec/api-contracts.md` | API contracts single source of truth |

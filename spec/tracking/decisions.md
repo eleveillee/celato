@@ -7,13 +7,13 @@ This serves as a lightweight Architecture Decision Record (ADR).
 
 ## Open Questions
 
-| # | Question | Context | Options | Status |
-|---|----------|---------|---------|--------|
-| | | | | |
+| ID | Question | Context | Options | Status |
+|----|----------|---------|---------|--------|
+| D-001 | | | | |
 
 ### Template for Open Questions
 ```markdown
-### Q[number]: [Short question]
+### D-001: [Short question]
 **Context:** Why this decision is needed.
 **Options:**
 | | Option | Pros | Cons |
@@ -25,13 +25,13 @@ This serves as a lightweight Architecture Decision Record (ADR).
 
 ## Resolved Decisions
 
-| # | Decision | Rationale | Date |
-|---|----------|-----------|------|
+| ID | Decision | Rationale | Date |
+|----|----------|-----------|------|
 | | | | |
 
 ### Template for Resolved Decisions
 ```markdown
-### D[number]: [What was decided]
+### D-001: [What was decided]
 **Context:** Why this came up.
 **Decision:** What we chose.
 **Rationale:** Why we chose it.

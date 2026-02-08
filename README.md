@@ -49,15 +49,15 @@ _Base/
 ├── README.md              # This file
 ├── .gitignore
 │
-├── docs/                  # For humans: architecture and patterns
-│   └── architecture.md
-├── spec/                  # For AI: standards, tracking, features
+├── spec/                  # Standards, architecture, tracking, features
 │   ├── coding-standards.md
 │   ├── workflow.md
 │   ├── api-contracts.md
+│   ├── architecture.md
 │   ├── setup-wizard.md
+│   ├── research/          # Competitive research, market analysis (optional)
 │   ├── features/          # Feature deep-dives (created per project)
-│   └── tracking/          # Milestones, backlog, bugs, decisions, learnings
+│   └── tracking/          # Milestones, backlog, bugs, decisions, learnings, tech-debt, versions
 ├── stacks/                # Language best-practice guides (TS, Python, C#)
 │
 ├── .claude/               # Claude Code config (rules, commands, settings)
@@ -79,11 +79,15 @@ Tracking is progressive — it grows with the project:
 This prevents premature overhead while still scaling to complex projects.
 See `spec/workflow.md` for the full system and transition triggers.
 
+All tracking items use prefixed IDs (`F-001`, `B-001`, `L-001`, etc.) for cross-referencing.
+
 Additional tracking:
 - **`backlog.md`** - Ideas and future work not yet in a milestone.
 - **`bugs.md`** - Known bugs with repro steps and severity.
 - **`decisions.md`** - Open and resolved technical decisions (lightweight ADRs).
 - **`learnings.md`** - Project-specific lessons learned (shared, committed knowledge).
+- **`tech-debt.md`** - Known technical debt with priority and proposed fixes.
+- **`version-matrix.md`** - Dependency versions and upgrade plan.
 
 ---
 
@@ -140,7 +144,7 @@ AI agents following this base's rules will:
 
 | Document | Purpose |
 |----------|---------|
-| [Architecture](docs/architecture.md) | System architecture patterns and principles |
+| [Architecture](spec/architecture.md) | System architecture patterns and principles |
 | [Coding Standards](spec/coding-standards.md) | Parseable code rules for AI agents |
 | [Workflow](spec/workflow.md) | Progressive tracking system (Phase 1 → 2 → 3) |
 | [API Contracts](spec/api-contracts.md) | Single source of truth for API shapes |

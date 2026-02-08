@@ -108,7 +108,7 @@ Ask the user:
 2. **What are the initial features/modules?** (Creates initial directories)
 
 ### Actions:
-- Create `src/` directory structure per `docs/architecture.md` patterns.
+- Create `src/` directory structure per `spec/architecture.md` patterns.
 - If feature-based: create `src/features/`, `src/shared/`, `src/app/`.
 - If the project has a specific framework convention (Next.js `app/`, etc.), follow it.
 - Update `CLAUDE.md` architecture section with the actual structure.

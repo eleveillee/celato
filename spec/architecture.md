@@ -1,8 +1,9 @@
 # Architecture Guide
 
 This document describes the architectural patterns and principles used across
-all projects built from this base. It's technology-agnostic - specific stack
-choices are covered in `stacks/`.
+all projects built from this base. It's technology-agnostic — specific stack
+choices are covered in `stacks/`. AI agents should reference this when making
+architectural decisions.
 
 ---
 
