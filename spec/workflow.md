@@ -5,31 +5,25 @@ this workflow when creating, updating, or reviewing project progress.
 
 ---
 
-## Progressive Tracking
+## Two-Phase Tracking
 
-Tracking grows with the project. Don't force structure before it's needed.
+Tracking starts simple and grows organically. There are only two modes:
 
-### Phase 1: Inline (MVP / Early Development)
+### Inline
 Tasks live directly in `milestone.md` under each feature heading.
-No feature spec files needed. Fast, low overhead.
+No feature spec files. Fast, low overhead. This is where every project starts.
 
-**When to use:** Project is new, features are small, you're figuring things out.
+### Extracted
+When a feature outgrows inline tracking, it gets its own home in `spec/features/`.
+milestone.md becomes a pointer. The feature spec owns all tasks and design docs.
 
-### Phase 2: Extract (Growing Features)
-When a feature needs a deep-dive (design docs, 10+ tasks, complex requirements),
-extract it to `spec/features/feature-name.md`. The milestone.md entry becomes a
-pointer to the spec file. Tasks move to the spec, milestone.md tracks status only.
-
-**Trigger to extract:** You feel the milestone.md section getting unwieldy, OR
-you need to document design decisions / requirements for a feature.
-
-### Phase 3: Full Spec-Driven (Mature Project)
-Most features have their own spec files. milestone.md is a pure index.
-Feature spec status is the source of truth.
+As more features get extracted, milestone.md gradually becomes a pure index.
+This happens naturally — there is no "switch" moment. AI agents should detect
+when a feature is ready for extraction and offer to help transition it.
 
 ---
 
-## Phase 1: Inline Tracking
+## Inline Tracking
 
 `milestone.md` holds everything. Features have inline task lists:
 
@@ -37,13 +31,13 @@ Feature spec status is the source of truth.
 ## Milestone 1: MVP
 _Goal: Basic working product_
 
-### Player Movement 🔄
+### F-001: Player Movement 🔄
 - [x] Basic WASD movement
 - [x] Camera follow
 - [ ] Collision detection
 - [ ] Jump mechanic
 
-### Save System ⬚
+### F-002: Save System ⬚
 - [ ] Serialize game state
 - [ ] Save to local storage
 - [ ] Load from file
@@ -53,49 +47,59 @@ Simple. No extra files. Just work through the tasks.
 
 ---
 
-## Phase 2: Extracting a Feature
+## Extracting a Feature
 
-When a feature outgrows inline tracking:
+**When to extract:** A feature has 10+ tasks, needs design documentation,
+has complex requirements, or the milestone.md section feels unwieldy.
 
-1. Create `spec/features/feature-name.md` using the template below.
+**AI agents:** When you notice these signals, proactively suggest extraction.
+Don't wait for the user to ask.
+
+### Extraction steps:
+
+1. Create the feature's home in `spec/features/` (file or folder — see below).
 2. Move tasks from milestone.md into the feature spec.
-3. Replace the inline tasks in milestone.md with a link:
+3. Replace the inline tasks in milestone.md with a pointer:
 
 ```markdown
-### Lightning System 🔄 → [spec](../features/lightning.md)
+### F-001: Player Movement 🔄 → [spec](../features/player-movement.md)
 ```
 
 4. From now on, the feature spec owns the tasks. milestone.md shows status only.
+5. Feature spec `## Status:` is the source of truth — update BOTH files when status changes.
 
----
+### Simple vs Complex features:
 
-## Phase 3: Full Spec-Driven
+| Complexity | Structure |
+|------------|-----------|
+| **Simple** | `spec/features/feature-name.md` — single file with tasks + brief design |
+| **Complex** | `spec/features/feature-name/` — folder (see below) |
 
-At this point, milestone.md is a clean index:
+### Complex feature folder:
 
-```markdown
-## Milestone 2: Core
-| Status | Feature | Spec | Priority |
-|--------|---------|------|----------|
-| 🔄 | Lightning | [spec](../features/lightning.md) | 🟡 Medium |
-| ⬚ | Save System | [spec](../features/save-system.md) | 🟡 Medium |
+When a feature needs both task tracking AND deep technical documentation:
+
+```
+spec/features/scanner/
+├── tasks.md        # Milestoned task tracking (the "what")
+└── design.md       # Technical deep-dive, architecture, research (the "how")
 ```
 
-**The contract:**
-1. Feature spec `## Status:` is the source of truth.
-2. milestone.md mirrors it.
-3. When status changes, update BOTH.
-4. Granular tasks live in feature specs only.
+**`tasks.md`** — uses the same feature spec template (status, tasks, requirements).
+**`design.md`** — technical approach, data models, API contracts, research notes, diagrams.
+
+This prevents single files from growing to 100+ KB (which happened in real projects).
+Start with a single file; split into a folder when the file gets unwieldy.
 
 ---
 
 ## Feature Deep-Dive Process
 
-When doing a deep-dive into a feature (Phase 2+):
+When doing a deep-dive into an extracted feature:
 
 1. Research the feature thoroughly before writing any code.
-2. Document findings in the feature spec under `## Design`.
-3. Break implementation into granular tasks under `## Tasks`.
+2. Document findings in the feature spec (or `design.md` for complex features).
+3. Break implementation into granular tasks ordered by priority.
 4. Order tasks: 🟢 Quick Wins → 🟡 Core → 🔴 Complex.
 5. Each task should be small enough to complete in one focused session.
 6. Iterate through tasks, checking them off as completed.
@@ -104,7 +108,7 @@ When doing a deep-dive into a feature (Phase 2+):
 
 ## Feature Spec Template
 
-Each feature gets its own file at `spec/features/feature-name.md`:
+For a single-file feature at `spec/features/feature-name.md`:
 
 ```markdown
 # Feature: [Name]
@@ -133,6 +137,29 @@ Each feature gets its own file at `spec/features/feature-name.md`:
 - [ ] Task 5
 ```
 
+For a complex feature folder, split `## Design` into `design.md` and keep
+everything else in `tasks.md`.
+
+---
+
+## AI Transition Detection
+
+AI agents should watch for these signals and suggest extraction:
+
+| Signal | Action |
+|--------|--------|
+| Feature has 10+ inline tasks | Suggest extracting to a feature spec |
+| User asks for a "deep-dive" or research | Create extracted spec with design section |
+| Inline section has design notes or decisions | Time for its own file |
+| Most features are extracted | Note that milestone.md is becoming an index |
+| Feature spec > 200 lines | Suggest splitting into folder (tasks.md + design.md) |
+
+When transitioning, do it gracefully:
+1. Show the user what will move and where.
+2. Preserve all existing tasks and their completion status.
+3. Update milestone.md pointer in the same operation.
+4. Confirm both files are consistent before finishing.
+
 ---
 
 ## ID Conventions
@@ -155,7 +182,7 @@ Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Rela
 
 | File | Purpose | Update Frequency |
 |------|---------|-----------------|
-| `spec/tracking/milestone.md` | Feature index + inline tasks (Phase 1) or index only (Phase 2+) | Active development |
+| `spec/tracking/milestone.md` | Inline tasks → gradually becomes index as features extract | Active development |
 | `spec/tracking/backlog.md` | Ideas & future work not yet in a milestone | When new ideas arise |
 | `spec/tracking/bugs.md` | Known bugs with repro steps | When bugs are found or fixed |
 | `spec/tracking/decisions.md` | Open and resolved technical decisions | When decisions are made or needed |
@@ -175,7 +202,8 @@ Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Rela
 
 ## Anti-Patterns
 
-- **Don't force feature specs too early.** Inline tasks are fine for MVP.
+- **Don't force feature specs too early.** Inline tasks are the right starting point.
 - **Don't duplicate tasks** across milestone.md and feature specs.
-- **Don't forget to extract** when a feature's inline section gets unwieldy.
+- **Don't let feature spec files grow past 200 lines** without splitting into a folder.
 - **Don't forget to update milestone.md** when a feature spec's status changes.
+- **Don't wait for the user to ask** — proactively suggest extraction when signals appear.

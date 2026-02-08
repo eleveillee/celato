@@ -1,10 +1,10 @@
 # Milestones
 
-> **Phase 1 (MVP):** Tasks live inline under each feature.
-> **Phase 2+:** Extract features to `spec/features/` when they need deep-dives.
-> See `spec/workflow.md` for when to transition.
+> **Start inline.** Tasks live under each feature heading.
+> **Extract when needed.** When a feature outgrows inline (10+ tasks, needs design docs),
+> move it to `spec/features/`. See `spec/workflow.md` for extraction steps.
 >
-> To extract a feature: `### Feature Name 🔄 → [spec](../features/feature-name.md)`
+> Extraction syntax: `### F-001: Feature Name 🔄 → [spec](../features/feature-name.md)`
 
 ---
 

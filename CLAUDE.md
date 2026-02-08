@@ -18,10 +18,12 @@
 [REPLACE: Brief architecture overview. See spec/architecture.md for patterns.]
 
 ## Workflow
-Tracking is progressive — see @spec/workflow.md for full details:
-- **Phase 1 (MVP):** Tasks live inline in `spec/tracking/milestone.md`.
-- **Phase 2 (Growing):** Extract to `spec/features/*.md` when a feature needs 10+ tasks or design docs.
-- **Phase 3 (Mature):** `milestone.md` becomes a pure index; feature specs own all tasks.
+Tracking starts inline and extracts organically — see @spec/workflow.md for full details:
+- **Inline:** Tasks live in `spec/tracking/milestone.md` under each feature. Start here.
+- **Extracted:** When a feature outgrows inline (10+ tasks, needs design docs), extract to `spec/features/`.
+  - Simple features → single file. Complex features → folder with `tasks.md` + `design.md`.
+- milestone.md gradually becomes an index as features get extracted. No hard switch.
+- AI agents should detect when extraction is needed and help transition gracefully.
 
 ## Spec Lookup Table
 

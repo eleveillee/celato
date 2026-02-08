@@ -49,6 +49,14 @@
 - Added ID conventions section to workflow.md
 - Updated all cross-references for architecture move
 
+### v0.6 - Two-Phase Tracking + Project References (2026-02-08)
+- Simplified 3-phase → 2-phase tracking (Inline → Extracted)
+- Phase 2 was just a transition state, not a real mode — removed it
+- Added complex feature folder pattern: `spec/features/name/` with `tasks.md` + `design.md`
+- Added AI transition detection rules (proactively suggest extraction)
+- Created `_meta/references/` with TagExpert and Helix project documentation
+- References capture patterns, architecture, learnings, and bloat warnings from real projects
+
 ## Design Decisions
 
 | Decision | Rationale |
@@ -57,7 +65,9 @@
 | _meta/ folder over headers | Physical separation is clearer than convention |
 | Keep all 5 tracking templates | They're scaffolding, empty is correct |
 | stacks/ as guides not templates | AI regenerates configs; guides encode rationale |
-| Progressive tracking (3 phases) | Don't force feature spec overhead before it's needed |
+| Two-phase tracking (inline → extracted) | 3 phases was overcomplicated; Phase 2 was just transition |
+| Complex feature folders (tasks.md + design.md) | Prevents 100KB+ single files (proven by Helix/TagExpert) |
+| _meta/references/ for real projects | Captures proven patterns and bloat warnings for base evolution |
 | api-contracts.md as single source | Prevents shape drift between frontend/backend/tests/docs |
 | Prefixed IDs on all tracking items | Enables cross-referencing between bugs, learnings, decisions, features |
 | architecture.md in spec/ not docs/ | Architecture is AI-facing; docs/ was left with nothing useful |

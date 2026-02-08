@@ -24,7 +24,7 @@
 
 ## Key Files
 - `spec/coding-standards.md` - Detailed code rules with language-specific sections
-- `spec/workflow.md` - Progressive tracking system (Phase 1 inline → Phase 2 extract → Phase 3 index)
+- `spec/workflow.md` - Two-phase tracking (inline → extracted) with AI transition detection
 - `spec/api-contracts.md` - API contracts single source of truth (when applicable)
 
 ## Communication

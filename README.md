@@ -67,17 +67,17 @@ _Base/
 
 ### The Tracking System
 
-Tracking is progressive — it grows with the project:
+Tracking starts simple and extracts organically:
 
-- **Phase 1 (MVP):** Tasks live inline in `spec/tracking/milestone.md` under each
-  feature heading. No feature spec files needed. Fast, low overhead.
-- **Phase 2 (Growing):** When a feature needs 10+ tasks or design docs, extract it
-  to `spec/features/feature-name.md`. milestone.md becomes a pointer to the spec.
-- **Phase 3 (Mature):** `milestone.md` is a pure index. Feature specs own all
-  granular tasks. Feature spec status is the source of truth.
+- **Inline:** Tasks live in `spec/tracking/milestone.md` under each feature heading.
+  No extra files needed. This is where every project starts.
+- **Extracted:** When a feature outgrows inline (10+ tasks, needs design docs),
+  extract it to `spec/features/`. Simple features get a single file; complex
+  features get a folder with `tasks.md` + `design.md`.
 
-This prevents premature overhead while still scaling to complex projects.
-See `spec/workflow.md` for the full system and transition triggers.
+As features get extracted, milestone.md gradually becomes an index. There's no
+hard switch — AI agents detect when extraction is needed and help transition.
+See `spec/workflow.md` for the full system.
 
 All tracking items use prefixed IDs (`F-001`, `B-001`, `L-001`, etc.) for cross-referencing.
 
@@ -146,6 +146,6 @@ AI agents following this base's rules will:
 |----------|---------|
 | [Architecture](spec/architecture.md) | System architecture patterns and principles |
 | [Coding Standards](spec/coding-standards.md) | Parseable code rules for AI agents |
-| [Workflow](spec/workflow.md) | Progressive tracking system (Phase 1 → 2 → 3) |
+| [Workflow](spec/workflow.md) | Two-phase tracking (inline → extracted) |
 | [API Contracts](spec/api-contracts.md) | Single source of truth for API shapes |
 | [Setup Wizard](spec/setup-wizard.md) | Interactive guide to convert base into a project |

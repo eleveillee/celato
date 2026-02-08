@@ -57,7 +57,10 @@ _Base/
 │
 └── _meta/                         # Base-only: deleted during setup
     ├── technical-reference.md     #   This file (base structure docs)
-    └── base-evolution.md          #   How the base iterates over time
+    ├── base-evolution.md          #   How the base iterates over time
+    └── references/                #   Real project patterns for comparison
+        ├── tagexpert.md           #   SaaS/Next.js patterns (TagExpert)
+        └── helix.md              #   Game engine/C# patterns (Helix)
 ```
 
 ---
@@ -114,27 +117,27 @@ cannot import from external files. When updating rules, edit both locations.
 
 ---
 
-## How Tracking Works (Progressive)
-
-Tracking grows with the project in three phases:
+## How Tracking Works (Two-Phase)
 
 ```
-Phase 1 (MVP):          Phase 2 (Growing):          Phase 3 (Mature):
+INLINE (start here):            EXTRACTED (when needed):
 
-milestone.md            milestone.md                milestone.md
-┌──────────────┐        ┌──────────────┐            ┌──────────────┐
-│ ### Feature  │        │ ### Feature  │            │ Feature Index │
-│ - [x] Task 1│        │ 🔄 → [spec] │──mirrors──►│ 🔄 | Feature │
-│ - [ ] Task 2│        └──────────────┘            └──────────────┘
-└──────────────┘        spec/features/f.md               │
-                        ┌──────────────┐            spec/features/f.md
- Inline tasks.          │ ## Status: 🔄│◄──────────┌──────────────┐
- No spec files.         │ - [x] Task 1 │            │ Source of    │
-                        │ - [ ] Task 2 │            │ truth for    │
-                        └──────────────┘            │ all tasks    │
-                                                    └──────────────┘
+milestone.md                    milestone.md
+┌──────────────┐                ┌──────────────┐
+│ ### Feature  │   ──extract──► │ 🔄 → [spec] │
+│ - [x] Task 1│                └──────┬───────┘
+│ - [ ] Task 2│                       │ mirrors
+└──────────────┘                      ▼
+                                spec/features/
+                                ┌──────────────────────────┐
+                                │ Simple: feature-name.md  │
+                                │ Complex: feature-name/   │
+                                │   ├── tasks.md           │
+                                │   └── design.md          │
+                                └──────────────────────────┘
 ```
 
-**Phase 1:** Tasks inline in milestone.md. Fast, low overhead for MVP.
-**Phase 2:** Extract when a feature needs 10+ tasks or design docs.
-**Phase 3:** milestone.md is a pure index. Feature specs own everything.
+**Inline:** Tasks in milestone.md. Where every project starts.
+**Extracted:** Feature gets its own file or folder in `spec/features/`.
+milestone.md gradually becomes an index as more features extract. No hard switch.
+AI detects when extraction is needed and helps transition.
