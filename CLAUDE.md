@@ -17,6 +17,12 @@
 ## Architecture
 [REPLACE: Brief architecture overview. See docs/architecture.md for patterns.]
 
+## Workflow
+Tracking is progressive — see @spec/workflow.md for full details:
+- **Phase 1 (MVP):** Tasks live inline in `spec/tracking/milestone.md`.
+- **Phase 2:** Extract to `spec/features/*.md` when a feature needs 10+ tasks or design docs.
+- **Phase 3:** `milestone.md` becomes a pure index; feature specs own all tasks.
+
 ## Key References
 - @spec/coding-standards.md - Code rules for AI agents
 - @spec/workflow.md - Milestone and feature tracking workflow

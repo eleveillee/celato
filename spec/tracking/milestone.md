@@ -3,6 +3,8 @@
 > **Phase 1 (MVP):** Tasks live inline under each feature.
 > **Phase 2+:** Extract features to `spec/features/` when they need deep-dives.
 > See `spec/workflow.md` for when to transition.
+>
+> To extract a feature: `### Feature Name 🔄 → [spec](../features/feature-name.md)`
 
 ---
 

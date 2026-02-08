@@ -123,8 +123,9 @@ Ask the user:
 3. **Any known technical decisions that need to be made?**
 
 ### Actions:
-- Populate `spec/tracking/milestone.md` with actual milestones and features.
-- Create initial feature specs in `spec/features/` for first milestone features.
+- Populate `spec/tracking/milestone.md` with actual milestones and inline tasks (Phase 1).
+- Do NOT create feature spec files yet — inline tasks are sufficient for MVP.
+- Feature specs are extracted later when a feature outgrows inline tracking (see `spec/workflow.md`).
 - Add any open questions to `spec/tracking/decisions.md`.
 - Clear template placeholder rows from all tracking files.
 
