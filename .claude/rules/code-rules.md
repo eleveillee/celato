@@ -7,13 +7,14 @@
 - Prefer well-maintained, widely-adopted packages.
 - Check last publish date and download count before recommending.
 - Minimize dependency count. Don't add a package for 10 lines of code.
+- Track versions in `spec/tracking/version-matrix.md`.
 
 ## Testing Standards
 - AAA pattern: Arrange, Act, Assert.
 - One logical assertion per test. Descriptive names: "should [action] when [condition]".
 - Co-locate tests: `feature.ts` → `feature.test.ts`.
 - 80%+ coverage on business logic. 100% on critical paths.
-- Every bug fix gets a regression test.
+- Every bug fix gets a regression test with success condition verification.
 - Do NOT test framework internals, trivial getters, or implementation details.
 
 ## API Contracts
@@ -21,6 +22,11 @@
 - Define contracts there BEFORE implementing endpoints or consumers.
 - Never duplicate endpoint definitions, request/response types, or status codes elsewhere.
 - When contracts change, update `api-contracts.md` first, then update implementations.
+
+## Tech Debt
+- Log known debt in `spec/tracking/tech-debt.md` with TD-### IDs.
+- Don't leave TODOs in code without a corresponding TD-### entry.
+- Priority: 🔴 High (actively causing issues) → 🟡 Medium (code smell) → 🟢 Low (nice-to-have).
 
 ## Security
 - NEVER read, log, or output .env files, API keys, or credentials.
