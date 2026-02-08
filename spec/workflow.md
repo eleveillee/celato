@@ -29,7 +29,7 @@ milestone.md ←→ spec/features/*.md
 
 ## Workflow: Starting a New Feature
 
-1. Create `spec/features/feature-name.md` using the template from `spec/project-conventions.md`.
+1. Create `spec/features/feature-name.md` using the template below.
 2. Add an entry in `spec/tracking/milestone.md` under the appropriate milestone.
 3. Deep-dive: research, document requirements, design, and break into tasks.
 4. Work through tasks in priority order (quick-wins first).
@@ -66,6 +66,37 @@ When doing a deep-dive into a feature:
 | ✅ | Complete |
 | ⏸️ | Paused / blocked |
 | ❌ | Cancelled |
+
+## Feature Spec Template
+
+Each feature gets its own file at `spec/features/feature-name.md`:
+
+```markdown
+# Feature: [Name]
+## Status: ⬚ Not Started | 🔄 In Progress | ✅ Complete
+## Milestone: [Which milestone this belongs to]
+
+## Overview
+[What this feature does and why it exists]
+
+## Requirements
+[Specific, testable requirements]
+
+## Design
+[Technical approach, data models, API surface]
+
+## Tasks
+### 🟢 Quick Wins
+- [ ] Task 1
+- [ ] Task 2
+
+### 🟡 Core
+- [ ] Task 3
+- [ ] Task 4
+
+### 🔴 Complex
+- [ ] Task 5
+```
 
 ## Anti-Patterns
 

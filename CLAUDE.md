@@ -19,10 +19,8 @@
 
 ## Key References
 - @spec/coding-standards.md - Code rules for AI agents
-- @spec/project-conventions.md - Structural conventions
 - @spec/workflow.md - Milestone and feature tracking workflow
 - @docs/architecture.md - Architecture patterns and principles
-- @docs/best-practices.md - Cross-cutting best practices
 
 ## Project-Specific Rules
 [REPLACE: Add rules specific to this project. Examples:]

@@ -1,0 +1,35 @@
+---
+description: "Communication format, task planning, and review standards"
+alwaysApply: true
+---
+
+# Communication
+
+When presenting options, ALWAYS use a table with emoji indicators:
+| | Option | Pros | Cons |
+|---|---|---|---|
+| ⭐ | **Recommended** | Why it wins | Tradeoffs |
+| 🔄 | Alternative | Strengths | Weaknesses |
+
+- Always recommend one option. If equivalent, say so explicitly.
+- Be concise. Lead with the answer. Use code blocks with language tags.
+- Reference files as `path/to/file.ts:lineNumber`.
+
+# After Task Completion
+Always provide:
+- **3-5 QoL/polish suggestions** for what was just built
+- **2-3 follow-up tasks** as natural next steps
+
+# Task Planning
+
+- Split ALL task lists by milestone. Never flat lists.
+- Add granular sub-tasks. Order: 🟢 quick-wins → 🟡 medium → 🔴 complex.
+- Suggest reordering, splitting, and parallelization when appropriate.
+- Granular tasks live in `spec/features/*.md`, not in milestone.md.
+
+# Review Categorization
+
+When reviewing code or milestones, ALWAYS split into:
+- **🔴 Obvious Fixes**: bugs, typos, security, broken imports, failing tests
+- **🟡 Needs Attention**: architecture decisions, performance, ambiguous requirements
+- **🟢 Can Postpone**: style preferences, optimizations, extra coverage, docs

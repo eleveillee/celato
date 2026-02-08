@@ -10,6 +10,7 @@ for input at each decision point.
 
 Before starting:
 - This base has been copied to the new project directory.
+- Read `_meta/technical-reference.md` for a full map of all files and their purposes.
 - The user is ready to answer questions about their project.
 
 ---
@@ -187,6 +188,7 @@ Present the user with a summary of everything that was set up:
 
 ### Actions:
 - Remove `[REPLACE: ...]` placeholders from all files.
+- **Delete `_meta/` directory** (base-only files, not needed in the project).
 - Remove `stacks/` directory if not needed (the guides have served their purpose).
   Or keep them as reference - ask the user.
 - Verify all files are consistent (no leftover template content).
@@ -206,4 +208,5 @@ Verify these before declaring setup complete:
 - [ ] Project builds/runs successfully
 - [ ] At least one test exists and passes
 - [ ] Git is initialized with an initial commit (if requested)
+- [ ] `_meta/` directory deleted
 - [ ] All tracking template files are cleaned of placeholder rows

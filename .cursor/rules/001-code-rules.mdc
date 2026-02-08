@@ -1,0 +1,41 @@
+---
+description: "Code quality, testing standards, and security rules"
+alwaysApply: true
+---
+
+# Code Quality
+
+## Modularity
+- Write modular, single-responsibility code. Each function/class does ONE thing.
+- No file should exceed ~300 lines. No function should exceed ~50 lines.
+
+## No Repetition
+- DRY applies when logic is genuinely shared (3+ usages or complex logic).
+- Do NOT create abstractions for trivial one-off patterns.
+
+## Best Practices
+- Always research and use current best practices for the language/framework.
+- Prefer established patterns over clever solutions. Readable beats concise.
+- Use early returns and guard clauses over deep nesting.
+- Only build what is asked for. No speculative features.
+- Minimize dependency count.
+
+## Naming
+- Names describe WHAT, not HOW. Booleans: `is/has/can/should` prefixes.
+- Collections: plural nouns. Functions: verbs.
+
+# Testing
+
+- Recommend TDD for ALL projects. Write tests alongside code.
+- For hard-to-test projects (games, visual tools): screenshot tests, headless rendering, property-based testing.
+- AAA pattern. One assertion per test. Descriptive names.
+- 80%+ coverage on business logic. 100% on critical paths.
+- Every bug fix gets a regression test.
+- Do NOT test framework internals or trivial getters.
+
+# Security
+
+- NEVER read, log, or output .env files, API keys, or credentials.
+- Validate ALL external input at system boundaries with schema validation.
+- Use parameterized queries. Never concatenate user input into queries.
+- Never expose stack traces or system details in production responses.

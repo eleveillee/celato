@@ -47,25 +47,22 @@ _Base/
 ├── CLAUDE.md              # Claude Code: project memory & instructions
 ├── AGENTS.md              # Universal: AI agent instructions (all tools)
 ├── README.md              # This file
-├── .gitignore             # Version control ignores
+├── .gitignore
 │
-├── docs/                  # For humans: architecture, best practices, reference
-├── spec/                  # For AI: standards, conventions, tracking, features
+├── docs/                  # For humans: architecture and patterns
+│   └── architecture.md
+├── spec/                  # For AI: standards, tracking, features
+│   ├── coding-standards.md
+│   ├── workflow.md
+│   ├── setup-wizard.md
 │   ├── features/          # Feature deep-dives (created per project)
 │   └── tracking/          # Milestones, backlog, bugs, decisions, learnings
 ├── stacks/                # Language best-practice guides (TS, Python, C#)
 │
 ├── .claude/               # Claude Code config (rules, commands, settings)
-└── .cursor/               # Cursor IDE config (rules)
+├── .cursor/               # Cursor IDE config (rules)
+└── _meta/                 # Base-only files (deleted during project setup)
 ```
-
-### docs/ vs spec/
-
-| | docs/ | spec/ |
-|---|---|---|
-| **Audience** | Human developers | AI agents |
-| **Style** | Narrative, explanatory | Structured, parseable |
-| **Contains** | Architecture, best practices, technical reference | Coding rules, conventions, tracking, feature specs |
 
 ### The Tracking System
 
@@ -142,9 +139,6 @@ AI agents following this base's rules will:
 | Document | Purpose |
 |----------|---------|
 | [Architecture](docs/architecture.md) | System architecture patterns and principles |
-| [Best Practices](docs/best-practices.md) | Cross-cutting development best practices |
-| [Technical Reference](docs/technical-reference.md) | Deep-dive on every file in this base |
 | [Coding Standards](spec/coding-standards.md) | Parseable code rules for AI agents |
-| [Project Conventions](spec/project-conventions.md) | Naming, structure, and organizational conventions |
 | [Workflow](spec/workflow.md) | Milestone and feature tracking system |
 | [Setup Wizard](spec/setup-wizard.md) | Interactive guide to convert base into a project |
