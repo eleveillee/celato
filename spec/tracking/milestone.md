@@ -1,29 +1,32 @@
 # Milestones
 
-> This file is an INDEX. Granular tasks live in `spec/features/*.md`.
-> Update status here when a feature spec's status changes.
+> **Phase 1 (MVP):** Tasks live inline under each feature.
+> **Phase 2+:** Extract features to `spec/features/` when they need deep-dives.
+> See `spec/workflow.md` for when to transition.
 
 ---
 
 ## Milestone 1: [Name] (MVP)
-_Goal: [One sentence describing what "done" looks like for this milestone]_
+_Goal: [One sentence describing what "done" looks like]_
 
-| Status | Feature | Spec | Priority |
-|--------|---------|------|----------|
-| ⬚ | Feature name | [spec](../features/feature-name.md) | 🟢 Quick |
-| ⬚ | Feature name | [spec](../features/feature-name.md) | 🟡 Medium |
+### Feature Name ⬚
+- [ ] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+### Feature Name ⬚
+- [ ] Task 1
+- [ ] Task 2
 
 ## Milestone 2: [Name] (Core)
 _Goal: [One sentence]_
 
-| Status | Feature | Spec | Priority |
-|--------|---------|------|----------|
-| ⬚ | Feature name | [spec](../features/feature-name.md) | 🟡 Medium |
-| ⬚ | Feature name | [spec](../features/feature-name.md) | 🔴 Complex |
+### Feature Name ⬚
+- [ ] Task 1
+- [ ] Task 2
 
 ## Milestone 3: [Name] (Polish)
 _Goal: [One sentence]_
 
-| Status | Feature | Spec | Priority |
-|--------|---------|------|----------|
-| ⬚ | Feature name | [spec](../features/feature-name.md) | 🟡 Medium |
+### Feature Name ⬚
+- [ ] Task 1
