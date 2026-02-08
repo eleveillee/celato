@@ -29,6 +29,15 @@
 - Phase 3: milestone.md becomes pure index (original behavior)
 - Updated workflow.md, milestone.md template, all rule files, technical-reference.md
 
+### v0.4 - Consistency Pass + API Contracts (2026-02-08)
+- Full consistency audit across all files
+- Fixed: README described only Phase 3, now covers all 3 phases
+- Fixed: broken ref to deleted `docs/best-practices.md` in coding-standards.md
+- Fixed: broken ref to deleted `.claude/rules/testing.md` in setup-wizard.md
+- Standardized phase labels to (MVP)/(Growing)/(Mature) everywhere
+- Added `spec/api-contracts.md` as single source of truth for API shapes
+- Added API contract enforcement rules to both .claude/ and .cursor/ rules
+
 ## Design Decisions
 
 | Decision | Rationale |
@@ -38,6 +47,7 @@
 | Keep all 5 tracking templates | They're scaffolding, empty is correct |
 | stacks/ as guides not templates | AI regenerates configs; guides encode rationale |
 | Progressive tracking (3 phases) | Don't force feature spec overhead before it's needed |
+| api-contracts.md as single source | Prevents shape drift between frontend/backend/tests/docs |
 
 ## What To Watch
 
