@@ -19,8 +19,8 @@ It provides:
 
 1. **Rules that AI agents follow** - coding standards, communication formats,
    review processes, and task planning conventions.
-2. **A tracking system that doesn't drift** - milestones index features,
-   feature specs own granular tasks, and there's a clear contract between them.
+2. **A tracking system that grows with the project** - start with inline tasks,
+   extract to feature specs when complexity demands it, with a clear contract at each phase.
 3. **Language-agnostic best practices** - with stack-specific reference guides
    that AI uses to generate fresh, tailored configurations per project.
 4. **A clear split between human and AI documentation** - humans get readable
@@ -54,6 +54,7 @@ _Base/
 ├── spec/                  # For AI: standards, tracking, features
 │   ├── coding-standards.md
 │   ├── workflow.md
+│   ├── api-contracts.md
 │   ├── setup-wizard.md
 │   ├── features/          # Feature deep-dives (created per project)
 │   └── tracking/          # Milestones, backlog, bugs, decisions, learnings
@@ -66,16 +67,17 @@ _Base/
 
 ### The Tracking System
 
-The project uses a two-level tracking approach:
+Tracking is progressive — it grows with the project:
 
-- **`spec/tracking/milestone.md`** - High-level index of features by milestone.
-  Tracks WHAT, not HOW. No granular tasks.
-- **`spec/features/*.md`** - Feature-level deep-dives with granular task breakdowns.
-  Each feature spec is a self-contained mini-project.
+- **Phase 1 (MVP):** Tasks live inline in `spec/tracking/milestone.md` under each
+  feature heading. No feature spec files needed. Fast, low overhead.
+- **Phase 2 (Growing):** When a feature needs 10+ tasks or design docs, extract it
+  to `spec/features/feature-name.md`. milestone.md becomes a pointer to the spec.
+- **Phase 3 (Mature):** `milestone.md` is a pure index. Feature specs own all
+  granular tasks. Feature spec status is the source of truth.
 
-The contract: feature spec status is the source of truth. milestone.md mirrors it.
-This prevents the common problem of milestone plans drifting out of sync with
-actual feature progress.
+This prevents premature overhead while still scaling to complex projects.
+See `spec/workflow.md` for the full system and transition triggers.
 
 Additional tracking:
 - **`backlog.md`** - Ideas and future work not yet in a milestone.
@@ -101,11 +103,11 @@ Additional tracking:
 
 ### Working on a Project
 
-1. Check `spec/tracking/milestone.md` for current status.
+1. Check `spec/tracking/milestone.md` for current status and tasks.
 2. Pick a feature to work on from the current milestone.
-3. Open or create its spec at `spec/features/feature-name.md`.
-4. Work through tasks in priority order (quick-wins first).
-5. Update status in both the feature spec and milestone.md.
+3. Work through tasks in priority order (quick-wins first).
+4. When a feature outgrows inline tracking, extract it to `spec/features/feature-name.md`.
+5. Update status in milestone.md (and the feature spec, if one exists).
 
 ### AI Communication Conventions
 
@@ -140,5 +142,6 @@ AI agents following this base's rules will:
 |----------|---------|
 | [Architecture](docs/architecture.md) | System architecture patterns and principles |
 | [Coding Standards](spec/coding-standards.md) | Parseable code rules for AI agents |
-| [Workflow](spec/workflow.md) | Milestone and feature tracking system |
+| [Workflow](spec/workflow.md) | Progressive tracking system (Phase 1 → 2 → 3) |
+| [API Contracts](spec/api-contracts.md) | Single source of truth for API shapes |
 | [Setup Wizard](spec/setup-wizard.md) | Interactive guide to convert base into a project |

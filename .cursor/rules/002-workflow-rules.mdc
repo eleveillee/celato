@@ -25,7 +25,7 @@ Always provide:
 - Split ALL task lists by milestone. Never flat lists.
 - Add granular sub-tasks. Order: 🟢 quick-wins → 🟡 medium → 🔴 complex.
 - Suggest reordering, splitting, and parallelization when appropriate.
-- Phase 1 (MVP): tasks live inline in milestone.md. Phase 2+: extract to `spec/features/*.md`.
+- Tracking is progressive. Phase 1 (MVP): inline in milestone.md. Phase 2 (Growing): extract to `spec/features/*.md`. Phase 3 (Mature): milestone.md is a pure index.
 
 # Review Categorization
 

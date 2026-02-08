@@ -25,7 +25,8 @@
 
 ## Key Files
 - `spec/coding-standards.md` - Detailed code rules with language-specific sections
-- `spec/workflow.md` - Milestone ↔ feature tracking system and templates
+- `spec/workflow.md` - Progressive tracking system (Phase 1 inline → Phase 2 extract → Phase 3 index)
+- `spec/api-contracts.md` - API contracts single source of truth (when applicable)
 
 ## Communication
 - Options in tables with emoji indicators. Always recommend one.

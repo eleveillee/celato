@@ -23,7 +23,8 @@ _Base/
 │
 ├── spec/                          # Template: agent-facing specifications
 │   ├── coding-standards.md        #   Parseable code rules
-│   ├── workflow.md                #   Milestone ↔ feature tracking + templates
+│   ├── workflow.md                #   Progressive tracking + feature spec templates
+│   ├── api-contracts.md           #   API contracts single source of truth
 │   ├── setup-wizard.md            #   Base → project transformation guide
 │   ├── features/                  #   Feature deep-dives (per-project)
 │   │   └── .gitkeep
@@ -70,7 +71,8 @@ _Base/
 | `.gitignore` | Covers TS/Python/C#/AI tools |
 | `docs/architecture.md` | Architecture patterns and decision framework |
 | `spec/coding-standards.md` | Code rules with language-specific sections |
-| `spec/workflow.md` | Tracking system definition + feature spec template |
+| `spec/workflow.md` | Progressive tracking system + feature spec template |
+| `spec/api-contracts.md` | API contracts single source of truth |
 | `spec/setup-wizard.md` | Interactive base → project guide |
 | `spec/tracking/*` | Empty tracking templates |
 | `spec/features/.gitkeep` | Placeholder for feature specs |

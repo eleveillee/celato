@@ -144,7 +144,7 @@ Ask the user:
 - Create test directory structure.
 - Add test commands to `CLAUDE.md` and `AGENTS.md`.
 - Create a sample test file demonstrating the project's test conventions.
-- Add stack-specific testing rules to `.claude/rules/testing.md` if needed.
+- Add stack-specific testing rules to `.claude/rules/code-rules.md` (and mirror to `.cursor/rules/001-code-rules.mdc`).
 
 ---
 

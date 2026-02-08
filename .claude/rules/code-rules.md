@@ -16,6 +16,12 @@
 - Every bug fix gets a regression test.
 - Do NOT test framework internals, trivial getters, or implementation details.
 
+## API Contracts
+- `spec/api-contracts.md` is the SINGLE SOURCE OF TRUTH for all API shapes.
+- Define contracts there BEFORE implementing endpoints or consumers.
+- Never duplicate endpoint definitions, request/response types, or status codes elsewhere.
+- When contracts change, update `api-contracts.md` first, then update implementations.
+
 ## Security
 - NEVER read, log, or output .env files, API keys, or credentials.
 - NEVER commit secrets. Use .env.example with placeholder values.

@@ -1,8 +1,7 @@
 # Coding Standards
 
 This file contains parseable, enforceable coding rules for AI agents.
-For human-readable best practices with rationale, see `docs/best-practices.md`.
-For language-specific guides, see `stacks/`.
+For language-specific guides with rationale, see `stacks/`.
 
 ---
 

@@ -33,6 +33,12 @@ alwaysApply: true
 - Every bug fix gets a regression test.
 - Do NOT test framework internals or trivial getters.
 
+# API Contracts
+
+- `spec/api-contracts.md` is the SINGLE SOURCE OF TRUTH for all API shapes.
+- Define contracts there BEFORE implementing endpoints or consumers.
+- Never duplicate endpoint definitions, request/response types, or status codes elsewhere.
+
 # Security
 
 - NEVER read, log, or output .env files, API keys, or credentials.
