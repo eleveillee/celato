@@ -23,8 +23,8 @@ It provides:
    extract to feature specs when complexity demands it, with a clear contract at each phase.
 3. **Language-agnostic best practices** - with stack-specific reference guides
    that AI uses to generate fresh, tailored configurations per project.
-4. **A clear split between human and AI documentation** - humans get readable
-   guides in `docs/`, AI agents get structured rules in `spec/`.
+4. **A clear split between human and AI documentation** - humans get `README.md`,
+   AI agents get structured rules and specs in `spec/`.
 
 ### Core Beliefs
 - **AI tools are collaborators, not autocomplete.** They need context, rules,

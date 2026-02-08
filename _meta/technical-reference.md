@@ -21,7 +21,7 @@ _Base/
 ├── spec/                          # Architecture, standards, tracking, features
 │   ├── architecture.md            #   Architecture patterns & decision framework
 │   ├── coding-standards.md        #   Parseable code rules
-│   ├── workflow.md                #   Progressive tracking + feature spec templates
+│   ├── workflow.md                #   Two-phase tracking (inline → extracted) + templates
 │   ├── api-contracts.md           #   API contracts single source of truth
 │   ├── setup-wizard.md            #   Base → project transformation guide
 │   ├── features/                  #   Feature deep-dives (per-project)
@@ -76,7 +76,7 @@ _Base/
 | `.gitignore` | Covers TS/Python/C#/AI tools |
 | `spec/architecture.md` | Architecture patterns and decision framework |
 | `spec/coding-standards.md` | Code rules with language-specific sections |
-| `spec/workflow.md` | Progressive tracking system + feature spec template |
+| `spec/workflow.md` | Two-phase tracking (inline → extracted) + feature spec template |
 | `spec/api-contracts.md` | API contracts single source of truth |
 | `spec/setup-wizard.md` | Interactive base → project guide |
 | `spec/tracking/*` | Empty tracking templates |
