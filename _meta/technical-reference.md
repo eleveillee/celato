@@ -28,7 +28,7 @@ _Base/
 │   ├── features/                  #   Feature deep-dives (per-project)
 │   │   └── .gitkeep
 │   └── tracking/                  #   Living project state
-│       ├── milestone.md           #   Feature index by milestone
+│       ├── milestone.md           #   Inline tasks (Phase 1) or index (Phase 2+)
 │       ├── backlog.md             #   Ideas & future work
 │       ├── bugs.md                #   Known bugs
 │       ├── decisions.md           #   Technical decisions (open & resolved)
@@ -110,17 +110,27 @@ cannot import from external files. When updating rules, edit both locations.
 
 ---
 
-## How Tracking Works
+## How Tracking Works (Progressive)
+
+Tracking grows with the project in three phases:
 
 ```
-spec/tracking/milestone.md          spec/features/feature-name.md
-┌─────────────────────┐            ┌──────────────────────────────┐
-│ Feature Index        │◄──mirrors──│ ## Status: 🔄 In Progress    │
-│ 🔄 | Lightning      │            │ ## Tasks                      │
-│ ⬚  | Save System    │            │ - [x] Task 1                  │
-└─────────────────────┘            │ - [ ] Task 2                  │
-                                    └──────────────────────────────┘
+Phase 1 (MVP):          Phase 2 (Growing):          Phase 3 (Mature):
+
+milestone.md            milestone.md                milestone.md
+┌──────────────┐        ┌──────────────┐            ┌──────────────┐
+│ ### Feature  │        │ ### Feature  │            │ Feature Index │
+│ - [x] Task 1│        │ 🔄 → [spec] │──mirrors──►│ 🔄 | Feature │
+│ - [ ] Task 2│        └──────────────┘            └──────────────┘
+└──────────────┘        spec/features/f.md               │
+                        ┌──────────────┐            spec/features/f.md
+ Inline tasks.          │ ## Status: 🔄│◄──────────┌──────────────┐
+ No spec files.         │ - [x] Task 1 │            │ Source of    │
+                        │ - [ ] Task 2 │            │ truth for    │
+                        └──────────────┘            │ all tasks    │
+                                                    └──────────────┘
 ```
 
-Feature spec status is source of truth. milestone.md mirrors it.
-Granular tasks ONLY in feature specs, never in milestone.md.
+**Phase 1:** Tasks inline in milestone.md. Fast, low overhead for MVP.
+**Phase 2:** Extract when a feature needs 10+ tasks or design docs.
+**Phase 3:** milestone.md is a pure index. Feature specs own everything.
