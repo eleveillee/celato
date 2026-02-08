@@ -10,7 +10,7 @@ for input at each decision point.
 
 Before starting:
 - This base has been copied to the new project directory.
-- Read `_meta/technical-reference.md` for a full map of all files and their purposes.
+- Read the project structure in `README.md` and `spec/workflow.md` to understand the base layout.
 - The user is ready to answer questions about their project.
 
 ---

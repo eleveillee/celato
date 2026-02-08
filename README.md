@@ -132,7 +132,8 @@ AI agents following this base's rules will:
 
 ### Adding New Stacks
 - Create a new directory under `stacks/` (e.g., `stacks/rust/guide.md`).
-- Follow the pattern of existing guides: rationale first, then recommendations.
+- Follow the key-decision format: `Decision / Why / Alternatives` per topic.
+- Guides tell the wizard WHAT to generate and WHY — not full configs (the wizard generates those).
 
 ### Personal Preferences
 - Create `CLAUDE.local.md` at root for personal Claude Code overrides (gitignored).

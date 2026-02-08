@@ -57,6 +57,14 @@
 - Created `_meta/references/` with TagExpert and Helix project documentation
 - References capture patterns, architecture, learnings, and bloat warnings from real projects
 
+### v0.7 - Trim Bloat (2026-02-08)
+- Trimmed stack guides from 365-662 lines to 165-200 lines each (-60-75%)
+- Converted from tutorial format to key-decision format (Decision/Why/Alternatives)
+- Researched 2026 best practices for all 3 stacks (TS, Python, C#)
+- Key 2026 updates: Node 22 type stripping, Biome v2, Prisma 7, Lucia deprecated, .NET 10 LTS, AwesomeAssertions fork, Python 3.14 free-threaded, ty type checker, Ruff v0.15+
+- Deleted `_meta/technical-reference.md` (directory map already in README, file descriptions were self-evident bloat)
+- Total lines saved: ~1,230 lines
+
 ## Design Decisions
 
 | Decision | Rationale |
@@ -64,7 +72,7 @@
 | Self-contained rules in both tools | Cursor can't import; accepted duplication over broken references |
 | _meta/ folder over headers | Physical separation is clearer than convention |
 | Keep all 5 tracking templates | They're scaffolding, empty is correct |
-| stacks/ as guides not templates | AI regenerates configs; guides encode rationale |
+| stacks/ as key-decision guides | AI regenerates configs; guides encode WHY not HOW |
 | Two-phase tracking (inline → extracted) | 3 phases was overcomplicated; Phase 2 was just transition |
 | Complex feature folders (tasks.md + design.md) | Prevents 100KB+ single files (proven by Helix/TagExpert) |
 | _meta/references/ for real projects | Captures proven patterns and bloat warnings for base evolution |
@@ -76,7 +84,7 @@
 ## What To Watch
 
 - ~~Does the `docs/` folder justify existing with only `architecture.md`?~~ Resolved: moved to spec/, deleted docs/
-- Are stacks/ guides too long? (365-662 lines each)
+- ~~Are stacks/ guides too long? (365-662 lines each)~~ Resolved: trimmed to 165-200 lines of key decisions (v0.7)
 - Does the setup wizard flow actually work end-to-end?
 - Do the merged rule files stay readable as they grow?
 
