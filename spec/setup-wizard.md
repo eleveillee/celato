@@ -49,9 +49,9 @@ Ask the user:
 
 | | Language | Stack Guide |
 |---|---|---|
-| 📘 | TypeScript / Node.js | `stacks/typescript/guide.md` |
-| 🐍 | Python | `stacks/python/guide.md` |
-| 💜 | C# / .NET | `stacks/csharp/guide.md` |
+| 📘 | TypeScript / Node.js | `stacks/typescript.md` |
+| 🐍 | Python | `stacks/python.md` |
+| 💜 | C# / .NET | `stacks/csharp.md` |
 | 🔧 | Other | Research best practices on the fly |
 
 2. **What framework?** (present relevant options from the stack guide)
@@ -59,7 +59,7 @@ Ask the user:
 4. **Any other key technologies?** (auth, hosting, etc.)
 
 ### Actions:
-- Read the relevant `stacks/*/guide.md` for best practices.
+- Read the relevant `stacks/*.md` for best practices.
 - Update `CLAUDE.md` tech stack section.
 - Update `AGENTS.md` tech stack section.
 

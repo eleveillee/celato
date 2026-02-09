@@ -58,7 +58,7 @@ _Base/
 │   ├── research/          # Competitive research, market analysis (optional)
 │   ├── features/          # Feature deep-dives (created per project)
 │   └── tracking/          # Milestones, backlog, bugs, decisions, learnings, tech-debt, versions
-├── stacks/                # Language best-practice guides (TS, Python, C#)
+├── stacks/                # Language stack guides (typescript.md, python.md, csharp.md)
 │
 ├── .claude/               # Claude Code config (rules, commands, settings)
 ├── .cursor/               # Cursor IDE config (rules)
@@ -131,8 +131,9 @@ AI agents following this base's rules will:
 - Both are auto-loaded. Keep rules in sync between tools.
 
 ### Adding New Stacks
-- Create a new directory under `stacks/` (e.g., `stacks/rust/guide.md`).
+- Create a new file under `stacks/` (e.g., `stacks/rust.md`).
 - Follow the key-decision format: `Decision / Why / Alternatives` per topic.
+- Include a "Recommended Stack" version table at the top.
 - Guides tell the wizard WHAT to generate and WHY — not full configs (the wizard generates those).
 
 ### Personal Preferences

@@ -1,6 +1,27 @@
 # C# / .NET Stack Guide
 
 > Key decisions for the Setup Wizard. Researched for 2026 best practices.
+> Always prefer the latest stable version. Minimums below are the tested "known-good" floor.
+
+## Recommended Stack (2026)
+
+| Category | Package | Minimum | Notes |
+|---|---|---|---|
+| Runtime | .NET | 10 LTS | C# 14, supported through Nov 2028 |
+| Web API | ASP.NET Core | 10 | Minimal APIs default |
+| ORM | EF Core | 10+ | Migrations, LINQ, change tracking |
+| ORM (perf) | Dapper | 2+ | Hot paths, full SQL control |
+| Testing | xUnit | 2.8+ | Async-first, constructor setup |
+| Assertions | AwesomeAssertions | latest | Free fork of FluentAssertions |
+| Mocking | NSubstitute | latest | Clean API, no SponsorLink |
+| Validation | FluentValidation | 11+ | Separated from models |
+| Logging | Serilog | 4+ | Structured, ILogger<T> abstraction |
+| Serialization | System.Text.Json | built-in | Source generators for AOT |
+| Resilience | Microsoft.Extensions.Http.Resilience | latest | Built on Polly v8 |
+| Analyzers | Meziantou.Analyzer | latest | Catches common async/string mistakes |
+| Cloud-native | .NET Aspire | 9+ | Service discovery, dashboard, OTEL |
+
+> Update this table as the base evolves.
 
 ---
 

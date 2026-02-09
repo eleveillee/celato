@@ -1,6 +1,27 @@
 # Python Stack Guide
 
 > Key decisions for the Setup Wizard. Researched for 2026 best practices.
+> Always prefer the latest stable version. Minimums below are the tested "known-good" floor.
+
+## Recommended Stack (2026)
+
+| Category | Package | Minimum | Notes |
+|---|---|---|---|
+| Language | Python | 3.13+ | Target 3.14 for free-threaded / JIT |
+| Package manager | uv | latest | Replaces pip, venv, pip-tools |
+| Web framework | FastAPI | 0.115+ | Async, auto OpenAPI, Pydantic |
+| Validation | Pydantic | 2.10+ | Rust core, 5-50x faster than v1 |
+| ORM | SQLAlchemy | 2.0+ | Modern typing, full async |
+| ORM (alt) | SQLModel | latest | SQLAlchemy + Pydantic unified |
+| HTTP client | httpx | 0.28+ | Sync + async, HTTP/2 |
+| Linting | Ruff | 0.15+ | Replaces flake8 + black + isort |
+| Type checking | pyright | 1.1+ | Watch ty (Astral) for successor |
+| Testing | pytest | 8+ | De facto standard |
+| Config | pydantic-settings | 2.7+ | Type-safe env/config loading |
+| Logging | structlog | latest | Structured JSON logging |
+| Build backend | hatchling | latest | Modern, src-layout default |
+
+> Update this table as the base evolves.
 
 ---
 

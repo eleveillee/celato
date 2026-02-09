@@ -4,8 +4,9 @@
 > ~/.claude/CLAUDE.md. These rules add project-specific standards.
 
 ## Dependencies
-- Prefer well-maintained, widely-adopted packages.
-- Check last publish date and download count before recommending.
+- **Always prefer the latest stable version** of packages and frameworks. Do not pin to old versions unless there is a specific compatibility reason.
+- Check the stack guide (`stacks/*.md`) for recommended minimum versions before adding packages.
+- Prefer well-maintained, widely-adopted packages. Check last publish date and download count.
 - Minimize dependency count. Don't add a package for 10 lines of code.
 - Track versions in `spec/tracking/version-matrix.md`.
 

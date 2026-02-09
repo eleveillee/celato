@@ -1,6 +1,28 @@
 # TypeScript / Node.js Stack Guide
 
 > Key decisions for the Setup Wizard. Researched for 2026 best practices.
+> Always prefer the latest stable version. Minimums below are the tested "known-good" floor.
+
+## Recommended Stack (2026)
+
+| Category | Package | Minimum | Notes |
+|---|---|---|---|
+| Runtime | Node.js | 22 LTS | Native TS type stripping, `--env-file` |
+| Language | TypeScript | 5.8+ | `erasableSyntaxOnly` flag |
+| Framework | Next.js | 16+ | App Router, Turbopack default in dev |
+| UI | React | 19+ | RSC, server actions |
+| Styling | Tailwind CSS | 4+ | CSS-first config, `@theme` |
+| Validation | Zod | 4+ | Standard Schema support |
+| ORM | Prisma | 7+ | Pure TS, no Rust engine |
+| ORM (alt) | Drizzle | latest | Code-first, edge-friendly |
+| State | Zustand | 5+ | Minimal, TS-first |
+| Data fetching | TanStack Query | 5+ | Cache, optimistic updates |
+| Linting | Biome | 2+ | Type-aware linting, plugin system |
+| Testing | Vitest | 3+ | Native TS, Vite pipeline |
+| E2E | Playwright | latest | Cross-browser, auto-waiting |
+| Components | shadcn/ui | latest | Copy-paste Radix + Tailwind components |
+
+> These versions are validated together in production (TagExpert). Update this table as the base evolves.
 
 ---
 

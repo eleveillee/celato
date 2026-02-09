@@ -15,6 +15,7 @@ alwaysApply: true
 
 ## Best Practices
 - Always research and use current best practices for the language/framework.
+- **Always prefer the latest stable version** of packages and frameworks. Check `stacks/*.md` for recommended minimums.
 - Prefer established patterns over clever solutions. Readable beats concise.
 - Use early returns and guard clauses over deep nesting.
 - Only build what is asked for. No speculative features.
