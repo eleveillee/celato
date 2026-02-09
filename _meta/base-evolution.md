@@ -1,6 +1,6 @@
 # Base Evolution
 
-> **This file is base-only.** Tracks how the _Base project iterates over time.
+> **This file is base-only.** Tracks how the Codex project iterates over time.
 > Deleted during setup wizard.
 
 ---

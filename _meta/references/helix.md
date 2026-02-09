@@ -9,9 +9,9 @@
 
 ## What This Project Validates
 
-Helix is a large, complex C# project that predates _Base. It demonstrates what happens
+Helix is a large, complex C# project that predates Codex. It demonstrates what happens
 with extensive AI-assisted development over many months. Both good patterns and bloat
-are instructive for _Base design.
+are instructive for Codex design.
 
 ---
 
@@ -41,11 +41,11 @@ spec/
 ```
 
 **Bloat note:** 150+ files is excessive. Many features documented but never reached milestones.
-85+ feature files with no pruning. _Base's progressive extraction prevents this.
+85+ feature files with no pruning. Codex's progressive extraction prevents this.
 
 ---
 
-## Patterns Worth Stealing (applied to _Base)
+## Patterns Worth Stealing (applied to Codex)
 
 ### 1. Success Conditions on Bugs
 Every bug has: "Bug is FIXED when: [observable outcomes]". Enables AI self-verification.
@@ -115,7 +115,7 @@ Three-level knowledge system:
 | **L4** | Engine-wide | `spec/knowledge/*.json` | Baked into engine |
 
 **Lesson:** Elegant concept but only L2 is fully implemented. L3/L4 promotion is manual.
-For _Base, Claude's auto-memory (`~/.claude/projects/`) covers L2 functionality.
+For Codex, Claude's auto-memory (`~/.claude/projects/`) covers L2 functionality.
 
 ---
 
@@ -157,7 +157,7 @@ GITM compilation errors cataloged with bad→good patterns:
 | GE013 | First line of Update | Must check `_input.IsKeyboardCapturedByUI` |
 
 **Lesson:** Domain-specific error catalogs are valuable for AI agents that generate code.
-Not applicable to _Base (too project-specific) but good pattern for game/compiler projects.
+Not applicable to Codex (too project-specific) but good pattern for game/compiler projects.
 
 ---
 
@@ -182,5 +182,5 @@ Not applicable to _Base (too project-specific) but good pattern for game/compile
 | Session reports in spec/Reports/ | Became bloat fast, git log is better |
 | Feature files mixing tasks + design + research | Single files grew to 94KB+ |
 
-**Key takeaway:** _Base's two-phase tracking (inline → extracted) with folder split
+**Key takeaway:** Codex's two-phase tracking (inline → extracted) with folder split
 for complex features directly addresses Helix's biggest bloat problems.

@@ -9,7 +9,7 @@
 
 ## What This Project Validates
 
-TagExpert is the first real project built with patterns that evolved into _Base.
+TagExpert is the first real project built with patterns that evolved into Codex.
 These are proven patterns from a shipping SaaS product.
 
 ---
@@ -47,7 +47,7 @@ spec/
 
 ---
 
-## Patterns Worth Stealing (applied to _Base)
+## Patterns Worth Stealing (applied to Codex)
 
 ### 1. Spec Lookup Table
 CLAUDE.md has a "when doing X, read Y" table. AI always knows which spec to consult.

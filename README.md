@@ -1,6 +1,6 @@
-# AI Project Base
+# Codex
 
-A starting point for all AI-assisted software projects. This base provides
+A starting point for all AI-assisted software projects. Codex provides
 structure, conventions, and best practices that work with both **Cursor IDE**
 and **Claude Code CLI** (and any other AI coding tool that supports AGENTS.md).
 
@@ -14,7 +14,7 @@ What conventions should I follow? How do I communicate effectively with AI tools
 How do I track progress without losing context?
 
 ### The Solution
-This base answers those questions once, consistently, across all projects.
+Codex answers those questions once, consistently, across all projects.
 It provides:
 
 1. **Rules that AI agents follow** - coding standards, communication formats,
@@ -43,7 +43,7 @@ It provides:
 ## Project Structure
 
 ```
-_Base/
+_Codex/
 ├── CLAUDE.md              # Claude Code: project memory & instructions
 ├── AGENTS.md              # Universal: AI agent instructions (all tools)
 ├── README.md              # This file
