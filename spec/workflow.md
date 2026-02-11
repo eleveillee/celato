@@ -1,4 +1,5 @@
 # Workflow: Milestone & Feature Tracking
+_Last updated: 2026-02-10_
 
 This document defines how project tracking works. AI agents MUST follow
 this workflow when creating, updating, or reviewing project progress.
@@ -146,10 +147,9 @@ When doing a deep-dive into an extracted feature:
 
 1. Research the feature thoroughly before writing any code.
 2. Document findings in the feature spec (or `design.md` for complex features).
-3. Break implementation into granular tasks ordered by priority.
-4. Order tasks: 🟢 Quick Wins → 🟡 Core → 🔴 Complex.
-5. Each task should be small enough to complete in one focused session.
-6. Iterate through tasks, checking them off as completed.
+3. Break implementation into phases that map to milestone delivery steps.
+4. Each task should be small enough to complete in one focused session.
+5. Iterate through phases, checking tasks off and updating phase badges.
 
 ---
 
@@ -174,18 +174,28 @@ _Blocked by: F-002 (needs X) | Blocks: F-005 | Decisions: D-003_
 [Technical approach, data models, API surface]
 
 ## Tasks
-### Phase 1: [Name] (Step 1) ⬚ [0/2 tasks] — NOT STARTED
+### Phase 1: [Name] ⬚ [0/2 tasks]
 - [ ] Task 1
 - [ ] Task 2
 
-### Phase 2: [Name] (Step 2) 🔄 [1/3 tasks] — IN PROGRESS
+### Phase 2: [Name] (Step 2) 🔄 [1/3 tasks]
 - [x] Task 3
 - [ ] Task 4
 - [ ] Task 5
 ```
 
+**Phases are optional.** For small features (under 10 tasks, one milestone step),
+a flat `## Tasks` list is fine. Use phases when a feature spans multiple delivery
+steps or is complex enough to need them.
+
+**Step references** like `(Step 2)` are added when the milestone has delivery-sequence
+steps. Leave them off until then.
+
 For a complex feature folder, split `## Design` into `design.md` and keep
 everything else in `tasks.md`.
+
+> **Copyable templates:** `spec/templates/feature-spec.md` (flat tasks)
+> and `spec/templates/feature-spec-phased.md` (with phases). Copy and rename.
 
 ---
 
@@ -213,6 +223,9 @@ When transitioning, do it gracefully:
 
 ## ID Conventions
 
+> **Canonical source.** If ID conventions change, update this table first.
+> Other files (milestone.md, CLAUDE.md, workflow-rules.md) summarize but defer here.
+
 All tracking items use prefixed IDs for cross-referencing:
 
 | Prefix | File | Example |
@@ -231,7 +244,7 @@ Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Rela
 
 | File | Purpose | Update Frequency |
 |------|---------|-----------------|
-| `spec/tracking/milestone.md` | Inline tasks → gradually becomes index as features extract | Active development |
+| `spec/tracking/milestone.md` | Inline tasks → evolves to delivery sequence as features extract | Active development |
 | `spec/tracking/backlog.md` | Ideas & future work not yet in a milestone | When new ideas arise |
 | `spec/tracking/bugs.md` | Known bugs with repro steps | When bugs are found or fixed |
 | `spec/tracking/decisions.md` | Open and resolved technical decisions | When decisions are made or needed |

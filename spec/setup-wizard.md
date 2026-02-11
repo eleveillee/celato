@@ -68,6 +68,10 @@ Available stack guides (read the relevant ones before recommending):
 
 For stacks not covered by a guide, research current best practices before recommending.
 
+### Checkpoint — Confirm architecture before generating:
+Present the recommended stack (components, languages, frameworks) and get explicit
+confirmation before generating any files. This is the last easy point to change direction.
+
 ### Actions:
 - Read the relevant `stacks/*.md` for each component.
 - Update `CLAUDE.md` tech stack and architecture sections.
@@ -167,11 +171,9 @@ Set up the remaining infrastructure in one pass:
 
 ## Step 7: Final Review
 
-### Checkpoint — Confirm before generating:
-Before writing any remaining files, present the full picture to the user:
-project name, architecture, stack per component, directory structure, milestones,
-and first features. Ask: **"Does this match what you had in mind? Anything to adjust?"**
-Only proceed to file generation after confirmation.
+### Checkpoint — Final review:
+Present the complete picture: project name, architecture, stack, directory structure,
+milestones, and first features. Ask: **"Anything to adjust before we finalize?"**
 
 Present a summary:
 
@@ -221,3 +223,4 @@ Verify before declaring setup complete:
 - [ ] Git is initialized with an initial commit (if requested)
 - [ ] `_meta/` directory deleted
 - [ ] All tracking template files are cleaned of placeholder rows
+- [ ] Template guidance blockquote removed from top of `milestone.md`

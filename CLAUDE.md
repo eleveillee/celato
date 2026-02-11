@@ -50,11 +50,12 @@ All tracking items use prefixed IDs for cross-referencing: `F-001` (features), `
 - [REPLACE: "NEVER modify files in src/generated/ - these are auto-generated"]
 - [REPLACE: "The legacy/ directory uses CommonJS - do not convert to ESM"]
 
-## Getting Started
+## Session Start (Every Session)
+AI agents should do this at the start of every conversation, not just the first one:
 1. Read this file and the spec lookup table above.
-2. Check `spec/tracking/milestone.md` for current project status.
+2. Check `spec/tracking/milestone.md` for current status and next steps.
 3. Check `spec/tracking/bugs.md` for known issues.
-4. Check `spec/tracking/decisions.md` for open questions.
+4. Check `spec/tracking/decisions.md` for open/blocking questions.
 
 ## Setup
 To convert this base into a project-specific setup, follow @spec/setup-wizard.md.

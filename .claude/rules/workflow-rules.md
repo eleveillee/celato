@@ -3,6 +3,12 @@
 > Personal communication and task preferences are in ~/.claude/CLAUDE.md.
 > These rules add project-specific tracking conventions.
 
+## Session Start
+At the start of every conversation:
+1. Read `CLAUDE.md` and the spec lookup table.
+2. Read `spec/tracking/milestone.md` for current status and next steps.
+3. Skim `spec/tracking/bugs.md` and `spec/tracking/decisions.md` for open/blocking items.
+
 ## Two-Phase Tracking
 - Tracking starts inline in `milestone.md`, extracts organically. See @spec/workflow.md.
 - **Inline:** Tasks under each feature heading. Start here. No extra files.
@@ -31,7 +37,7 @@
 
 ## Milestone Transitions
 These rules are tied to specific actions you already perform:
-- **When completing any meaningful work:** Check milestone.md and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name (Step X) 🔄 [3/8 tasks] — IN PROGRESS`), and update feature status icons. Work often happens without starting from a milestone task — tracking must stay current.
+- **When completing any meaningful work:** Check milestone.md and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name 🔄 [3/8 tasks]`), and update feature status icons. Work often happens without starting from a milestone task — tracking must stay current.
 - **When marking a feature ✅:** Check if it's the last one in its milestone. If so, tell the user and walk through the transition checklist in milestone.md.
 - **When starting work on a feature in a new milestone:** Read the previous milestone's transition checklist first. If incomplete, flag it before proceeding.
 - **When creating or extracting a feature:** Add `_(blocks F-XXX)_` or `_(blocked by F-XXX)_` to the milestone.md heading if dependencies exist.
