@@ -174,15 +174,13 @@ _Blocked by: F-002 (needs X) | Blocks: F-005 | Decisions: D-003_
 [Technical approach, data models, API surface]
 
 ## Tasks
-### 🟢 Quick Wins
+### Phase 1: [Name] (Step 1) ⬚ [0/2 tasks] — NOT STARTED
 - [ ] Task 1
 - [ ] Task 2
 
-### 🟡 Core
-- [ ] Task 3
+### Phase 2: [Name] (Step 2) 🔄 [1/3 tasks] — IN PROGRESS
+- [x] Task 3
 - [ ] Task 4
-
-### 🔴 Complex
 - [ ] Task 5
 ```
 

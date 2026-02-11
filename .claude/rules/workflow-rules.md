@@ -31,7 +31,7 @@
 
 ## Milestone Transitions
 These rules are tied to specific actions you already perform:
-- **When completing any meaningful work:** Check milestone.md and relevant feature specs for tasks that match what was done. Mark them complete and update feature status icons. Work often happens without starting from a milestone task — tracking must stay current.
+- **When completing any meaningful work:** Check milestone.md and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name (Step X) 🔄 [3/8 tasks] — IN PROGRESS`), and update feature status icons. Work often happens without starting from a milestone task — tracking must stay current.
 - **When marking a feature ✅:** Check if it's the last one in its milestone. If so, tell the user and walk through the transition checklist in milestone.md.
 - **When starting work on a feature in a new milestone:** Read the previous milestone's transition checklist first. If incomplete, flag it before proceeding.
 - **When creating or extracting a feature:** Add `_(blocks F-XXX)_` or `_(blocked by F-XXX)_` to the milestone.md heading if dependencies exist.
