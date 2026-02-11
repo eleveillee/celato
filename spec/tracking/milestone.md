@@ -25,25 +25,45 @@ Reference format: `See D-003` or `Blocked by B-012`. AIs should use these IDs wh
 
 ## Milestone 1: [Name] (MVP)
 _Goal: [One sentence describing what "done" looks like]_
+_Done when: [Verifiable criteria — e.g. "both demo games playable, all tests pass"]_
+_Blocking decisions: [D-001, D-003 — must resolve before M2]_
 
 ### F-001: Feature Name ⬚
 - [ ] Task 1
 - [ ] Task 2
 - [ ] Task 3
 
-### F-002: Feature Name ⬚
+### F-002: Feature Name ⬚ _(blocks F-003)_
 - [ ] Task 1
 - [ ] Task 2
+
+### M1 → M2 Transition
+- [ ] All M1 features ✅ or explicitly deferred with rationale
+- [ ] Blocking decisions resolved (see above)
+- [ ] Completed features collapsed to status-only (see workflow.md)
+- [ ] M2 dependency order confirmed
+
+---
 
 ## Milestone 2: [Name] (Core)
 _Goal: [One sentence]_
+_Done when: [Verifiable criteria]_
+_Blocking decisions: [D-IDs if any]_
 
-### F-003: Feature Name ⬚
+### F-003: Feature Name ⬚ _(blocked by F-002)_
 - [ ] Task 1
 - [ ] Task 2
 
+### M2 → M3 Transition
+- [ ] All M2 features ✅ or explicitly deferred with rationale
+- [ ] Blocking decisions resolved
+- [ ] Completed features collapsed to status-only
+
+---
+
 ## Milestone 3: [Name] (Polish)
 _Goal: [One sentence]_
+_Done when: [Verifiable criteria]_
 
 ### F-004: Feature Name ⬚
 - [ ] Task 1

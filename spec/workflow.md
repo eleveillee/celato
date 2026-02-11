@@ -93,6 +93,49 @@ Start with a single file; split into a folder when the file gets unwieldy.
 
 ---
 
+## Milestone Transitions
+
+When a milestone completes, clean up before starting the next one:
+
+### Collapsing a completed milestone
+
+Replace inline task lists with status-only pointers. Before:
+```markdown
+### F-001: Player Movement ✅
+- [x] Basic WASD movement
+- [x] Camera follow
+- [x] Collision detection
+```
+
+After:
+```markdown
+### F-001: Player Movement ✅
+```
+
+Or if extracted: `### F-001: Player Movement ✅ → [spec](../features/player-movement.md)`
+
+This keeps milestone.md scannable. The detail lives in git history or the feature spec.
+
+### Transition checklist
+
+Each milestone has an `M1 → M2 Transition` section. Before starting the next milestone:
+1. All features ✅ or explicitly deferred (with rationale, not just ignored).
+2. All blocking decisions resolved — check `_Blocking decisions:_` at the top.
+3. Completed features collapsed to status-only.
+4. Next milestone's feature dependency order confirmed.
+
+### Feature dependencies
+
+Use inline annotations on feature headings when order matters:
+```markdown
+### F-003: Telemetry ⬚ _(blocks F-005, F-006)_
+### F-005: AI Input ⬚ _(blocked by F-003)_
+```
+
+Keep it lightweight — only declare dependencies that affect start order.
+
+---
+
 ## Feature Deep-Dive Process
 
 When doing a deep-dive into an extracted feature:
@@ -114,6 +157,8 @@ For a single-file feature at `spec/features/feature-name.md`:
 # Feature: [Name]
 ## Status: ⬚ Not Started | 🔄 In Progress | ✅ Complete
 ## Milestone: [Which milestone this belongs to]
+## Dependencies
+_Blocked by: F-002 (needs X) | Blocks: F-005 | Decisions: D-003_
 
 ## Overview
 [What this feature does and why it exists]
@@ -153,6 +198,8 @@ AI agents should watch for these signals and suggest extraction:
 | Inline section has design notes or decisions | Time for its own file |
 | Most features are extracted | Note that milestone.md is becoming an index |
 | Feature spec > 200 lines | Suggest splitting into folder (tasks.md + design.md) |
+| All features in a milestone are ✅ | Prompt user to run the transition checklist |
+| Unresolved decisions block the next milestone | Flag them before starting new milestone work |
 
 When transitioning, do it gracefully:
 1. Show the user what will move and where.
@@ -207,3 +254,5 @@ Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Rela
 - **Don't let feature spec files grow past 200 lines** without splitting into a folder.
 - **Don't forget to update milestone.md** when a feature spec's status changes.
 - **Don't wait for the user to ask** — proactively suggest extraction when signals appear.
+- **Don't start a new milestone with unresolved blocking decisions.** Resolve or explicitly defer them.
+- **Don't leave completed milestones expanded.** Collapse to status-only — the detail is in git or feature specs.

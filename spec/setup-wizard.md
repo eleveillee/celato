@@ -124,6 +124,7 @@ Ask the user:
 
 ### Actions:
 - Populate `spec/tracking/milestone.md` with actual milestones and inline tasks.
+- Every milestone MUST have `Done when` criteria and `Blocking decisions` filled in (not placeholder text).
 - Do NOT create feature spec files yet — inline tasks are the starting point.
 - Features get extracted later when they outgrow inline tracking (10+ tasks, need design docs).
   - Simple features → `spec/features/feature-name.md` (single file).

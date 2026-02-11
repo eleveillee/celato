@@ -7,14 +7,15 @@ This serves as a lightweight Architecture Decision Record (ADR).
 
 ## Open Questions
 
-| ID | Question | Context | Options | Status |
-|----|----------|---------|---------|--------|
-| D-001 | | | | |
+| ID | Question | Context | Options | Blocks | Status |
+|----|----------|---------|---------|--------|--------|
+| D-001 | | | | | |
 
 ### Template for Open Questions
 ```markdown
 ### D-001: [Short question]
 **Context:** Why this decision is needed.
+**Blocks:** F-003, M2 start _(which features/milestones are waiting on this?)_
 **Options:**
 | | Option | Pros | Cons |
 |---|---|---|---|
