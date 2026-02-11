@@ -22,7 +22,8 @@ Tracking starts inline and extracts organically — see @spec/workflow.md for fu
 - **Inline:** Tasks live in `spec/tracking/milestone.md` under each feature. Start here.
 - **Extracted:** When a feature outgrows inline (10+ tasks, needs design docs), extract to `spec/features/`.
   - Simple features → single file. Complex features → folder with `tasks.md` + `design.md`.
-- milestone.md gradually becomes an index as features get extracted. No hard switch.
+- **Feature specs own granular tasks. milestone.md owns delivery order.** As features extract,
+  milestone.md evolves from task list to delivery sequence — referencing feature phases, not individual tasks.
 - AI agents should detect when extraction is needed and help transition gracefully.
 
 ## Spec Lookup Table

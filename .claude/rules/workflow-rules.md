@@ -9,7 +9,8 @@
 - **Extracted:** When 10+ tasks or design docs needed → `spec/features/` (file or folder).
   - Simple features → single `.md` file.
   - Complex features → folder with `tasks.md` (what) + `design.md` (how).
-- milestone.md gradually becomes an index. No hard switch — AI detects and helps transition.
+- As features extract, milestone.md evolves from task list to delivery sequence — referencing
+  feature phases in build order, not individual tasks. No hard switch — AI detects and helps transition.
 - When using feature specs, `## Status:` is the source of truth — update BOTH files.
 - Proactively suggest extraction when signals appear. Don't wait for the user to ask.
 

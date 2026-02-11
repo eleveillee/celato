@@ -15,9 +15,10 @@ No feature spec files. Fast, low overhead. This is where every project starts.
 
 ### Extracted
 When a feature outgrows inline tracking, it gets its own home in `spec/features/`.
-milestone.md becomes a pointer. The feature spec owns all tasks and design docs.
+milestone.md becomes a pointer. The feature spec owns all granular tasks.
 
-As more features get extracted, milestone.md gradually becomes a pure index.
+As more features get extracted, milestone.md evolves from task list to
+**delivery sequence** — an ordered plan showing what to build when, with gates.
 This happens naturally — there is no "switch" moment. AI agents should detect
 when a feature is ready for extraction and offer to help transition it.
 
@@ -65,8 +66,11 @@ Don't wait for the user to ask.
 ### F-001: Player Movement 🔄 → [spec](../features/player-movement.md)
 ```
 
-4. From now on, the feature spec owns the tasks. milestone.md shows status only.
-5. Feature spec `## Status:` is the source of truth — update BOTH files when status changes.
+4. From now on, the feature spec owns the granular tasks.
+5. milestone.md shows delivery order: which feature phases to work on, in what sequence,
+   with optional gate conditions between steps. It references phases (e.g., "F-038 Phase 2"),
+   not individual tasks. Standalone steps that don't belong to any feature are fine too.
+6. Feature spec `## Status:` is the source of truth — update BOTH files when status changes.
 
 ### Simple vs Complex features:
 
@@ -250,7 +254,8 @@ Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Rela
 ## Anti-Patterns
 
 - **Don't force feature specs too early.** Inline tasks are the right starting point.
-- **Don't duplicate tasks** across milestone.md and feature specs.
+- **Don't duplicate tasks** across milestone.md and feature specs. When features are
+  extracted, milestone.md references phases (e.g., "F-003 Phase 2"), not individual tasks.
 - **Don't let feature spec files grow past 200 lines** without splitting into a folder.
 - **Don't forget to update milestone.md** when a feature spec's status changes.
 - **Don't wait for the user to ask** — proactively suggest extraction when signals appear.

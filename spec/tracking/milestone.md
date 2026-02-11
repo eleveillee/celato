@@ -50,9 +50,20 @@ _Goal: [One sentence]_
 _Done when: [Verifiable criteria]_
 _Blocking decisions: [D-IDs if any]_
 
-### F-003: Feature Name ⬚ _(blocked by F-002)_
-- [ ] Task 1
-- [ ] Task 2
+> When features are extracted, this section becomes a delivery sequence.
+> List feature phases in build order, not individual tasks. Standalone
+> steps that don't belong to any feature are fine too. See `spec/workflow.md`.
+
+### Step 1: [Description] ⬚
+> _Gate: [How you know this step is done]_
+- F-003 Phase 1 (schemas + interfaces)
+- F-004 Phase 1 (scaffolding)
+- Set up shared config — not tied to any feature
+
+### Step 2: [Description] ⬚
+> _Gate: [Verifiable outcome]_
+- F-003 Phase 2 (core implementation)
+- F-004 Phase 2 (integration)
 
 ### M2 → M3 Transition
 - [ ] All M2 features ✅ or explicitly deferred with rationale
