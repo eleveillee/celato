@@ -9,19 +9,21 @@ This serves as a lightweight Architecture Decision Record (ADR).
 
 | ID | Question | Context | Options | Blocks | Status |
 |----|----------|---------|---------|--------|--------|
-| D-001 | | | | | |
+| D-001-TAG | | | | | |
 
 ### Template for Open Questions
 ```markdown
-### D-001: [Short question]
+### D-###-TAG: [Short question]
 **Context:** Why this decision is needed.
-**Blocks:** F-003, M2 start _(which features/milestones are waiting on this?)_
+**Blocks:** F-003-INV, VS-002-AUT _(which features/slices are waiting on this?)_
 **Options:**
 | | Option | Pros | Cons |
 |---|---|---|---|
 | ⭐ | Recommended | ... | ... |
 | 🔄 | Alternative | ... | ... |
 **Decision:** Pending
+
+_Example IDs: D-005-ARC (Architecture), D-012-DBS (DataBaSe choice)_
 ```
 
 ## Resolved Decisions
@@ -32,9 +34,11 @@ This serves as a lightweight Architecture Decision Record (ADR).
 
 ### Template for Resolved Decisions
 ```markdown
-### D-001: [What was decided]
+### D-###-TAG: [What was decided]
 **Context:** Why this came up.
 **Decision:** What we chose.
 **Rationale:** Why we chose it.
 **Consequences:** What this means going forward.
+
+_Example IDs: D-005-ARC (Architecture), D-012-DBS (DataBaSe choice)_
 ```

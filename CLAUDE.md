@@ -18,12 +18,13 @@
 [REPLACE: Brief architecture overview. See spec/architecture.md for patterns.]
 
 ## Workflow
-Tracking starts inline and extracts organically — see @spec/workflow.md for full details:
-- **Inline:** Tasks live in `spec/tracking/milestone.md` under each feature. Start here.
+Projects progress through **Vertical Slices (VS)** — complete, verifiable increments. See @spec/workflow.md for full details:
+- **VS-0 First:** Every project starts with "The Walking Skeleton" — minimal runnable loop
+- **Inline:** Tasks live in `spec/tracking/slices/vsN_name.md` under each feature. Start here.
 - **Extracted:** When a feature outgrows inline (10+ tasks, needs design docs), extract to `spec/features/`.
   - Simple features → single file. Complex features → folder with `tasks.md` + `design.md`.
-- **Feature specs own granular tasks. milestone.md owns delivery order.** As features extract,
-  milestone.md evolves from task list to delivery sequence — referencing feature phases, not individual tasks.
+- **Feature specs own granular tasks. VS docs own delivery order.** As features extract,
+  VS docs reference feature phases in build order, not individual tasks.
 - AI agents should detect when extraction is needed and help transition gracefully.
 
 ## Spec Lookup Table
@@ -43,7 +44,7 @@ Tracking starts inline and extracts organically — see @spec/workflow.md for fu
 | Browse future ideas | @spec/tracking/backlog.md |
 
 ## ID Conventions
-All tracking items use prefixed IDs for cross-referencing: `F-001` (features), `B-001` (bugs), `L-001` (learnings), `D-001` (decisions), `BL-001` (backlog), `TD-001` (tech debt), `UP-001` (upgrades). See `milestone.md` for full reference.
+All tracking items use **3-letter mnemonic tags**: `[Type]-[Number]-[TAG]`. Examples: `VS-000-SKE` (Skeleton), `F-012-INV` (Inventory), `D-005-ARC` (Architecture), `B-003-LTO` (Login TimeOut). See `milestone.md` and `workflow.md` for full reference and tag conventions.
 
 ## Project-Specific Rules
 [REPLACE: Add rules specific to this project. Examples:]

@@ -1,80 +1,102 @@
-# Milestones
+# Milestones: Vertical Slice Index
 
-> **Start inline.** Tasks live under each feature heading.
+> **Vertical Slice Philosophy:** Each milestone (VS-#) is a complete, verifiable increment of the project.
+> VS-0 is the "Walking Skeleton" — a minimal, runnable loop. Subsequent slices can be features OR foundational work.
+>
+> **Start inline.** Tasks live under each feature heading within the VS document.
 > **Extract when needed.** When a feature outgrows inline (10+ tasks, needs design docs),
 > move it to `spec/features/`. See `spec/workflow.md` for extraction steps.
->
-> Extraction syntax: `### F-001: Feature Name 🔄 → [spec](../features/feature-name.md)`
 
 ---
 
 ## ID Conventions
 
-All items use prefixed IDs for cross-referencing across files:
-- **F-001** — Features (in milestones and feature specs)
-- **B-001** — Bugs (`bugs.md`)
-- **L-001** — Learnings (`learnings.md`)
-- **D-001** — Decisions (`decisions.md`)
-- **BL-001** — Backlog items (`backlog.md`)
-- **TD-001** — Tech debt (`tech-debt.md`)
-- **UP-001** — Upgrade plan items (`version-matrix.md`)
+All items use **3-letter mnemonic tags** for human-readable IDs: `[Type]-[Number]-[TAG]`
 
-Reference format: `See D-003` or `Blocked by B-012`. AIs should use these IDs when linking related items.
+- **VS-###-TAG** — Vertical Slices (e.g., `VS-000-SKE` for Skeleton)
+- **F-###-TAG** — Features (e.g., `F-001-AUT` for Authentication)
+- **B-###-TAG** — Bugs (e.g., `B-003-LTO` for Login TimeOut)
+- **L-###-TAG** — Learnings (e.g., `L-012-PRS` for Prisma gotcha)
+- **D-###-TAG** — Decisions (e.g., `D-005-ARC` for Architecture)
+- **BL-###-TAG** — Backlog items (e.g., `BL-008-DRK` for Dark mode)
+- **TD-###-TAG** — Tech debt (e.g., `TD-002-TMO` for Timeout hardcoded)
+- **UP-###-TAG** — Upgrade plan items (e.g., `UP-001-R19` for React 19)
 
----
-
-## Milestone 1: [Name] (MVP)
-_Goal: [One sentence describing what "done" looks like]_
-_Done when: [Verifiable criteria — e.g. "both demo games playable, all tests pass"]_
-_Blocking decisions: [D-001, D-003 — must resolve before M2]_
-
-### F-001: Feature Name ⬚
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
-
-### F-002: Feature Name ⬚ _(blocks F-003)_
-- [ ] Task 1
-- [ ] Task 2
-
-### M1 → M2 Transition
-- [ ] All M1 features ✅ or explicitly deferred with rationale
-- [ ] Blocking decisions resolved (see above)
-- [ ] Completed features collapsed to status-only (see workflow.md)
-- [ ] M2 dependency order confirmed
+Reference format: `See D-003-ARC` or `Blocked by B-012-LTO`. AIs should use full IDs when linking.
 
 ---
 
-## Milestone 2: [Name] (Core)
-_Goal: [One sentence]_
-_Done when: [Verifiable criteria]_
-_Blocking decisions: [D-IDs if any]_
+## Vertical Slice Index
 
-> When features are extracted, this section becomes a delivery sequence.
-> List feature phases in build order, not individual tasks. Standalone
-> steps that don't belong to any feature are fine too. See `spec/workflow.md`.
-
-### Step 1: [Description] ⬚
-> _Gate: [How you know this step is done]_
-- F-003 Phase 1 (schemas + interfaces)
-- F-004 Phase 1 (scaffolding)
-- Set up shared config — not tied to any feature
-
-### Step 2: [Description] ⬚
-> _Gate: [Verifiable outcome]_
-- F-003 Phase 2 (core implementation)
-- F-004 Phase 2 (integration)
-
-### M2 → M3 Transition
-- [ ] All M2 features ✅ or explicitly deferred with rationale
-- [ ] Blocking decisions resolved
-- [ ] Completed features collapsed to status-only
+| ID | Focus | Status | Document |
+|:---|:------|:-------|:---------|
+| **VS-000-SKE** | **The Walking Skeleton** | ⬚ Not Started | [→ spec](slices/vs0_skeleton.md) |
+| **VS-001-[TAG]** | [Next Logical Step] | ⬚ Planned | |
+| **VS-002-[TAG]** | [Future Increment] | ⬚ Planned | |
 
 ---
 
-## Milestone 3: [Name] (Polish)
-_Goal: [One sentence]_
-_Done when: [Verifiable criteria]_
+## Active Slice
 
-### F-004: Feature Name ⬚
-- [ ] Task 1
+> This section tracks the current slice being worked on. When a slice completes,
+> collapse it to status-only in the index above and move to the next one.
+
+### VS-000-SKE: The Walking Skeleton ⬚
+
+_See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and requirements._
+
+**Goal:** Minimal playable/runnable loop. The absolute minimum to reach a functional state.
+
+**Done when:**
+- [ ] Basic loop runs without errors
+- [ ] Can be started and stopped cleanly
+- [ ] Has at least one observable behavior
+- [ ] Foundation is in place for next vertical slice
+
+**Blocking decisions:** None initially — defer architecture decisions until proven necessary.
+
+---
+
+## Defining New Slices
+
+When planning a new VS, ask:
+1. **Is it a complete increment?** Does it add verifiable value (feature OR architecture)?
+2. **Is it focused?** Can it be finished in a reasonable timeframe (1-2 weeks ideal)?
+3. **Is it runnable?** After this slice, does the project still work end-to-end?
+
+Each VS can be:
+- **Feature-focused**: "Inventory System", "Combat Mechanics"
+- **Architecture-focused**: "Save/Load System", "Refactored Physics Layer"
+- **Hybrid**: "Dashboard with Real-time Updates" (feature + infrastructure)
+
+The key: each VS is a **complete unit of progress**, not a vague "phase."
+
+---
+
+## Slice Transitions
+
+Before moving from VS-N to VS-N+1:
+
+### Transition Checklist
+- [ ] All features in VS-N are ✅ or explicitly deferred with rationale
+- [ ] All blocking decisions resolved (check VS document)
+- [ ] VS-N slice document updated to final status
+- [ ] Next VS's feature dependency order confirmed
+- [ ] Index table updated with new status
+
+### Collapsing Completed Slices
+
+When a VS completes, update the index table status to ✅ and remove the "Active Slice" section.
+The VS document in `slices/` preserves all detail. milestone.md stays scannable.
+
+---
+
+## Notes on Flexibility
+
+Unlike rigid "Phase 1 = Foundation, Phase 2 = Features" approaches:
+- VS progression is **opportunistic** — build what makes sense next
+- Architecture work happens **when needed**, not up-front
+- Each slice is **independently valuable** — no waiting for "Phase 2" to see results
+- **Walking Skeleton First** — always have something running
+
+This optimizes for **momentum and learning** over predictability.

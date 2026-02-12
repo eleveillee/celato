@@ -9,21 +9,22 @@ At the start of every conversation:
 2. Read `spec/tracking/milestone.md` for current status and next steps.
 3. Skim `spec/tracking/bugs.md` and `spec/tracking/decisions.md` for open/blocking items.
 
-## Two-Phase Tracking
-- Tracking starts inline in `milestone.md`, extracts organically. See @spec/workflow.md.
-- **Inline:** Tasks under each feature heading. Start here. No extra files.
+## Vertical Slice Tracking
+- Projects progress through **Vertical Slices (VS)** — complete, verifiable increments. See @spec/workflow.md.
+- **VS-0 First:** Start with "The Walking Skeleton" — minimal runnable loop before building features.
+- **Inline:** Tasks in `spec/tracking/slices/vsN_name.md` under each feature heading. Start here. No extra files.
 - **Extracted:** When 10+ tasks or design docs needed → `spec/features/` (file or folder).
   - Simple features → single `.md` file.
   - Complex features → folder with `tasks.md` (what) + `design.md` (how).
-- As features extract, milestone.md evolves from task list to delivery sequence — referencing
+- As features extract, VS docs evolve from task list to delivery sequence — referencing
   feature phases in build order, not individual tasks. No hard switch — AI detects and helps transition.
 - When using feature specs, `## Status:` is the source of truth — update BOTH files.
 - Proactively suggest extraction when signals appear. Don't wait for the user to ask.
 
 ## ID Conventions
-- All tracking items use prefixed IDs: F-### (features), B-### (bugs), L-### (learnings),
-  D-### (decisions), BL-### (backlog), TD-### (tech debt), UP-### (upgrades).
-- Use IDs when cross-referencing: `See D-003`, `Blocked by B-012`, `Related: L-005`.
+- All tracking items use **3-letter mnemonic tags**: `[Type]-[Number]-[TAG]`
+- Examples: `VS-000-SKE` (Skeleton), `F-012-INV` (Inventory), `D-005-ARC` (Architecture)
+- Use full IDs when cross-referencing: `See D-003-ARC`, `Blocked by B-012-LTO`, `Related: L-005-RUL`
 
 ## Bug Handling
 - Every non-trivial bug gets a success condition: "Bug is FIXED when: [observable outcomes]".
@@ -35,13 +36,13 @@ At the start of every conversation:
 - Include severity (Critical/High/Medium/Low).
 - For important learnings, include bad/good code pattern examples.
 
-## Milestone Transitions
+## Vertical Slice Transitions
 These rules are tied to specific actions you already perform:
-- **When completing any meaningful work:** Check milestone.md and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name 🔄 [3/8 tasks]`), and update feature status icons. Work often happens without starting from a milestone task — tracking must stay current.
-- **When marking a feature ✅:** Check if it's the last one in its milestone. If so, tell the user and walk through the transition checklist in milestone.md.
-- **When starting work on a feature in a new milestone:** Read the previous milestone's transition checklist first. If incomplete, flag it before proceeding.
-- **When creating or extracting a feature:** Add `_(blocks F-XXX)_` or `_(blocked by F-XXX)_` to the milestone.md heading if dependencies exist.
-- **When creating a decision (D-###):** Always fill the `Blocks` field — which features or milestones are waiting on this?
+- **When completing any meaningful work:** Check the active VS doc and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name 🔄 [3/8 tasks]`), and update feature status icons. Work often happens without starting from a task — tracking must stay current.
+- **When marking a feature ✅:** Check if it's the last one in the current VS. If so, tell the user and walk through the VS transition checklist.
+- **When starting work on a new VS:** Read the previous VS's transition checklist first. If incomplete, flag it before proceeding.
+- **When creating or extracting a feature:** Add `_(blocks F-XXX)_` or `_(blocked by F-XXX)_` to the VS doc heading if dependencies exist.
+- **When creating a decision (D-###):** Always fill the `Blocks` field — which features or VSs are waiting on this?
 - **When a feature spec exceeds 200 lines:** Split into `tasks.md` + `design.md` immediately, not "later."
 
 ## Code Review Checklist

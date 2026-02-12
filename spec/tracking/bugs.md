@@ -8,7 +8,7 @@ Known bugs with reproduction steps and status. Each bug has an ID for cross-refe
 
 | ID | Severity | Bug | Repro Steps | Found | Related |
 |----|----------|-----|-------------|-------|---------|
-| B-001 | | | | | |
+| B-001-TAG | | | | | |
 
 ### Severity Levels
 - 🔴 **Critical**: Blocks usage, data loss, security vulnerability
@@ -20,7 +20,7 @@ Known bugs with reproduction steps and status. Each bug has an ID for cross-refe
 For non-trivial bugs, expand below the table:
 
 ```markdown
-### B-001: [Short description]
+### B-###-TAG: [Short description]
 **Severity:** 🔴 Critical / 🟡 Major / 🟢 Minor
 **Repro:** Steps to reproduce.
 **Expected:** What should happen.
@@ -31,6 +31,8 @@ For non-trivial bugs, expand below the table:
 1. [Observable outcome that proves the fix works]
 2. [Edge case that must also pass]
 3. [Regression test added and passing]
+
+_Example IDs: B-003-LTO (Login TimeOut), B-012-CRS (CRaSh on startup)_
 ```
 
 ## Resolved Bugs

@@ -1,8 +1,8 @@
-# Feature: [Name]
+# Feature: F-###-TAG: [Name]
 ## Status: ⬚ Not Started
-## Milestone: [Which milestone this belongs to]
+## Vertical Slice: VS-###-TAG ([Slice Name])
 ## Dependencies
-_Blocked by: [F-IDs] | Blocks: [F-IDs] | Decisions: [D-IDs]_
+_Blocked by: [F-012-INV] | Blocks: [F-015-DIS] | Decisions: [D-003-ARC]_
 
 ## Overview
 [What this feature does and why it exists]

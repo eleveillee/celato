@@ -1,58 +1,79 @@
-# Workflow: Milestone & Feature Tracking
-_Last updated: 2026-02-10_
+# Workflow: Vertical Slice & Feature Tracking
+_Last updated: 2026-02-11_
 
 This document defines how project tracking works. AI agents MUST follow
 this workflow when creating, updating, or reviewing project progress.
 
 ---
 
-## Two-Phase Tracking
+## Vertical Slice Tracking
 
-Tracking starts simple and grows organically. There are only two modes:
+Projects progress through **Vertical Slices (VS)** — complete, verifiable increments.
+Each VS can be a feature, foundational work, or a hybrid. The goal: always have something running.
 
-### Inline
-Tasks live directly in `milestone.md` under each feature heading.
-No feature spec files. Fast, low overhead. This is where every project starts.
+### The Walking Skeleton (VS-0)
 
-### Extracted
-When a feature outgrows inline tracking, it gets its own home in `spec/features/`.
-milestone.md becomes a pointer. The feature spec owns all granular tasks.
+Every project starts with **VS-0: The Walking Skeleton** — the minimal runnable loop.
+This is not scaffolding or boilerplate. It's the simplest version of the product that runs end-to-end.
 
-As more features get extracted, milestone.md evolves from task list to
-**delivery sequence** — an ordered plan showing what to build when, with gates.
-This happens naturally — there is no "switch" moment. AI agents should detect
-when a feature is ready for extraction and offer to help transition it.
+Examples:
+- **Game**: Player can move in an empty world
+- **Dashboard**: Shows one metric from hardcoded data
+- **API**: One endpoint that returns "Hello World" with proper auth
+- **CLI Tool**: Accepts one command and prints output
+
+**Why VS-0 matters:**
+- Proves the tech stack works
+- Establishes the development loop (code → test → run)
+- Creates momentum — you're building, not planning
+- Reveals real architecture needs, not imagined ones
+
+### Subsequent Vertical Slices
+
+After VS-0, each slice adds **one complete capability** to the system:
+- **Feature Slice**: "Inventory System", "User Authentication", "Combat Mechanics"
+- **Architecture Slice**: "Save/Load System", "Refactored Physics Layer", "Caching Infrastructure"
+- **Hybrid Slice**: "Real-time Dashboard" (feature + WebSocket infrastructure)
+
+**The key:** Each VS is independently valuable. No "Phase 1 Foundation, Phase 2 Features" separation.
+Build architecture **when features need it**, not up-front.
 
 ---
 
-## Inline Tracking
+## Two Levels of Tracking
 
-`milestone.md` holds everything. Features have inline task lists:
+Within each Vertical Slice, tracking starts simple and grows organically:
 
+### Inline (Start Here)
+Tasks live directly in the VS document (`spec/tracking/slices/vsN_name.md`) under feature headings.
+No feature spec files. Fast, low overhead. This is where every VS starts.
+
+Example:
 ```markdown
-## Milestone 1: MVP
-_Goal: Basic working product_
+## VS-1: Inventory System
 
-### F-001: Player Movement 🔄
-- [x] Basic WASD movement
-- [x] Camera follow
-- [ ] Collision detection
-- [ ] Jump mechanic
+### F-005: Item Pickup 🔄
+- [x] Click to collect items
+- [ ] Add to inventory data structure
+- [ ] Update UI counter
 
-### F-002: Save System ⬚
-- [ ] Serialize game state
-- [ ] Save to local storage
-- [ ] Load from file
+### F-006: Item Display ⬚
+- [ ] Show inventory grid
+- [ ] Render item icons
 ```
 
-Simple. No extra files. Just work through the tasks.
+### Extracted (When Needed)
+When a feature outgrows inline tracking (10+ tasks, needs design docs), extract it to `spec/features/`.
+The VS document becomes a pointer. The feature spec owns all granular tasks.
+
+AI agents should detect when extraction is needed and offer to help transition.
 
 ---
 
 ## Extracting a Feature
 
 **When to extract:** A feature has 10+ tasks, needs design documentation,
-has complex requirements, or the milestone.md section feels unwieldy.
+has complex requirements, or the inline section feels unwieldy.
 
 **AI agents:** When you notice these signals, proactively suggest extraction.
 Don't wait for the user to ask.
@@ -60,17 +81,16 @@ Don't wait for the user to ask.
 ### Extraction steps:
 
 1. Create the feature's home in `spec/features/` (file or folder — see below).
-2. Move tasks from milestone.md into the feature spec.
-3. Replace the inline tasks in milestone.md with a pointer:
+2. Move tasks from the VS document into the feature spec.
+3. Replace the inline tasks in the VS document with a pointer:
 
 ```markdown
-### F-001: Player Movement 🔄 → [spec](../features/player-movement.md)
+### F-005: Item Pickup 🔄 → [spec](../../features/item-pickup.md)
 ```
 
 4. From now on, the feature spec owns the granular tasks.
-5. milestone.md shows delivery order: which feature phases to work on, in what sequence,
-   with optional gate conditions between steps. It references phases (e.g., "F-038 Phase 2"),
-   not individual tasks. Standalone steps that don't belong to any feature are fine too.
+5. The VS document shows delivery order: which feature phases to work on, in what sequence.
+   It references phases (e.g., "F-005 Phase 2"), not individual tasks.
 6. Feature spec `## Status:` is the source of truth — update BOTH files when status changes.
 
 ### Simple vs Complex features:
@@ -98,36 +118,27 @@ Start with a single file; split into a folder when the file gets unwieldy.
 
 ---
 
-## Milestone Transitions
+## Vertical Slice Transitions
 
-When a milestone completes, clean up before starting the next one:
+When a VS completes, clean up before starting the next one:
 
-### Collapsing a completed milestone
+### Collapsing a completed slice
 
-Replace inline task lists with status-only pointers. Before:
+Update the Vertical Slice Index in `milestone.md`:
 ```markdown
-### F-001: Player Movement ✅
-- [x] Basic WASD movement
-- [x] Camera follow
-- [x] Collision detection
+| **VS-1** | **Inventory System** | ✅ Complete | [→ spec](slices/vs1_inventory.md) |
 ```
 
-After:
-```markdown
-### F-001: Player Movement ✅
-```
-
-Or if extracted: `### F-001: Player Movement ✅ → [spec](../features/player-movement.md)`
-
-This keeps milestone.md scannable. The detail lives in git history or the feature spec.
+Remove the "Active Slice" section from `milestone.md`. The VS document preserves all detail.
 
 ### Transition checklist
 
-Each milestone has an `M1 → M2 Transition` section. Before starting the next milestone:
+Each VS document has a completion checklist. Before starting the next VS:
 1. All features ✅ or explicitly deferred (with rationale, not just ignored).
-2. All blocking decisions resolved — check `_Blocking decisions:_` at the top.
-3. Completed features collapsed to status-only.
-4. Next milestone's feature dependency order confirmed.
+2. All blocking decisions resolved — check `_Blocking decisions:_` at the top of the VS doc.
+3. VS document marked complete with final status.
+4. Next VS's feature dependency order confirmed.
+5. Index table in `milestone.md` updated.
 
 ### Feature dependencies
 
@@ -147,7 +158,7 @@ When doing a deep-dive into an extracted feature:
 
 1. Research the feature thoroughly before writing any code.
 2. Document findings in the feature spec (or `design.md` for complex features).
-3. Break implementation into phases that map to milestone delivery steps.
+3. Break implementation into phases that map to VS delivery steps.
 4. Each task should be small enough to complete in one focused session.
 5. Iterate through phases, checking tasks off and updating phase badges.
 
@@ -160,7 +171,7 @@ For a single-file feature at `spec/features/feature-name.md`:
 ```markdown
 # Feature: [Name]
 ## Status: ⬚ Not Started | 🔄 In Progress | ✅ Complete
-## Milestone: [Which milestone this belongs to]
+## Vertical Slice: VS-1 (Inventory System)
 ## Dependencies
 _Blocked by: F-002 (needs X) | Blocks: F-005 | Decisions: D-003_
 
@@ -178,18 +189,15 @@ _Blocked by: F-002 (needs X) | Blocks: F-005 | Decisions: D-003_
 - [ ] Task 1
 - [ ] Task 2
 
-### Phase 2: [Name] (Step 2) 🔄 [1/3 tasks]
+### Phase 2: [Name] 🔄 [1/3 tasks]
 - [x] Task 3
 - [ ] Task 4
 - [ ] Task 5
 ```
 
-**Phases are optional.** For small features (under 10 tasks, one milestone step),
+**Phases are optional.** For small features (under 10 tasks, one delivery step),
 a flat `## Tasks` list is fine. Use phases when a feature spans multiple delivery
 steps or is complex enough to need them.
-
-**Step references** like `(Step 2)` are added when the milestone has delivery-sequence
-steps. Leave them off until then.
 
 For a complex feature folder, split `## Design` into `design.md` and keep
 everything else in `tasks.md`.
@@ -205,18 +213,18 @@ AI agents should watch for these signals and suggest extraction:
 
 | Signal | Action |
 |--------|--------|
-| Feature has 10+ inline tasks | Suggest extracting to a feature spec |
+| Feature has 10+ inline tasks in VS doc | Suggest extracting to a feature spec |
 | User asks for a "deep-dive" or research | Create extracted spec with design section |
 | Inline section has design notes or decisions | Time for its own file |
-| Most features are extracted | Note that milestone.md is becoming an index |
+| Most features in a VS are extracted | Note that VS doc is becoming an index |
 | Feature spec > 200 lines | Suggest splitting into folder (tasks.md + design.md) |
-| All features in a milestone are ✅ | Prompt user to run the transition checklist |
-| Unresolved decisions block the next milestone | Flag them before starting new milestone work |
+| All features in a VS are ✅ | Prompt user to run the transition checklist |
+| Unresolved decisions block the next VS | Flag them before starting new VS work |
 
 When transitioning, do it gracefully:
 1. Show the user what will move and where.
 2. Preserve all existing tasks and their completion status.
-3. Update milestone.md pointer in the same operation.
+3. Update VS document pointer in the same operation.
 4. Confirm both files are consistent before finishing.
 
 ---
@@ -226,26 +234,30 @@ When transitioning, do it gracefully:
 > **Canonical source.** If ID conventions change, update this table first.
 > Other files (milestone.md, CLAUDE.md, workflow-rules.md) summarize but defer here.
 
-All tracking items use prefixed IDs for cross-referencing:
+All tracking items use **3-letter mnemonic tags** for human-readable IDs at a glance:
 
-| Prefix | File | Example |
-|--------|------|---------|
-| **F-###** | `milestone.md` / feature specs | `F-001: User Auth` |
-| **B-###** | `bugs.md` | `B-003: Login timeout` |
-| **L-###** | `learnings.md` | `L-012: Prisma v7 gotcha` |
-| **D-###** | `decisions.md` | `D-005: Auth provider` |
-| **BL-###** | `backlog.md` | `BL-008: Dark mode` |
-| **TD-###** | `tech-debt.md` | `TD-002: Hardcoded timeout` |
-| **UP-###** | `version-matrix.md` | `UP-001: React 19 upgrade` |
+**Format:** `[Type]-[Number]-[TAG]` where TAG is a 3-letter mnemonic summary.
 
-Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Related: L-005`.
+| Prefix | File | Example | TAG Meaning |
+|--------|------|---------|-------------|
+| **VS-###-TAG** | `milestone.md` / `slices/` | `VS-000-SKE` | Skeleton |
+| **F-###-TAG** | VS docs / feature specs | `F-001-AUT` | Authentication |
+| **B-###-TAG** | `bugs.md` | `B-003-LTO` | Login TimeOut |
+| **L-###-TAG** | `learnings.md` | `L-012-PRS` | PRiSma gotcha |
+| **D-###-TAG** | `decisions.md` | `D-005-ARC` | ARChitecture |
+| **BL-###-TAG** | `backlog.md` | `BL-008-DRK` | DaRK mode |
+| **TD-###-TAG** | `tech-debt.md` | `TD-002-TMO` | TiMeOut hardcoded |
+| **UP-###-TAG** | `version-matrix.md` | `UP-001-R19` | React 19 |
+
+**Cross-referencing:** Use full IDs when linking: `See D-003-ARC`, `Blocked by B-012-LTO`, `Related: L-005-RUL`.
 
 ## Tracking Files Reference
 
 | File | Purpose | Update Frequency |
 |------|---------|-----------------|
-| `spec/tracking/milestone.md` | Inline tasks → evolves to delivery sequence as features extract | Active development |
-| `spec/tracking/backlog.md` | Ideas & future work not yet in a milestone | When new ideas arise |
+| `spec/tracking/milestone.md` | Vertical Slice Index + Active Slice | Every VS transition |
+| `spec/tracking/slices/` | Individual VS documents with inline tasks | Active development |
+| `spec/tracking/backlog.md` | Ideas & future work not yet in a VS | When new ideas arise |
 | `spec/tracking/bugs.md` | Known bugs with repro steps | When bugs are found or fixed |
 | `spec/tracking/decisions.md` | Open and resolved technical decisions | When decisions are made or needed |
 | `spec/tracking/learnings.md` | Project-specific lessons learned | After significant discoveries |
@@ -264,11 +276,12 @@ Use these IDs when linking related items: `See D-003`, `Blocked by B-012`, `Rela
 
 ## Anti-Patterns
 
-- **Don't force feature specs too early.** Inline tasks are the right starting point.
-- **Don't duplicate tasks** across milestone.md and feature specs. When features are
-  extracted, milestone.md references phases (e.g., "F-003 Phase 2"), not individual tasks.
+- **Don't force feature specs too early.** Inline tasks in the VS document are the right starting point.
+- **Don't duplicate tasks** across VS docs and feature specs. When features are
+  extracted, the VS doc references phases (e.g., "F-003 Phase 2"), not individual tasks.
 - **Don't let feature spec files grow past 200 lines** without splitting into a folder.
-- **Don't forget to update milestone.md** when a feature spec's status changes.
+- **Don't forget to update the VS document** when a feature spec's status changes.
 - **Don't wait for the user to ask** — proactively suggest extraction when signals appear.
-- **Don't start a new milestone with unresolved blocking decisions.** Resolve or explicitly defer them.
-- **Don't leave completed milestones expanded.** Collapse to status-only — the detail is in git or feature specs.
+- **Don't start a new VS with unresolved blocking decisions.** Resolve or explicitly defer them.
+- **Don't build architecture up-front.** Wait until features need it. Walking Skeleton first.
+- **Don't skip VS-0.** Always start with the minimal runnable loop, even if it feels trivial.

@@ -21,7 +21,9 @@ Update when adding, upgrading, or removing dependencies.
 
 | ID | Dependency | From → To | Blocked By | Priority |
 |----|------------|-----------|------------|----------|
-| UP-001 | | | | |
+| UP-001-TAG | | | | |
+
+_Example IDs: UP-001-R19 (React 19 upgrade), UP-005-N22 (Node 22 migration)_
 
 ## Compatibility Notes
 

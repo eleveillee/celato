@@ -9,7 +9,7 @@ this file is committed and shared, serving as institutional knowledge for the pr
 
 | ID | Severity | Date | Learning | Context | Related |
 |----|----------|------|----------|---------|---------|
-| L-001 | | | | | |
+| L-001-TAG | | | | | |
 
 ### Severity Levels
 - 🔴 **Critical**: Will cause bugs/outages if ignored
@@ -22,7 +22,7 @@ this file is committed and shared, serving as institutional knowledge for the pr
 For important learnings, expand with bad/good patterns:
 
 ```markdown
-### L-001: [One-line summary]
+### L-###-TAG: [One-line summary]
 **Severity:** 🔴 Critical
 **Context:** How this was discovered.
 
@@ -39,6 +39,8 @@ const data = fetchFresh(key); // always current
 \`\`\`
 
 **Insight:** One-line takeaway for quick scanning.
+
+_Example IDs: L-003-RUL (Rules gotcha), L-012-PRS (Prisma v7 issue)_
 ```
 
 ## Process Learnings

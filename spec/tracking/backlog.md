@@ -8,7 +8,9 @@ When an item gets promoted to a milestone, move it there and create a feature sp
 ## Ideas
 | ID | Priority | Idea | Notes | Added |
 |----|----------|------|-------|-------|
-| BL-001 | | | | |
+| BL-001-TAG | | | | |
+
+_Example IDs: BL-008-DRK (Dark mode), BL-015-I18 (Internationalization)_
 
 ## Someday / Maybe
 Items with no timeline. Revisit periodically.

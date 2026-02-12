@@ -8,7 +8,9 @@ Known technical debt items tracked by priority. Each item has an ID for cross-re
 
 | ID | Priority | File/Area | Problem | Proposed Fix |
 |----|----------|-----------|---------|--------------|
-| TD-001 | | | | |
+| TD-001-TAG | | | | |
+
+_Example IDs: TD-002-TMO (Hardcoded TimeOut), TD-007-DUP (Code DUPlication)_
 
 ### Priority Levels
 - 🔴 **High**: Actively causing issues, blocking features, or security risk
