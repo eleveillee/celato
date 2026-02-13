@@ -40,6 +40,22 @@ Build architecture **when features need it**, not up-front.
 
 ---
 
+## Terminology: Slices (Not Cycles)
+
+**Vertical Slices (VS):**
+- Complete, verifiable increments of functionality
+- Named with VS-### IDs and 3-letter tags (e.g., `VS-001-AUTH`)
+- Live in `spec/tracking/slices/`
+- Each VS document tracks features, tasks, and delivery order for that increment
+
+**NOT "cycles":**
+We use **"slices"** consistently across all Codex-based projects. "Slice" emphasizes
+vertical integration (end-to-end functionality), not time-boxed iterations.
+
+If you see "cycles/" in older projects, it should be renamed to "slices/" for consistency.
+
+---
+
 ## Two Levels of Tracking
 
 Within each Vertical Slice, tracking starts simple and grows organically:
