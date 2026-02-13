@@ -36,6 +36,12 @@ At the start of every conversation:
 - Include severity (Critical/High/Medium/Low).
 - For important learnings, include bad/good code pattern examples.
 
+## Quality Assurance
+- When a feature is "done" (code written), update `spec/tracking/qa.md` to ⚪ Needs Verification
+- After manual testing, move to 🟢 Confirmed Working with specific success condition
+- **NEVER mark as 🟢 without actual verification**
+- Success conditions should be testable, not vague (e.g., "Login works" ❌ vs "User can log in with email/password and session persists after browser refresh" ✅)
+
 ## Vertical Slice Transitions
 These rules are tied to specific actions you already perform:
 - **When completing any meaningful work:** Check the active VS doc and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name 🔄 [3/8 tasks]`), and update feature status icons. Work often happens without starting from a task — tracking must stay current.

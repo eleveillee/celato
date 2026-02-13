@@ -42,6 +42,7 @@ Projects progress through **Vertical Slices (VS)** — complete, verifiable incr
 | Check dependency versions | @spec/tracking/version-matrix.md |
 | Track code quality debt | @spec/tracking/tech-debt.md |
 | Browse future ideas | @spec/tracking/backlog.md |
+| Check feature health & verification status | @spec/tracking/qa.md |
 
 ## ID Conventions
 All tracking items use **3-letter mnemonic tags**: `[Type]-[Number]-[TAG]`. Examples: `VS-000-SKE` (Skeleton), `F-012-INV` (Inventory), `D-005-ARC` (Architecture), `B-003-LTO` (Login TimeOut). See `milestone.md` and `workflow.md` for full reference and tag conventions.
