@@ -1,19 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Read",
-      "Glob",
-      "Grep",
-      "Bash(git diff *)",
-      "Bash(git log *)",
-      "Bash(git status)"
-    ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./**/*.key)",
-      "Read(./**/*.pem)",
-      "Bash(rm -rf *)"
-    ]
+    "allow": [],
+    "deny": []
   }
 }
