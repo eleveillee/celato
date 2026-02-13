@@ -1,0 +1,33 @@
+---
+description: "Standards for communication, file referencing, and presentation"
+globs: "*"
+---
+
+# Communication Standards
+
+## Presentation Format
+When presenting options, **ALWAYS** use a table with emoji indicators:
+
+| | Option | Pros | Cons |
+|---|---|---|---|
+| ⭐ | **Recommended** | Why it wins | Tradeoffs |
+| 🔄 | Alternative | Strengths | Weaknesses |
+
+- **Always** recommend one option. If equivalent, say so explicitly.
+- **Be concise**: Lead with the answer. Avoid fluff.
+- Use code blocks with language tags (e.g., ````csharp`).
+
+## File Referencing
+- Reference files as: `path/to/file.ts:lineNumber` (e.g., `src/Services/Auth.cs:42`).
+- When showing code changes, provide enough context (3-5 lines) around the change.
+
+## Task Completion
+Always provide:
+1. **3-5 QoL/polish suggestions** for what was just built.
+2. **2-3 follow-up tasks** as natural next steps.
+
+## Review Categorization
+When reviewing code or milestones, split into:
+- **🔴 Obvious Fixes**: Bugs, security issues, typos, broken imports.
+- **🟡 Needs Attention**: Architecture decisions, performance, ambiguous requirements.
+- **🟢 Can Postpone**: Style preferences, optimizations, extra coverage, docs.

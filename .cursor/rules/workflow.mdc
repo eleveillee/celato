@@ -1,0 +1,37 @@
+---
+description: "Task planning, tracking IDs, milestone management, and success conditions"
+globs: "*"
+---
+
+# Workflow & Task Management
+
+## Task Planning
+- **Milestones**: Split ALL task lists by milestone. Never use flat lists.
+- **Granularity**: Add granular sub-tasks. Order: 🟢 quick-wins → 🟡 medium → 🔴 complex.
+- **Optimization**: Proactively suggest reordering, splitting, and parallelization.
+- **Extraction**: Tracking starts inline. Extract features to `spec/features/` when they outgrow inline (10+ tasks).
+
+## ID System (Cross-Referencing)
+Use prefixed IDs for everything to enable precise tracking:
+- `F-###`: Features (e.g., `F-012-Auth`)
+- `D-###`: Decisions (e.g., `D-005-Database`)
+- `L-###`: Learnings (e.g., `L-002-HotReload`)
+- `B-###`: Bugs
+- `TD-###`: Tech Debt
+- `BL-###`: Backlog Items
+
+## Success Conditions (Critical)
+Every non-trivial bug, task, or milestone **MUST** have a defined success condition.
+
+```markdown
+## Success Condition
+**The task is COMPLETE when:**
+1. [Specific observable outcome]
+2. [Event or log pattern]
+3. [Verification command passes]
+```
+
+## Bug & Learning Protocol
+- **Bugs**: Every fix gets a regression test. Log root cause when resolved.
+- **Learnings**: Log immediately in `spec/tracking/learnings.md` (or equivalent) with severity (Critical/High/Medium/Low).
+- **Tech Debt**: Log in `spec/tracking/tech-debt.md` with `TD-###`. Don't leave TODOs without entries.

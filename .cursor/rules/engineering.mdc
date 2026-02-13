@@ -1,0 +1,37 @@
+---
+description: "Code quality, modularity, security, and best practices"
+globs: "*"
+---
+
+# Engineering Standards
+
+## The "Golden Path" Principle
+- **Build for the End State**: Skip "educational" refactors or throwaway prototypes.
+- **No Over-Engineering**: Only build what's asked for. No speculative features.
+- **Robustness**: Use proper error handling, validation, and typing from the start.
+- **Infrastructure-First**: Update specs, decision logs, and tracking files *before* or *during* work, never just after.
+
+## Modularity & Structure
+- **Single Responsibility**: Each function/class does ONE thing.
+- **Size Limits**: No file > ~300 lines. No function > ~50 lines.
+- **DRY**: Apply when logic is genuinely shared (3+ usages). Avoid abstractions for trivial one-offs.
+- **API Contracts**: Define contracts in `spec/api-contracts.md` (or equivalent) *before* implementation.
+
+## Best Practices
+- **Modern Defaults**:
+  - Python: `uv` over `pip`
+  - C#: `System.Text.Json` over `Newtonsoft`
+  - TypeScript/Node: Biome, Vitest, pnpm
+  - General: Always prefer the latest stable version
+- **Naming**: Describe WHAT, not HOW. Booleans use `is/has/can/should`. Collections are plural.
+- **Code Style**: Named exports only. Use early returns and guard clauses.
+- **DRY Threshold**: Three similar lines > premature DRY. Wait for genuine reuse patterns (3+ usages).
+- **Testing**:
+  - TDD approach with AAA pattern (Arrange, Act, Assert)
+  - 80%+ coverage on business logic. 100% on critical paths.
+  - One assertion per test preferred.
+
+## Security
+- **No Secrets**: NEVER read/log/output `.env` files or API keys.
+- **Validation**: Validate ALL external input at system boundaries.
+- **Sanitization**: Use parameterized queries. Never expose stack traces in production.
