@@ -30,9 +30,10 @@ Reference format: `See D-003-ARC` or `Blocked by B-012-LTO`. AIs should use full
 
 | ID | Focus | Status | Document |
 |:---|:------|:-------|:---------|
-| **VS-000-SKE** | **The Walking Skeleton** | ⬚ Not Started | [→ spec](slices/vs0_skeleton.md) |
-| **VS-001-[TAG]** | [Next Logical Step] | ⬚ Planned | |
-| **VS-002-[TAG]** | [Future Increment] | ⬚ Planned | |
+| **VS-000-SKE** | **The Walking Skeleton** | 🔄 In Progress | [→ spec](slices/vs0_skeleton.md) |
+| **VS-001-WOZ** | **Wizard of Oz Prototype** | ⬚ Planned | |
+| **VS-002-MVP** | **Mobile MVP** | ⬚ Planned | |
+| **VS-003-POL** | **Smart Cost & Polish** | ⬚ Planned | |
 
 ---
 
@@ -41,35 +42,67 @@ Reference format: `See D-003-ARC` or `Blocked by B-012-LTO`. AIs should use full
 > This section tracks the current slice being worked on. When a slice completes,
 > collapse it to status-only in the index above and move to the next one.
 
-### VS-000-SKE: The Walking Skeleton ⬚
+### VS-000-SKE: The Walking Skeleton 🔄
 
 _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and requirements._
 
-**Goal:** Minimal playable/runnable loop. The absolute minimum to reach a functional state.
+**Goal:** Mobile app connects to API orchestrator via WebSocket. Proves monorepo, TypeScript, and basic client-server communication works.
 
 **Done when:**
-- [ ] Basic loop runs without errors
-- [ ] Can be started and stopped cleanly
-- [ ] Has at least one observable behavior
-- [ ] Foundation is in place for next vertical slice
+- [x] Monorepo builds without errors
+- [ ] API server starts and health check responds
+- [ ] Mobile app launches in Expo
+- [ ] WebSocket connection established between mobile and API
+- [ ] At least one test passes in shared and API packages
+- [ ] Development workflow documented
 
-**Blocking decisions:** None initially — defer architecture decisions until proven necessary.
+**Blocking decisions:** None — defer Retell AI and OpenAI integration to VS-1.
+
+---
+
+## Planned Slices
+
+### VS-001-WOZ: Wizard of Oz Prototype (Weeks 1-2)
+**Goal:** Validate "whisper" interaction via web interface before building full mobile stack.
+
+**Focus:**
+- Web-based dialer (Next.js or simple HTML)
+- Retell AI integration for phone calls
+- Spacebar "whisper" button to inject text into agent context
+- Visual conversation log
+- Test with real business call (e.g., check store hours)
+
+**Success:** User can press spacebar, whisper an instruction, and see the agent follow it in the next turn.
+
+### VS-002-MVP: Mobile MVP (Weeks 3-6)
+**Goal:** First functional mobile experience with full VoIP.
+
+**Focus:**
+- React Native Director UI (three panels: Business, Agent, User controls)
+- Whisper audio (not just text)
+- Live transcript streaming
+- Basic context presets (General, Restaurant, Support)
+- Call session management
+
+**Success:** Make a dinner reservation in a foreign language where the user corrects a detail mid-call via whisper.
+
+### VS-003-POL: Smart Cost & Polish (Weeks 7-10)
+**Goal:** Make it viable for daily use.
+
+**Focus:**
+- Model switching ("Parrot" cheap mode vs "Negotiator" smart mode)
+- Call history and transcript review
+- Contacts integration
+- Multi-language support
+- Cost tracking and billing integration
+
+**Success:** User can review past calls, see cost breakdown, and switch between cost tiers.
 
 ---
 
 ## Defining New Slices
 
-When planning a new VS, ask:
-1. **Is it a complete increment?** Does it add verifiable value (feature OR architecture)?
-2. **Is it focused?** Can it be finished in a reasonable timeframe (1-2 weeks ideal)?
-3. **Is it runnable?** After this slice, does the project still work end-to-end?
-
-Each VS can be:
-- **Feature-focused**: "Inventory System", "Combat Mechanics"
-- **Architecture-focused**: "Save/Load System", "Refactored Physics Layer"
-- **Hybrid**: "Dashboard with Real-time Updates" (feature + infrastructure)
-
-The key: each VS is a **complete unit of progress**, not a vague "phase."
+Each VS maps to a phase from the roadmap (see `spec/celato/roadmap.md`). The key: each VS is a **complete unit of progress** that adds verifiable value and keeps the system runnable end-to-end.
 
 ---
 

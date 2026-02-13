@@ -1,12 +1,22 @@
-# [REPLACE: Project Name]
+# Celato
 
-[REPLACE: One-sentence project description.]
+Real-time collaborative voice agent for phone calls - the "Bionic Director" that lets you whisper instructions to an AI agent who negotiates on your behalf.
 
 ## Tech Stack
-[REPLACE: After setup wizard]
+- **Monorepo:** pnpm workspace (TypeScript)
+- **Mobile:** React Native (Expo)
+- **API:** Node.js 22 + Fastify
+- **Telephony:** Retell AI
+- **Intelligence:** OpenAI Realtime API (GPT-4o)
+- **Database:** Supabase (PostgreSQL)
 
 ## Commands
-[REPLACE: After setup wizard]
+```bash
+pnpm dev              # Start all packages
+pnpm test             # Run tests
+pnpm check            # Lint + format check
+pnpm build            # Build all packages
+```
 
 ## Principles
 - Modular code, single responsibility. Max ~300 lines per file, ~50 per function.

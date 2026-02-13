@@ -6,9 +6,10 @@ Known technical debt items tracked by priority. Each item has an ID for cross-re
 
 ## Active Debt
 
+_No technical debt yet - project just starting._
+
 | ID | Priority | File/Area | Problem | Proposed Fix |
 |----|----------|-----------|---------|--------------|
-| TD-001-TAG | | | | |
 
 _Example IDs: TD-002-TMO (Hardcoded TimeOut), TD-007-DUP (Code DUPlication)_
 

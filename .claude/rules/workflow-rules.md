@@ -26,6 +26,12 @@ At the start of every conversation:
 - Examples: `VS-000-SKE` (Skeleton), `F-012-INV` (Inventory), `D-005-ARC` (Architecture)
 - Use full IDs when cross-referencing: `See D-003-ARC`, `Blocked by B-012-LTO`, `Related: L-005-RUL`
 
+## Quality Assurance
+- When a feature is "done" (code written), update `spec/tracking/qa.md` to ⚪ Needs Verification
+- After manual testing, move to 🟢 Confirmed Working with specific success condition
+- **NEVER mark as 🟢 without actual verification**
+- Success conditions should be testable, not vague (e.g., "Login works" ❌ vs "User can log in with email/password and session persists after browser refresh" ✅)
+
 ## Bug Handling
 - Every non-trivial bug gets a success condition: "Bug is FIXED when: [observable outcomes]".
 - Every bug fix gets a regression test.
@@ -44,7 +50,7 @@ At the start of every conversation:
 
 ## Vertical Slice Transitions
 These rules are tied to specific actions you already perform:
-- **When completing any meaningful work:** Check the active VS doc and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name 🔄 [3/8 tasks]`), and update feature status icons. Work often happens without starting from a task — tracking must stay current.
+- **When completing any meaningful work:** Check the active VS doc and relevant feature specs for tasks that match what was done. Mark them complete, update phase badges (`### Phase N: Name 🔄 [3/8 tasks]`), and update feature status icons. Update `qa.md` to move from ⚪ Needs Verification to 🟢 Confirmed Working after manual verification. Work often happens without starting from a task — tracking must stay current.
 - **When marking a feature ✅:** Check if it's the last one in the current VS. If so, tell the user and walk through the VS transition checklist.
 - **When starting work on a new VS:** Read the previous VS's transition checklist first. If incomplete, flag it before proceeding.
 - **When creating or extracting a feature:** Add `_(blocks F-XXX)_` or `_(blocked by F-XXX)_` to the VS doc heading if dependencies exist.

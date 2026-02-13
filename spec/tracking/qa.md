@@ -8,7 +8,13 @@
 
 | Feature | Verified Date | Success Condition / Proof |
 |---------|---------------|---------------------------|
-| *None yet* | - | - |
+| Monorepo Setup | 2026-02-12 | pnpm install completes, all packages build without errors, 8 tests passing |
+| TypeScript Compilation | 2026-02-12 | All packages (shared, api) build with strict mode, no errors |
+| Test Suite | 2026-02-12 | Vitest runs successfully, 8/8 tests pass (6 in shared, 2 in API) |
+| API Health Check | 2026-02-16 | `curl localhost:4000/health` returns `{"status":"ok","service":"celato-api","version":"0.1.0"}` |
+| WebSocket Connection | 2026-02-16 | `wscat -c ws://localhost:4000/ws` connects successfully, server accepts messages |
+| Message Exchange | 2026-02-16 | Client sends "test message" → Server responds `{"type":"ack","timestamp":...}` with Zod-validated structure |
+| Zod Schema Validation | 2026-02-16 | Server validates outgoing ack messages via AckMessageSchema before sending |
 
 ## 🟡 Partial / Degraded
 *Features that work but have known non-blocking issues.*
@@ -29,7 +35,8 @@
 
 | Feature | Condition | Context |
 |---------|-----------|---------|
-| *None currently tracked* | - | - |
+| Mobile App Launch | Scan Expo QR code, verify app displays without errors | Code complete, Expo web has Metro bundler issue (Hermes on web), native testing deferred to VS-1 |
+| Mobile E2E WebSocket | Full mobile → API WebSocket flow via Expo Go | Core WebSocket verified via wscat; mobile UI testing optional for VS-0 |
 
 ---
 

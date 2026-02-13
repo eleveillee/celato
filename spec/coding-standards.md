@@ -1,7 +1,6 @@
 # Coding Standards
 
 This file contains parseable, enforceable coding rules for AI agents.
-For language-specific guides with rationale, see `stacks/`.
 
 ---
 

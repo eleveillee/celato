@@ -62,22 +62,103 @@ Description of what this endpoint does.
 
 ## Endpoints
 
-> [REPLACE: Add endpoint groups below as the project develops.]
-> Remove this note and the example when adding real endpoints.
+### Health Check
 
-### Example: Users
+#### `GET /health`
+Health check endpoint for API orchestrator.
 
-#### `GET /api/users/:id`
-Get a user by ID.
-
-**Auth:** Required
-**Rate Limit:** 60/min
+**Auth:** Public
+**Rate Limit:** None
 
 **Response (200):**
 | Field | Type | Description |
 |-------|------|-------------|
-| id | string | User ID |
-| email | string | User email |
+| status | string | "ok" |
+| service | string | "celato-api" |
+| version | string | API version |
+
+---
+
+## WebSocket Protocol
+
+### Connection: `/ws`
+
+Bidirectional WebSocket for real-time communication between mobile app and API orchestrator.
+
+**Connection:**
+- URL: `ws://localhost:3000/ws` (dev) / `wss://api.celato.com/ws` (prod)
+- Auth: Bearer token in query param (future: `?token=xxx`)
+
+**Message Types:**
+
+#### Client → Server
+
+##### `whisper`
+User whispers an instruction to the agent.
+
+```typescript
+{
+  type: "whisper",
+  audioData: ArrayBuffer,  // Opus-encoded audio
+  timestamp: number
+}
+```
+
+##### `mode_change`
+User switches audio mode (standard/whisper/passthrough).
+
+```typescript
+{
+  type: "mode_change",
+  mode: "standard" | "whisper" | "passthrough"
+}
+```
+
+#### Server → Client
+
+##### `ack`
+Acknowledgment of received message.
+
+```typescript
+{
+  type: "ack",
+  timestamp: number
+}
+```
+
+##### `transcript`
+Real-time conversation transcript (translated).
+
+```typescript
+{
+  type: "transcript",
+  speaker: "business" | "agent",
+  text: string,
+  translatedText?: string,
+  timestamp: number
+}
+```
+
+##### `state_update`
+Call state change notification.
+
+```typescript
+{
+  type: "state_update",
+  state: "idle" | "connecting" | "active" | "holding" | "ended",
+  timestamp: number
+}
+```
+
+---
+
+## Future Endpoints
+
+_Will be defined in later vertical slices:_
+- `POST /calls` - Initiate a new call
+- `GET /calls/:id` - Get call details
+- `GET /calls/:id/transcript` - Get full transcript
+- `POST /contacts` - Save a contact
 | displayName | string | Display name |
 | createdAt | string | ISO 8601 creation date |
 
@@ -88,13 +169,22 @@ Get a user by ID.
 
 ---
 
-## Webhooks / Events
-
-> [REPLACE: Document webhook payloads and event contracts here if applicable.]
-
----
-
 ## Third-Party Integrations
 
-> [REPLACE: Document external API contracts your project depends on.]
-> Include: base URL, auth method, key endpoints consumed, response shapes.
+### Retell AI
+- **Base URL:** `https://api.retellai.com/v1`
+- **Auth:** Bearer token in header
+- **Key Endpoints:** Custom LLM webhook, call management
+- **Documentation:** See Retell AI docs for full API reference
+
+### OpenAI Realtime API
+- **Base URL:** `wss://api.openai.com/v1/realtime`
+- **Auth:** API key + organization ID
+- **Protocol:** WebSocket with structured events
+- **Documentation:** OpenAI Realtime API docs
+
+### Supabase
+- **Base URL:** Project-specific (`https://xxxxx.supabase.co`)
+- **Auth:** Service role key for backend, anon key for client
+- **Used For:** User auth, call logs, transcripts, contacts
+- **Documentation:** Supabase client library docs

@@ -1,30 +1,23 @@
 # Workflow: Vertical Slice & Feature Tracking
-_Last updated: 2026-02-11_
+_Last updated: 2026-02-12_
 
-This document defines how project tracking works. AI agents MUST follow
-this workflow when creating, updating, or reviewing project progress.
+This document defines how Celato's tracking workflow operates.
 
 ---
 
 ## Vertical Slice Tracking
 
-Projects progress through **Vertical Slices (VS)** — complete, verifiable increments.
+Celato progresses through **Vertical Slices (VS)** — complete, verifiable increments.
 Each VS can be a feature, foundational work, or a hybrid. The goal: always have something running.
 
 ### The Walking Skeleton (VS-0)
 
-Every project starts with **VS-0: The Walking Skeleton** — the minimal runnable loop.
-This is not scaffolding or boilerplate. It's the simplest version of the product that runs end-to-end.
+**VS-0: The Walking Skeleton** is the minimal runnable loop that proves the tech stack works.
 
-Examples:
-- **Game**: Player can move in an empty world
-- **Dashboard**: Shows one metric from hardcoded data
-- **API**: One endpoint that returns "Hello World" with proper auth
-- **CLI Tool**: Accepts one command and prints output
+**For Celato:** Mobile app connects to API orchestrator via WebSocket. Proves monorepo setup, TypeScript compilation, and basic client-server communication.
 
-**Why VS-0 matters:**
-- Proves the tech stack works
-- Establishes the development loop (code → test → run)
+**Why it matters:**
+- Establishes the development workflow (code → test → run)
 - Creates momentum — you're building, not planning
 - Reveals real architecture needs, not imagined ones
 
@@ -218,30 +211,26 @@ steps or is complex enough to need them.
 For a complex feature folder, split `## Design` into `design.md` and keep
 everything else in `tasks.md`.
 
-> **Copyable templates:** `spec/templates/feature-spec.md` (flat tasks)
-> and `spec/templates/feature-spec-phased.md` (with phases). Copy and rename.
-
 ---
 
-## AI Transition Detection
+## Extraction Triggers
 
-AI agents should watch for these signals and suggest extraction:
+Watch for these signals to extract features:
 
 | Signal | Action |
 |--------|--------|
-| Feature has 10+ inline tasks in VS doc | Suggest extracting to a feature spec |
-| User asks for a "deep-dive" or research | Create extracted spec with design section |
+| Feature has 10+ inline tasks in VS doc | Extract to a feature spec |
+| Deep-dive or research needed | Create extracted spec with design section |
 | Inline section has design notes or decisions | Time for its own file |
-| Most features in a VS are extracted | Note that VS doc is becoming an index |
-| Feature spec > 200 lines | Suggest splitting into folder (tasks.md + design.md) |
-| All features in a VS are ✅ | Prompt user to run the transition checklist |
-| Unresolved decisions block the next VS | Flag them before starting new VS work |
+| Most features in a VS are extracted | VS doc becomes an index |
+| Feature spec > 200 lines | Split into folder (tasks.md + design.md) |
+| All features in a VS are ✅ | Run the transition checklist |
+| Unresolved decisions block the next VS | Flag before starting new VS work |
 
-When transitioning, do it gracefully:
-1. Show the user what will move and where.
-2. Preserve all existing tasks and their completion status.
-3. Update VS document pointer in the same operation.
-4. Confirm both files are consistent before finishing.
+When extracting:
+1. Preserve all existing tasks and their completion status.
+2. Update VS document pointer in the same operation.
+3. Confirm both files are consistent.
 
 ---
 

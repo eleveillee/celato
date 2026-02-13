@@ -35,6 +35,16 @@ out/
 .next/
 publish/
 
+# React Native / Expo
+.expo/
+.expo-shared/
+*.jks
+*.p8
+*.p12
+*.mobileprovision
+*.orig.*
+web-build/
+
 # ========================
 # IDE & OS
 # ========================

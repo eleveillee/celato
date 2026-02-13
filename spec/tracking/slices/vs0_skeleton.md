@@ -25,52 +25,60 @@ development loop.
 
 ## Goal
 
-> [REPLACE: One sentence describing what "runnable" looks like for this project]
->
-> Example: "A dashboard that fetches one metric from a mock API and displays it in a chart."
+Mobile app connects to API orchestrator via WebSocket and receives a health status message. Proves the monorepo setup, TypeScript compilation, and basic client-server communication works.
 
 ---
 
 ## Success Criteria
 
 The Walking Skeleton is DONE when:
-- [ ] The project runs without errors from a clean setup
-- [ ] The core loop executes (game loop, request/response, CLI command flow)
-- [ ] At least one observable behavior proves the system works
-- [ ] Development workflow is established (run, test, debug cycle)
-- [ ] Basic testing infrastructure is in place (one passing test)
+- [x] Monorepo builds without errors (`pnpm install`, `pnpm build`)
+- [ ] API server starts and responds to health check (`GET /health`)
+- [ ] Mobile app launches in Expo and displays the Celato title screen
+- [ ] Mobile app can connect to API via WebSocket and receive a message
+- [ ] At least one test passes in each package (shared, api)
+- [ ] Development workflow documented (how to run mobile + API together)
 
 ---
 
 ## Blocking Decisions
 
-> List any decisions that MUST be resolved before starting VS-0:
-> - D-001-RND: Which rendering library? (Three.js vs Babylon.js)
-> - D-002-AUT: Authentication approach? (JWT vs sessions)
->
-> If no blocking decisions, write "None — defer architecture until proven necessary."
-
-_Blocking decisions:_ [REPLACE]
+_Blocking decisions:_ None — defer architecture until proven necessary. Start with basic WebSocket; add Retell and OpenAI in later slices.
 
 ---
 
 ## Features (Inline Tasks)
 
-> Start with inline tasks. Extract to `spec/features/` only when a feature grows to 10+ tasks.
+### F-001-MON: Monorepo Setup ⬚
+Set up pnpm workspace with shared types, API, and mobile packages.
 
-### F-001-[TAG]: [Minimal Feature 1] ⬚
-> [One sentence: what this feature does]
-> Example TAG: F-001-MVP for "Minimum Viable Player", F-001-RND for "Renderer"
+- [x] Root package.json with workspace scripts
+- [x] TypeScript config (tsconfig.base.json + per-package configs)
+- [x] Biome linting and formatting config
+- [x] Vitest test configuration
+- [x] Create packages: shared, api, mobile
+- [ ] Add sample test in shared package
+- [ ] Add sample test in API package
+- [ ] Verify all packages build successfully
 
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
+### F-002-API: Basic API Server ⬚
+Fastify server with health check and WebSocket endpoint.
 
-### F-002-[TAG]: [Minimal Feature 2] ⬚
-> [One sentence: what this feature does]
+- [x] Fastify server setup with logging (pino)
+- [x] Health check endpoint (`GET /health`)
+- [x] WebSocket endpoint (`/ws`) with basic ack response
+- [ ] Environment variable loading (`.env`)
+- [ ] Test: health check returns 200
+- [ ] Test: WebSocket connection succeeds
 
-- [ ] Task 1
-- [ ] Task 2
+### F-003-APP: Mobile App Shell ⬚
+React Native (Expo) app that displays Celato title and connects to API.
+
+- [x] Expo app.json configuration
+- [x] Basic App.tsx with Celato title screen
+- [ ] WebSocket client connection to API
+- [ ] Display connection status on screen (connected/disconnected)
+- [ ] Test: app launches without errors in Expo Go
 
 ---
 
@@ -79,18 +87,21 @@ _Blocking decisions:_ [REPLACE]
 > **Keep this minimal.** Only include what's required for the walking skeleton to run.
 
 ### What's In Scope
-- [ ] Basic project structure (folders, entry point)
-- [ ] One core capability that demonstrates the product (e.g., one endpoint, one game mechanic)
-- [ ] Minimal UI or CLI output to prove it works
-- [ ] One smoke test that passes
+- [x] Monorepo structure (pnpm workspaces)
+- [x] Basic API server (Fastify + WebSocket)
+- [x] Mobile app shell (Expo + React Native)
+- [x] Shared types package
+- [ ] Client-server WebSocket connection
+- [ ] Smoke tests for API health check and WebSocket
 
 ### What's Out of Scope (Defer to Later Slices)
-- Comprehensive error handling
-- Data persistence (use hardcoded data or in-memory storage)
-- User management, authentication (unless core to the product)
-- Polish, animations, advanced UI
-- Performance optimization
-- Extensive test coverage (one smoke test is enough for VS-0)
+- Retell AI integration (VS-1)
+- OpenAI Realtime API (VS-1)
+- Audio handling and routing (VS-1)
+- Whisper button and controls (VS-1)
+- Call transcripts and logging (VS-2)
+- Authentication and user management (VS-2)
+- Database (Supabase) integration (VS-2)
 
 ---
 
@@ -100,7 +111,11 @@ _Blocking decisions:_ [REPLACE]
 
 | Dependency | Purpose | Version | Notes |
 |------------|---------|---------|-------|
-| [REPLACE] | [Why it's needed] | [Version] | [Any gotchas] |
+| Fastify | Lightweight API server | ^5.2.0 | Low overhead for WebSocket |
+| @fastify/websocket | WebSocket support | ^11.0.1 | Built on ws library |
+| Expo | React Native development | ^52.0 | Latest stable |
+| pino | Structured logging | ^9.6.0 | Fast JSON logger |
+| Zod | Schema validation | ^3.24.1 | Used in shared types |
 
 ---
 
@@ -110,20 +125,34 @@ _Blocking decisions:_ [REPLACE]
 > Don't design the full system architecture — that emerges over time.
 
 **Tech Stack:**
-- [REPLACE: Language, framework, key libraries]
+- TypeScript 5.8+ (strict mode, erasableSyntaxOnly)
+- Node.js 22 LTS (native TypeScript support)
+- pnpm workspaces (monorepo)
+- Fastify (API server)
+- React Native + Expo (mobile app)
 
 **Structure:**
 ```
-[REPLACE: Minimal folder structure for VS-0]
-src/
-├── index.ts          # Entry point
-├── core/             # Core logic
-└── tests/            # One smoke test
+celato/
+├── packages/
+│   ├── shared/          # Shared types and contracts
+│   │   └── src/
+│   │       ├── index.ts
+│   │       └── types/
+│   ├── api/             # Fastify WebSocket server
+│   │   └── src/
+│   │       └── index.ts
+│   └── mobile/          # React Native (Expo) app
+│       ├── App.tsx
+│       └── app.json
+└── spec/                # Tracking and documentation
 ```
 
 **Key Decisions:**
-- [REPLACE: Any important decisions made for VS-0, with brief rationale]
-- Example: "Using Vite instead of Webpack for faster dev server startup"
+- **Monorepo with pnpm:** Shared types avoid duplication, workspace protocol keeps packages in sync
+- **Fastify over Express:** Lower overhead for WebSocket-heavy workload, better TypeScript support
+- **Expo over bare React Native:** Faster iteration, easier testing, can eject later if needed
+- **No database yet:** Defer Supabase to VS-2; focus on communication loop first
 
 ---
 

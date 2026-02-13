@@ -1,125 +1,132 @@
-# Codex
+# Celato
 
-A starting point for all AI-assisted software projects. Codex provides
-structure, conventions, and best practices that work with both **Cursor IDE**
-and **Claude Code CLI** (and any other AI coding tool that supports AGENTS.md).
+**The "Bionic Director" for phone calls.** A real-time collaborative voice agent that lets you whisper instructions to an AI agent who negotiates with businesses on your behalf — while you stay in control.
+
+Unlike standard translation apps or fully autonomous agents, Celato keeps you in the loop. You listen to the translated conversation and can "whisper" directions to the AI, who then handles the interaction professionally in the target language.
+
+---
+
+## The Problem We're Solving
+
+Ever tried to:
+- Book a restaurant reservation in a foreign country?
+- Navigate government bureaucracy in a language you don't speak?
+- Call customer support and explain a complex issue through a translator?
+
+Existing solutions fall short:
+- **Google Translate** - literal translation with no agency
+- **Samsung/Google AI Call** - built into hardware, literal translation only
+- **AI Call app** - autonomous but doesn't let you course-correct mid-call
+
+## The Celato Difference
+
+**You're the Director. The AI is your Actor.**
+
+1. **Whisper instructions** - speak privately to the AI without the business hearing
+2. **Agent negotiates** - handles the conversation professionally in target language
+3. **Stay in control** - approve, reject, or clarify in real-time
+4. **Autonomous holding** - agent keeps conversation flowing while you think
+
+**Example:** Calling a Tokyo pizza place:
+- You whisper: "Large pepperoni"
+- Agent: "One large pepperoni, please" (in Japanese)
+- Business: "We're out of pepperoni"
+- Agent (to you): "Bad news, no pepperoni. What's backup?"
+- You whisper: "Damn. Just cheese then."
+- Agent (to business): "That's okay, we'll take a cheese pizza instead." *(filters profanity, polite delivery)*
 
 ---
 
-## Philosophy
+## Tech Stack
 
-### The Problem
-Every new project starts with the same questions: How should I structure this?
-What conventions should I follow? How do I communicate effectively with AI tools?
-How do I track progress without losing context?
-
-### The Solution
-Codex answers those questions once, consistently, across all projects.
-It provides:
-
-1. **Rules that AI agents follow** - coding standards, communication formats,
-   review processes, and task planning conventions.
-2. **A tracking system that grows with the project** - start with inline tasks,
-   extract to feature specs when complexity demands it, with a clear contract at each phase.
-3. **Language-agnostic best practices** - with stack-specific reference guides
-   that AI uses to generate fresh, tailored configurations per project.
-4. **A clear split between human and AI documentation** - humans get `README.md`,
-   AI agents get structured rules and specs in `spec/`.
-
-### Core Beliefs
-- **AI tools are collaborators, not autocomplete.** They need context, rules,
-  and structure to be effective.
-- **Start simple, add complexity only when needed.** Three similar lines of code
-  are better than a premature abstraction.
-- **Test everything.** Even game engines, even visual tools. There's always
-  a way to test.
-- **Small files, small functions, small commits.** Humans and AI both work
-  better with focused, digestible units.
-- **Research best practices, don't guess.** When uncertain, look it up.
-  Encode what you learn so future projects benefit.
-
----
+- **Mobile:** React Native (Expo) - cross-platform iOS/Android
+- **Backend:** Node.js 22 + Fastify - audio routing orchestrator
+- **Telephony:** Retell AI - handles VAD, interruptions, turn-taking
+- **Intelligence:** OpenAI Realtime API (GPT-4o) - audio-to-audio agent
+- **Database:** Supabase - user data, call logs, prompts
+- **Monorepo:** pnpm workspaces
 
 ## Project Structure
 
 ```
-_Codex/
-├── CLAUDE.md              # Claude Code: project memory & instructions
-├── AGENTS.md              # Universal: AI agent instructions (all tools)
-├── README.md              # This file
-├── .gitignore
+celato/
+├── packages/
+│   ├── mobile/            # React Native (Expo) app
+│   ├── api/               # Node.js orchestrator
+│   └── shared/            # Shared types & contracts
 │
-├── spec/                  # Standards, architecture, tracking, features
-│   ├── coding-standards.md
-│   ├── workflow.md
-│   ├── api-contracts.md
-│   ├── architecture.md
-│   ├── setup-wizard.md
-│   ├── research/          # Competitive research, market analysis (optional)
-│   ├── features/          # Feature deep-dives (created per project)
-│   └── tracking/          # Milestones, backlog, bugs, decisions, learnings, tech-debt, versions
-├── stacks/                # Language stack guides (typescript.md, python.md, csharp.md)
+├── spec/
+│   ├── celato/            # Product vision (concept, UX, roadmap)
+│   ├── architecture.md    # Technical architecture
+│   ├── api-contracts.md   # WebSocket protocol, API shapes
+│   ├── tracking/          # Milestones, bugs, decisions, learnings
+│   └── features/          # Extracted feature specs
 │
-├── .claude/               # Claude Code config (rules, commands, settings)
-├── .cursor/               # Cursor IDE config (rules)
-└── _meta/                 # Base-only files (deleted during project setup)
+├── CLAUDE.md              # AI agent instructions
+└── README.md              # This file
 ```
 
-### The Tracking System
+## Development Roadmap
 
-Tracking starts simple and extracts organically:
+**Phase 1: Wizard of Oz Prototype** (Weeks 1-2)
+- Web interface to validate "whisper" interaction model
+- Simple dialer with spacebar whisper button
+- Test with real business calls
 
-- **Inline:** Tasks live in `spec/tracking/milestone.md` under each feature heading.
-  No extra files needed. This is where every project starts.
-- **Extracted:** When a feature outgrows inline (10+ tasks, needs design docs),
-  extract it to `spec/features/`. Simple features get a single file; complex
-  features get a folder with `tasks.md` + `design.md`.
+**Phase 2: Bionic Director MVP** (Weeks 3-6)
+- React Native mobile app with full VoIP
+- Real-time whisper audio injection
+- Live transcripts and basic contexts
 
-As features get extracted, milestone.md gradually becomes an index. There's no
-hard switch — AI agents detect when extraction is needed and help transition.
-See `spec/workflow.md` for the full system.
+**Phase 3: Smart Cost & Polish** (Weeks 7-10)
+- Model switching (cheap "Parrot" vs smart "Negotiator")
+- Call history and transcript review
+- Multi-language support
 
-All tracking items use prefixed IDs (`F-001`, `B-001`, `L-001`, etc.) for cross-referencing.
-
-Additional tracking:
-- **`backlog.md`** - Ideas and future work not yet in a milestone.
-- **`bugs.md`** - Known bugs with repro steps and severity.
-- **`decisions.md`** - Open and resolved technical decisions (lightweight ADRs).
-- **`learnings.md`** - Project-specific lessons learned (shared, committed knowledge).
-- **`tech-debt.md`** - Known technical debt with priority and proposed fixes.
-- **`version-matrix.md`** - Dependency versions and upgrade plan.
+See `spec/tracking/milestone.md` for current status and detailed tasks.
 
 ---
 
 ## Getting Started
 
-### Starting a New Project
+### Prerequisites
 
-1. Copy this base to your new project directory.
-2. Open it in Cursor or with Claude Code CLI.
-3. Tell the AI: "Follow the setup wizard at `spec/setup-wizard.md`".
-4. The wizard will walk through an interactive setup:
-   - Project name and description
-   - Tech stack selection
-   - Configuration generation (using `stacks/` guides)
-   - Initialize tracking files
-   - Customize CLAUDE.md and AGENTS.md
+- Node.js 22 LTS
+- pnpm 9+
+- Expo account (for mobile dev)
+- API keys: OpenAI, Retell AI, Supabase
 
-### Working on a Project
+### Setup
 
-1. Check `spec/tracking/milestone.md` for current status and tasks.
-2. Pick a feature to work on from the current milestone.
-3. Work through tasks in priority order (quick-wins first).
-4. When a feature outgrows inline tracking, extract it to `spec/features/feature-name.md`.
-5. Update status in milestone.md (and the feature spec, if one exists).
+```bash
+# Install dependencies
+pnpm install
 
-### AI Communication Conventions
+# Copy environment template
+cp .env.example .env
 
-AI agents following this base's rules will:
-- Present options in tables with a recommended approach.
-- After every task, suggest 3-5 polish items and 2-3 follow-ups.
-- Split reviews into: obvious fixes / needs attention / can postpone.
-- Order task lists from quick-wins to complex.
+# Fill in your API keys in .env
+
+# Start development
+pnpm dev
+```
+
+### Development Workflow
+
+1. Check `spec/tracking/milestone.md` for current vertical slice and tasks
+2. Product vision lives in `spec/celato/` - read before implementing features
+3. Technical architecture in `spec/architecture.md`
+4. API contracts in `spec/api-contracts.md` (single source of truth)
+
+### Key Documentation
+
+| Document | Purpose |
+|----------|---------|
+| `spec/celato/concept.md` | Competitive analysis, core UX philosophy |
+| `spec/celato/ux_design.md` | "Director's Chair" interface, smart cost architecture |
+| `spec/celato/architecture.md` | Component diagram, whisper loop data flow |
+| `spec/tracking/milestone.md` | Current status, tasks, roadmap |
+| `spec/tracking/qa.md` | Feature health and verification status |
 
 ---
 

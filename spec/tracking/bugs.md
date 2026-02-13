@@ -6,9 +6,10 @@ Known bugs with reproduction steps and status. Each bug has an ID for cross-refe
 
 ## Open Bugs
 
+_No bugs reported yet._
+
 | ID | Severity | Bug | Repro Steps | Found | Related |
 |----|----------|-----|-------------|-------|---------|
-| B-001-TAG | | | | | |
 
 ### Severity Levels
 - 🔴 **Critical**: Blocks usage, data loss, security vulnerability

@@ -7,9 +7,10 @@ this file is committed and shared, serving as institutional knowledge for the pr
 
 ## Technical Learnings
 
+_Learnings will be captured as the project progresses._
+
 | ID | Severity | Date | Learning | Context | Related |
 |----|----------|------|----------|---------|---------|
-| L-001-TAG | | | | | |
 
 ### Severity Levels
 - 🔴 **Critical**: Will cause bugs/outages if ignored

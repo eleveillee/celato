@@ -1,9 +1,124 @@
 # Architecture Guide
 
-This document describes the architectural patterns and principles used across
-all projects built from this base. It's technology-agnostic — specific stack
-choices are covered in `stacks/`. AI agents should reference this when making
-architectural decisions.
+This document describes Celato's technical architecture. For product vision and UX patterns, see `spec/celato/`.
+
+## System Architecture
+
+### High-Level System Diagram
+
+```
+┌─────────────────┐
+│  Mobile App     │ ◄─── User (Director)
+│  React Native   │
+└────────┬────────┘
+         │ WebSocket (Control + Whisper Audio)
+         ▼
+┌─────────────────┐
+│  Orchestrator   │ ◄─── Audio Routing & LLM Context
+│  Node.js +      │
+│  Fastify        │
+└────┬────────┬───┘
+     │        │
+     │        └──► OpenAI Realtime API (GPT-4o)
+     │
+     ▼
+┌─────────────────┐
+│  Retell AI      │ ◄─── Telephony Provider
+│  (VAD, Turn-    │
+│   taking)       │
+└────────┬────────┘
+         │ PSTN / SIP
+         ▼
+┌─────────────────┐
+│  Business       │ ◄─── Third Party (Phone)
+└─────────────────┘
+```
+
+### The Three-Way Dynamic
+
+**Participants:**
+- **User (Director)** - controls via mobile app, whispers private instructions
+- **Agent (Actor)** - AI that negotiates, follows user's direction
+- **Business (Third Party)** - only hears the agent, not the whispers
+
+**Audio Routing Modes:**
+
+| Mode | User Audio | Agent Audio | Business Hears |
+|------|------------|-------------|----------------|
+| **Standard** | Muted | Active ↔ Business | Agent only |
+| **Whisper** | Active → Agent | Active ↔ Business | Agent only (not user) |
+| **Passthrough** | Active ↔ Business | Silent | User directly |
+
+### The "Whisper Loop" Data Flow
+
+1. **State:** Call active. Agent talking to business.
+2. **User presses "Whisper" button** on mobile app.
+3. **App:**
+   - Mutes user audio to Retell (business doesn't hear)
+   - Streams user audio to Orchestrator via separate WebSocket channel
+4. **Orchestrator:**
+   - Transcribes user audio: *"Tell them I'm running 5 mins late"*
+   - Injects instruction into LLM context as high-priority system message:
+     `[DIRECTOR INSTRUCTION: Tell them user is 5 mins late. Be polite.]`
+5. **LLM (OpenAI Realtime API):**
+   - Generates audio response: *"Apologies, my client is running about 5 minutes behind schedule."*
+6. **Retell AI:** Plays LLM audio to business.
+
+**Critical Latency Constraint:** Whisper → Agent → Business must complete in under 1-2 seconds for natural conversation flow.
+
+---
+
+## General Architectural Principles
+
+---
+
+## Components
+
+### 1. Mobile App (Frontend)
+**Stack:** React Native (Expo)
+
+**Responsibilities:**
+- **VoIP Interface:** Visualizing call state (User, Agent, Third Party)
+- **Audio Handling:** Capturing user microphone for "Whisper" and "Passthrough"
+- **Control Panel:** Buttons for "Whisper", "Hold", "Take Over"
+- **State Sync:** Receiving real-time transcripts and state updates from Orchestrator
+
+### 2. Celato Orchestrator (Backend)
+**Stack:** Node.js 22 (TypeScript) + Fastify
+
+**Responsibilities:**
+- **Session Management:** Linking user's app session to Retell phone call
+- **Audio Mixing/Routing:**
+  - Standard: User (muted) → Agent (active) ↔ Business
+  - Whisper: User (active) → Agent (active); Business (excluded)
+  - Passthrough: User (active) ↔ Business; Agent (silent)
+- **LLM Context Management:** Injecting system prompts, handling tool calls, managing conversation state
+
+### 3. Telephony & Audio (Retell AI)
+**Why Retell AI:**
+- Built-in VAD (Voice Activity Detection)
+- Interruption handling and turn-taking logic out of the box
+- "Custom LLM" feature allows routing audio to our Orchestrator
+- Enables whisper instruction injection before audio reaches the model
+
+**Alternative:** Twilio (raw streams, requires building VAD/turn-taking ourselves)
+
+### 4. Intelligence (OpenAI Realtime API)
+**Primary Model:** GPT-4o Audio
+
+**Why:**
+- Native audio-to-audio (avoids transcription latency)
+- Critical for sub-2-second whisper loop
+- Handles multi-turn context naturally
+
+**Cost Fallback (Future):** Deepgram + GPT-4o-mini for simple confirmations and "hold" handling (~$0.01/min vs ~$0.20/min)
+
+### 5. Database (Supabase)
+**Schema:**
+- **Users:** Auth & preferences
+- **Contacts:** Saved business numbers with context (e.g., "Mario's Pizza - usually order pepperoni")
+- **Calls:** Call logs, transcripts, cost tracking
+- **Prompts:** Custom system prompts for different scenarios (Restaurant, Support, Emergency)
 
 ---
 

@@ -7,9 +7,10 @@ This serves as a lightweight Architecture Decision Record (ADR).
 
 ## Open Questions
 
+_No open technical decisions currently._
+
 | ID | Question | Context | Options | Blocks | Status |
 |----|----------|---------|---------|--------|--------|
-| D-001-TAG | | | | | |
 
 ### Template for Open Questions
 ```markdown
