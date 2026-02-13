@@ -7,7 +7,7 @@
 At the start of every conversation:
 1. Read `CLAUDE.md` and the spec lookup table.
 2. Read `spec/tracking/milestone.md` for current status and next steps.
-3. Skim `spec/tracking/bugs.md` and `spec/tracking/decisions.md` for open/blocking items.
+3. Skim `spec/tracking/bugs.md`, `spec/tracking/decisions.md`, and `spec/tracking/qa.md` for open/blocking items and feature health.
 
 ## Vertical Slice Tracking
 - Projects progress through **Vertical Slices (VS)** — complete, verifiable increments. See @spec/workflow.md.
