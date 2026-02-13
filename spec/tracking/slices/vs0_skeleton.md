@@ -1,6 +1,6 @@
 # VS-000-SKE: The Walking Skeleton
 
-## Status: ⬚ Not Started
+## Status: ⚪ Needs Verification
 
 ## Philosophy
 
@@ -49,7 +49,7 @@ _Blocking decisions:_ None — defer architecture until proven necessary. Start 
 
 ## Features (Inline Tasks)
 
-### F-001-MON: Monorepo Setup ⬚
+### F-001-MON: Monorepo Setup ✅
 Set up pnpm workspace with shared types, API, and mobile packages.
 
 - [x] Root package.json with workspace scripts
@@ -57,28 +57,29 @@ Set up pnpm workspace with shared types, API, and mobile packages.
 - [x] Biome linting and formatting config
 - [x] Vitest test configuration
 - [x] Create packages: shared, api, mobile
-- [ ] Add sample test in shared package
-- [ ] Add sample test in API package
-- [ ] Verify all packages build successfully
+- [x] Add sample test in shared package (6 tests)
+- [x] Add sample test in API package (2 tests)
+- [x] Verify all packages build successfully
 
-### F-002-API: Basic API Server ⬚
+### F-002-API: Basic API Server ✅
 Fastify server with health check and WebSocket endpoint.
 
 - [x] Fastify server setup with logging (pino)
 - [x] Health check endpoint (`GET /health`)
 - [x] WebSocket endpoint (`/ws`) with basic ack response
-- [ ] Environment variable loading (`.env`)
-- [ ] Test: health check returns 200
-- [ ] Test: WebSocket connection succeeds
+- [x] Environment variable loading (`.env`)
+- [x] Test: health check returns 200
+- [x] Test: WebSocket connection succeeds
 
-### F-003-APP: Mobile App Shell ⬚
+### F-003-APP: Mobile App Shell ✅
 React Native (Expo) app that displays Celato title and connects to API.
 
 - [x] Expo app.json configuration
 - [x] Basic App.tsx with Celato title screen
-- [ ] WebSocket client connection to API
-- [ ] Display connection status on screen (connected/disconnected)
-- [ ] Test: app launches without errors in Expo Go
+- [x] WebSocket client hook (useWebSocket)
+- [x] Display connection status on screen with color-coded dot
+- [x] Send test message button when connected
+- [x] Display last received message
 
 ---
 
