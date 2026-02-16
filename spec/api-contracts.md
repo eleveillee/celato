@@ -86,14 +86,45 @@ Health check endpoint for API orchestrator.
 Bidirectional WebSocket for real-time communication between mobile app and API orchestrator.
 
 **Connection:**
-- URL: `ws://localhost:3000/ws` (dev) / `wss://api.celato.com/ws` (prod)
-- Auth: Bearer token in query param (future: `?token=xxx`)
+- URL: `ws://localhost:4000/ws` (dev) / `wss://api.celato.com/ws` (prod)
+- Auth: None (VS-0); Bearer token in query param (future: `?token=xxx`)
 
-**Message Types:**
+---
+
+### VS-0 Protocol (Current Implementation)
+
+**Client → Server:**
+- Plain text messages (any string)
+- Example: `"test message from mobile"`
+
+**Server → Client:**
+- JSON with ack response
+
+```typescript
+{
+  type: "ack",
+  timestamp: number
+}
+```
+
+**Example:**
+```typescript
+// Client sends
+ws.send("test message from mobile");
+
+// Server responds
+{ "type": "ack", "timestamp": 1708012345678 }
+```
+
+---
+
+### Future Message Types (VS-1+)
+
+The following message types are planned but not yet implemented:
 
 #### Client → Server
 
-##### `whisper`
+##### `whisper` (VS-1)
 User whispers an instruction to the agent.
 
 ```typescript
@@ -104,7 +135,7 @@ User whispers an instruction to the agent.
 }
 ```
 
-##### `mode_change`
+##### `mode_change` (VS-1)
 User switches audio mode (standard/whisper/passthrough).
 
 ```typescript
@@ -116,17 +147,7 @@ User switches audio mode (standard/whisper/passthrough).
 
 #### Server → Client
 
-##### `ack`
-Acknowledgment of received message.
-
-```typescript
-{
-  type: "ack",
-  timestamp: number
-}
-```
-
-##### `transcript`
+##### `transcript` (VS-1)
 Real-time conversation transcript (translated).
 
 ```typescript
@@ -139,7 +160,7 @@ Real-time conversation transcript (translated).
 }
 ```
 
-##### `state_update`
+##### `state_update` (VS-1)
 Call state change notification.
 
 ```typescript

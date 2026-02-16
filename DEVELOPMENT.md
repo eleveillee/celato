@@ -14,10 +14,10 @@ This document describes how to develop Celato locally.
 # Install dependencies
 pnpm install
 
-# Copy environment template
+# Create .env (required for API to start)
 cp .env.example .env
 
-# (Optional) Fill in API keys - not needed for VS-0
+# Edit .env: API keys not needed for VS-0. Port 4000 is used by default.
 ```
 
 ## Development Commands
@@ -81,12 +81,12 @@ pnpm build
 pnpm dev:api
 
 # Should see:
-# 🚀 Celato API listening on http://localhost:3000
+# 🚀 Celato API listening on http://localhost:4000
 ```
 
 ```bash
 # Terminal 2: Test health check
-curl http://localhost:3000/health
+curl http://localhost:4000/health
 
 # Should return:
 # {"status":"ok","service":"celato-api","version":"0.1.0"}
@@ -109,7 +109,7 @@ pnpm dev:mobile
    - "The Bionic Director" subtitle
    - Connection status dot (gray/yellow = disconnected, green = connected)
 
-**Note:** WebSocket connection to `localhost:3000` will only work on web. For physical devices, update `WS_URL` in `packages/mobile/App.tsx` to your computer's IP address.
+**Note:** WebSocket connection to `localhost:4000` will only work on iOS Simulator or web. For Android Emulator use `ws://10.0.2.2:4000/ws`. For physical devices, update `WS_URL` in `packages/mobile/App.tsx` to your computer's IP address.
 
 ### 3. Verify WebSocket Connection
 
@@ -138,7 +138,7 @@ Open `http://localhost:8081` in your browser. You should see:
 
 2. Update `packages/mobile/App.tsx`:
    ```typescript
-   const WS_URL = "ws://192.168.1.XXX:3000/ws"; // Your computer's IP
+   const WS_URL = "ws://192.168.1.XXX:4000/ws"; // Your computer's IP
    ```
 
 3. Restart mobile app and test connection
@@ -174,9 +174,10 @@ celato/
 - Try clearing cache: `cd packages/mobile && pnpm start --clear`
 
 ### "WebSocket connection failed"
-- Verify API server is running on port 3000
+- Verify API server is running on port 4000
 - For physical devices, use your computer's IP address, not `localhost`
-- Check firewall settings (port 3000 must be accessible)
+- For Android Emulator, use `10.0.2.2` instead of `localhost`
+- Check firewall settings (port 4000 must be accessible)
 
 ### "Build errors"
 - Run `pnpm install` again

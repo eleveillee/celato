@@ -50,11 +50,11 @@ _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and req
 
 **Done when:**
 - [x] Monorepo builds without errors
-- [ ] API server starts and health check responds
+- [x] API server starts and health check responds (verified 2026-02-16)
 - [ ] Mobile app launches in Expo
 - [ ] WebSocket connection established between mobile and API
-- [ ] At least one test passes in shared and API packages
-- [ ] Development workflow documented
+- [x] At least one test passes in shared and API packages (8/8)
+- [x] Development workflow documented
 
 **Blocking decisions:** None — defer Retell AI and OpenAI integration to VS-1.
 
