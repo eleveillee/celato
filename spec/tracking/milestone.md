@@ -28,12 +28,12 @@ Reference format: `See D-003-ARC` or `Blocked by B-012-LTO`. AIs should use full
 
 ## Vertical Slice Index
 
-| ID | Focus | Status | Document |
-|:---|:------|:-------|:---------|
+| ID | Focus | Status | Documents |
+|:---|:------|:-------|:----------|
 | **VS-000-SKE** | **The Walking Skeleton** | 🔄 In Progress | [→ spec](slices/vs0_skeleton.md) |
-| **VS-001-WOZ** | **Wizard of Oz Prototype** | ⬚ Planned | |
-| **VS-002-MVP** | **Mobile MVP** | ⬚ Planned | |
-| **VS-003-POL** | **Smart Cost & Polish** | ⬚ Planned | |
+| **VS-001-WOZ** | **Wizard of Oz Prototype** | ⬚ Planned | [→ spec](slices/vs1_wizard.md) • [→ design](slices/vs1_design.md) |
+| **VS-002-MVP** | **Mobile Native Apps** | ⬚ Planned | [→ spec](slices/vs2_mobile.md) |
+| **VS-003-POL** | **Smart Cost & Polish** | ⬚ Planned | [→ spec](slices/vs3_polish.md) |
 
 ---
 
@@ -62,41 +62,67 @@ _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and req
 
 ## Planned Slices
 
-### VS-001-WOZ: Wizard of Oz Prototype (Weeks 1-2)
+> **Documentation Structure:**
+> - **This file (milestone.md):** High-level slice summaries, index, and current status
+> - **VS spec files (vsN_*.md):** Feature tracking, success criteria, test scenarios
+> - **Design docs (vs1_design.md, etc.):** Implementation-level detail for complex slices
+
+### VS-001-WOZ: Wizard of Oz Prototype
 **Goal:** Validate "whisper" interaction via web interface before building full mobile stack.
 
-**Focus:**
-- Web-based dialer (Next.js or simple HTML)
-- Retell AI integration for phone calls
-- Spacebar "whisper" button to inject text into agent context
-- Visual conversation log
-- Test with real business call (e.g., check store hours)
+**Phases:**
+1. **Core Validation** — Platform abstraction interfaces (F-012), Retell integration (F-005), whisper system (F-006), LLM (F-010)
+2. **Production Features** — Web UI (F-004), persona system (F-007), cost tracking (F-008), transcript management (F-009)
+3. **Polish & Deploy** — Error handling (F-011) and production deployment (Railway + Vercel)
 
-**Success:** User can press spacebar, whisper an instruction, and see the agent follow it in the next turn.
+**Critical Discovery:** Retell AI "Custom LLM" mode is **text-only**. All audio processing (ASR/TTS) happens within Retell. We receive text transcripts and send text responses.
 
-### VS-002-MVP: Mobile MVP (Weeks 3-6)
-**Goal:** First functional mobile experience with full VoIP.
+**Success:** User makes real business call, whispers text instructions mid-conversation (business doesn't hear), agent follows instruction naturally within 2 seconds.
 
-**Focus:**
-- React Native Director UI (three panels: Business, Agent, User controls)
-- Whisper audio (not just text)
-- Live transcript streaming
-- Basic context presets (General, Restaurant, Support)
-- Call session management
+**Documentation:**
+- [vs1_wizard.md](slices/vs1_wizard.md) — Feature tracking, phases, and test scenarios
+- [vs1_design.md](slices/vs1_design.md) — Implementation-level design (whisper loop, Retell protocol, LLM prompts, deployment)
+- [spec/integrations/retell-ai.md](../../integrations/retell-ai.md) — Retell AI integration reference
+- [spec/api-contracts.md](../../api-contracts.md) — WebSocket protocol contracts
 
-**Success:** Make a dinner reservation in a foreign language where the user corrects a detail mid-call via whisper.
+### VS-002-MVP: Mobile Native Apps
+**Goal:** Native iOS/Android apps with audio whisper support, VoIP integration, and offline resilience.
 
-### VS-003-POL: Smart Cost & Polish (Weeks 7-10)
-**Goal:** Make it viable for daily use.
+**Key Features:**
+- Expo React Native apps (iOS + Android)
+- Audio whisper (microphone → Deepgram transcription → LLM)
+- Voice Command Parser ("Hey Celato, hang up")
+- Offline Whisper Queue (auto-sync on reconnect)
+- VoIP integration (CallKit on iOS, ConnectionService on Android)
+- Platform interface implementations (mobile versions of all 6 interfaces)
 
-**Focus:**
-- Model switching ("Parrot" cheap mode vs "Negotiator" smart mode)
-- Call history and transcript review
-- Contacts integration
-- Multi-language support
-- Cost tracking and billing integration
+**Reuses from VS-1:**
+- Same API orchestrator and Retell integration
+- Same WebSocket protocol
+- Same conversation state management
+- ~40-50% code reuse via `packages/shared`
 
-**Success:** User can review past calls, see cost breakdown, and switch between cost tiers.
+**Success:** User makes call from iPhone, whispers audio instruction (not text), business doesn't hear raw audio, agent responds naturally with <2s latency including transcription.
+
+**Documentation:**
+- [vs2_mobile.md](slices/vs2_mobile.md) — Full specification with features, system design, and deployment
+
+### VS-003-POL: Smart Cost & Polish
+**Goal:** Production-ready mobile and web apps with smart cost optimization, call history, and multi-platform polish.
+
+**Key Features:**
+- User authentication (Supabase Auth with email/magic link)
+- Call history with search and filtering (Supabase PostgreSQL + RLS)
+- Contacts integration (save businesses with context notes)
+- Smart cost optimization (auto-switch between "Parrot" ~$0.01/min and "Negotiator" ~$0.08/min)
+- Multi-language support (Spanish, French, Mandarin, Japanese)
+- Cost analytics dashboard (total spend, breakdown by tier, top contacts)
+- Settings & preferences (default persona, language, cost tier)
+
+**Success:** User registers, makes call in cheap "Parrot" mode, agent auto-upgrades to "Negotiator" for complex negotiation, user reviews call history on both mobile and web (synced via Supabase).
+
+**Documentation:**
+- [vs3_polish.md](slices/vs3_polish.md) — Full specification with features, Supabase schema, cost optimization strategy
 
 ---
 

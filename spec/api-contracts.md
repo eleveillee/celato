@@ -125,12 +125,40 @@ The following message types are planned but not yet implemented:
 #### Client → Server
 
 ##### `whisper` (VS-1)
-User whispers an instruction to the agent.
+User whispers an instruction to the agent (business does NOT hear this).
 
+**VS-1 (text-based):**
 ```typescript
 {
   type: "whisper",
-  audioData: ArrayBuffer,  // Opus-encoded audio
+  text: string,         // User's whisper instruction
+  timestamp: number
+}
+```
+
+**VS-2+ (audio-based):**
+```typescript
+{
+  type: "whisper",
+  audioData: ArrayBuffer,  // Opus-encoded audio (transcribed server-side via Deepgram)
+  timestamp: number
+}
+```
+
+**Server behavior:**
+- Stores whisper in conversation context (hidden from business)
+- Transforms via LLM into natural agent speech
+- Only LLM output goes to business (via Retell TTS)
+- ✅ Business never hears the raw whisper text
+
+##### `start_call` (VS-1)
+Initiate a new phone call.
+
+```typescript
+{
+  type: "start_call",
+  phoneNumber: string,      // E.164 format (e.g., "+15551234567")
+  personaMode: "transparent" | "proxy",
   timestamp: number
 }
 ```
@@ -148,14 +176,31 @@ User switches audio mode (standard/whisper/passthrough).
 #### Server → Client
 
 ##### `transcript` (VS-1)
-Real-time conversation transcript (translated).
+Real-time conversation transcript.
 
 ```typescript
 {
   type: "transcript",
-  speaker: "business" | "agent",
+  speaker: "business" | "agent" | "whisper",  // "whisper" for hidden user instructions
   text: string,
-  translatedText?: string,
+  timestamp: number
+}
+```
+
+**Note:** `speaker: "whisper"` indicates a hidden instruction that business did NOT hear.
+
+##### `cost_update` (VS-1)
+Real-time cost tracking update.
+
+```typescript
+{
+  type: "cost_update",
+  totalCost: number,           // USD total
+  breakdown: {
+    retell: number,            // Retell AI cost (call minutes)
+    llm: number,               // LLM cost (token usage)
+    transcription?: number     // Deepgram cost (VS-2+, when whisper audio is used)
+  },
   timestamp: number
 }
 ```
@@ -192,17 +237,64 @@ _Will be defined in later vertical slices:_
 
 ## Third-Party Integrations
 
-### Retell AI
-- **Base URL:** `https://api.retellai.com/v1`
-- **Auth:** Bearer token in header
-- **Key Endpoints:** Custom LLM webhook, call management
-- **Documentation:** See Retell AI docs for full API reference
+### Retell AI Custom LLM WebSocket
 
-### OpenAI Realtime API
-- **Base URL:** `wss://api.openai.com/v1/realtime`
-- **Auth:** API key + organization ID
-- **Protocol:** WebSocket with structured events
-- **Documentation:** OpenAI Realtime API docs
+**Endpoint:** `/llm-websocket/:call_id` (implemented by our API orchestrator)
+
+**Connection:** Retell initiates WebSocket connection when call starts.
+
+**Protocol:** TEXT-ONLY (JSON messages, no binary audio)
+
+**Critical:** See [spec/integrations/retell-ai.md](../integrations/retell-ai.md) for full technical details.
+
+#### Retell → Server Messages
+
+| Type | When | Purpose |
+|------|------|---------|
+| `call_details` | Call start | Initial call metadata |
+| `response_required` | Turn boundary | Agent response needed |
+| `update_only` | Continuous | Live transcript updates |
+| `ping_pong` | Every 2s | Keepalive (if `auto_reconnect: true`) |
+
+#### Server → Retell Messages
+
+| Type | Purpose |
+|------|---------|
+| `config` | Initial connection setup |
+| `response` | Agent speech (text, Retell handles TTS) |
+| `agent_interrupt` | Force immediate agent speech (interrupts current speaker) |
+| `ping_pong` | Keepalive response |
+
+**Example whisper flow:**
+```typescript
+// 1. User whispers (hidden from business)
+{ type: "whisper", text: "Tell them I'm running late" }
+
+// 2. Server stores in context (not sent to Retell yet)
+
+// 3. Retell sends response_required (business finished speaking)
+{ interaction_type: "response_required", response_id: 5, transcript: [...] }
+
+// 4. Server sends LLM-transformed response (business hears this)
+{
+  response_type: "response",
+  response_id: 5,
+  content: "Apologies, I'm running about 5 minutes behind schedule.",
+  content_complete: true
+}
+```
+
+---
+
+### OpenAI API (Text-based LLM)
+
+- **Base URL:** `https://api.openai.com/v1`
+- **Auth:** Bearer token (`sk-proj-...`)
+- **Model:** GPT-4o-mini (text-based chat completion)
+- **Use:** Transform whisper instructions into natural agent speech
+- **Cost:** $0.15/1M input tokens, $0.60/1M output tokens
+
+**Note:** OpenAI Realtime API (audio-to-audio) is NOT used — Retell Custom LLM is text-only.
 
 ### Supabase
 - **Base URL:** Project-specific (`https://xxxxx.supabase.co`)
