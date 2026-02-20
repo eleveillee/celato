@@ -41,6 +41,9 @@ _Example IDs: D-005-ARC (Architecture), D-012-DBS (DataBaSe choice)_
 | D-014-LAT | Latency optimization strategy | Streaming + prompt caching + predicted responses for sub-500ms typical latency | 2026-02-16 |
 | D-015-CTX | Pre-call context input | User provides call purpose before dialing for immediate context | 2026-02-16 |
 | D-016-CDG | Context-driven phrase generation | Pre-generate high-probability responses based on user's stated intent (90-95% hit rate) | 2026-02-16 |
+| D-019-ABS | Rate limit + logging for abuse prevention | 10 calls/day free tier, payment for unlimited, all calls logged for review | 2026-02-20 |
+| D-020-TEL | Abstract telephony layer (TelephonyProvider interface) | Protect against Retell vendor lock-in; implement RetellProvider only for now, Twilio migration path documented | 2026-02-20 |
+| D-021-CLR | DTMF + passthrough for sensitive info (credit cards, SSN) | DTMF tones for IVR systems (PCI-DSS standard), passthrough mode for voice-only; sensitive data never touches our backend | 2026-02-20 |
 
 ### D-001-SLC: Terminology - "Slices" not "Cycles"
 **Date:** 2026-02-12
@@ -787,3 +790,213 @@ class ResponseCache {
 - **VS-2:** Layer 1 only (context-driven) - 70-80% instant
 - **VS-3:** Layer 1 + Layer 2 (both) - 85-95% instant
 - **VS-4+:** Add learning system to improve predictions over time
+
+---
+
+### D-019-ABS: Abuse Prevention Strategy ✅ RESOLVED
+
+**Context:** Proxy mode allows agent to speak as user. Without controls, users could make prank calls, impersonate others, or violate business TOS. Need guardrails without killing the core value proposition.
+
+**Blocks:** F-007-PER (Persona System), future billing
+
+**Decision:** **Rate limiting + comprehensive logging** (resolved 2026-02-20).
+
+**Implementation:**
+
+| Control | Details | VS |
+|---------|---------|-----|
+| **Rate limit (free tier)** | 10 calls/day, 5 min max per call | VS-1 |
+| **Rate limit (paid tier)** | Unlimited calls, configurable max duration | VS-3 |
+| **Call logging** | All calls logged with transcript, duration, cost, phone number | VS-1 |
+| **Abuse review** | Manual review queue for reported calls | VS-3 |
+| **Ban mechanism** | Account suspension on repeated violations | VS-3 |
+
+**Rationale:**
+- Rate limiting prevents mass abuse without blocking legitimate use
+- Logging enables post-hoc review (cheaper than real-time monitoring)
+- Payment requirement for unlimited use creates accountability
+- Gradual enforcement: warn → throttle → suspend
+
+**What we explicitly accept:**
+- Individual bad actors may make a few prank calls before detection
+- We don't monitor call content in real-time (privacy + latency concerns)
+- Legal liability is on the user (documented in TOS)
+
+**Consequences:**
+- Need basic usage tracking from VS-1 (call count per user per day)
+- Need TOS that explicitly states user responsibility
+- Future: add phone number blocklist if pattern abuse detected
+
+---
+
+### D-020-TEL: Abstract Telephony Layer ✅ RESOLVED
+
+**Context:** Entire phone system depends on Retell AI. If Retell changes pricing, shuts down, or breaks their API, Celato is dead. Need insurance without over-engineering.
+
+**Blocks:** F-005-RET (Retell Integration)
+
+**Decision:** **TelephonyProvider interface with RetellProvider implementation** (resolved 2026-02-20).
+
+**Architecture:**
+
+```typescript
+// packages/shared/interfaces/telephony-provider.ts
+interface TelephonyProvider {
+  name: string;
+
+  // Call lifecycle
+  createCall(params: {
+    phoneNumber: string;
+    systemPrompt: string;
+    metadata?: Record<string, string>;
+  }): Promise<{ callId: string }>;
+
+  endCall(callId: string): Promise<void>;
+
+  // Event handling
+  onTranscript(callId: string, callback: (transcript: TranscriptEvent) => void): void;
+  onResponseRequired(callId: string, callback: (context: ResponseContext) => void): void;
+  onCallStateChange(callId: string, callback: (state: CallState) => void): void;
+
+  // Agent response
+  sendResponse(callId: string, response: AgentResponse): void;
+
+  // DTMF support (D-021-CLR)
+  sendDTMF?(callId: string, digits: string): void;
+}
+
+type CallState = 'connecting' | 'active' | 'holding' | 'ended' | 'error';
+```
+
+**Downside analysis:**
+
+| Concern | Impact | Verdict |
+|---------|--------|---------|
+| Extra indirection | ~10 lines of interface code | Negligible |
+| Abstraction may not fit Twilio perfectly | May need interface evolution | Accept — iterate when needed |
+| Maintenance of unused interface | Zero cost (one implementation) | Non-issue |
+
+**Why the protection is worth it:**
+- Retell is a startup — platform risk is real
+- Interface is thin (~50 lines) — near-zero implementation cost
+- Forces clean separation between telephony and business logic
+- Makes unit testing trivial (mock TelephonyProvider)
+- Migration to Twilio becomes "implement new provider" not "rewrite everything"
+
+**Implementation Timeline:**
+- **VS-1:** Define interface + implement `RetellProvider`
+- **VS-3+:** If Retell issues arise, implement `TwilioProvider` (2-3 day effort with interface in place)
+
+**Migration cost comparison:**
+- Without interface: Retell-specific code scattered through codebase → 1-2 week migration
+- With interface: Implement new provider, swap in config → 2-3 day migration
+
+**Consequences:**
+- All telephony interactions go through `TelephonyProvider` interface
+- No direct Retell imports outside of `RetellProvider` implementation
+- Test suite mocks the interface, not Retell-specific APIs
+
+---
+
+### D-021-CLR: Secure Sensitive Information Handling ✅ RESOLVED
+
+**Context:** Business asks "What's your credit card number?" Agent needs to relay this without sensitive data passing through our API, LLM, or logs. User wants maximum security — data should never leave the device as text.
+
+**Blocks:** F-006-WSP (Whisper System), future payment flows
+
+**Decision:** **DTMF for automated systems + Passthrough mode for voice-only** (resolved 2026-02-20).
+
+**Why not pre-recorded voice?**
+- Our architecture sends TEXT to Retell → Retell does TTS. We don't inject raw audio.
+- Even if we could, audio would still pass through Retell's infrastructure.
+- Voice recordings of CC numbers are a PCI-DSS violation if stored improperly.
+
+**The DTMF approach (IVR/automated systems):**
+
+DTMF (Dual-Tone Multi-Frequency) is the *standard* PCI-DSS compliant method for phone payments. When a phone system says "Enter your card number", it expects keypad tones — not voice.
+
+```
+User Flow:
+1. Agent detects "sensitive info needed" (CC, SSN, etc.)
+2. Agent says to business: "I'll enter that now."
+3. App prompts user: "Enter card number securely"
+4. User taps digits on secure numpad (device-local, no network)
+5. System sends DTMF tones directly into call via Retell
+6. CC digits NEVER touch our API, LLM, or logs
+```
+
+```typescript
+// Secure info flow — DTMF path
+interface SecureInputRequest {
+  type: 'secure_input';
+  inputType: 'credit_card' | 'ssn' | 'pin' | 'custom';
+  label: string;  // "Enter your card number"
+}
+
+// Client-side only — never sent to server
+interface SecureInput {
+  digits: string;  // "4242424242424242" — stays on device
+}
+
+// Server receives ONLY the instruction to send DTMF
+interface DTMFCommand {
+  type: 'dtmf';
+  callId: string;
+  digits: string;  // Sent directly to Retell DTMF API, never logged
+}
+```
+
+**The Passthrough approach (voice-only / cashier scenarios):**
+
+When business requires spoken numbers (human cashier, not IVR):
+
+```
+User Flow:
+1. Agent detects sensitive info needed
+2. Agent says: "One moment, I'll hand the line over."
+3. System switches to Passthrough mode (user ↔ business directly)
+4. User speaks CC number directly — agent silent
+5. After done, user taps "Resume" — agent takes over again
+6. CC number NEVER enters our system (pure phone-to-phone audio)
+```
+
+**Security guarantees:**
+
+| Data Path | CC Touches Our Backend? | CC Touches LLM? | CC in Logs? |
+|-----------|------------------------|------------------|-------------|
+| **DTMF** | ❌ No (DTMF tones only) | ❌ No | ❌ No |
+| **Passthrough** | ❌ No (direct audio) | ❌ No | ❌ No |
+| **Whisper (BAD)** | ⚠️ Yes | ⚠️ Yes | ⚠️ Yes |
+
+**Optional enhancement: Encrypted device vault (VS-3+)**
+
+```typescript
+// Store CC in device keychain for repeat use
+// iOS: Keychain Services, Android: EncryptedSharedPreferences
+interface SecureVault {
+  store(key: string, value: string): Promise<void>;  // Encrypted at rest
+  retrieve(key: string): Promise<string>;
+  delete(key: string): Promise<void>;
+}
+
+// User saves CC once → auto-DTMF on future calls
+// Never leaves device as plaintext
+```
+
+**Implementation Timeline:**
+- **VS-1:** Agent says "One moment..." + Passthrough mode for sensitive info (simplest)
+- **VS-2:** DTMF support via Retell API (automates payment flows)
+- **VS-3:** Encrypted vault for saved payment methods (repeat callers)
+
+**Rationale:**
+- DTMF is PCI-DSS standard — not a workaround, it's the *correct* method
+- Passthrough mode has zero implementation cost (already planned in audio routing)
+- CC digits never enter our system under any path
+- Retell supports DTMF injection via their API
+- Device keychain provides OS-level encryption for saved data
+
+**Consequences:**
+- UI needs "Secure Input" modal for DTMF entry (VS-2)
+- Agent system prompt must detect sensitive info requests and trigger appropriate mode
+- Transcript will show "[SECURE INPUT - DTMF]" placeholder, not actual digits
+- Need to verify Retell's DTMF API capabilities during VS-1 integration

@@ -320,6 +320,10 @@ CRITICAL RULES:
 - Follow director instructions in [DIRECTOR INSTRUCTION: ...] messages
 - Transform director instructions into natural speech that fits the conversation
 - NEVER mention the director instructions directly to the business
+${session.targetLanguage && session.targetLanguage !== 'en'
+  ? `- ALWAYS speak to the business in ${session.targetLanguageName}. Director instructions may be in a different language — translate and respond naturally in ${session.targetLanguageName}.`
+  : ''
+}
 
 Current mode: ${session.personaMode}
 ${session.personaMode === 'transparent'

@@ -30,7 +30,7 @@ Reference format: `See D-003-ARC` or `Blocked by B-012-LTO`. AIs should use full
 
 | ID | Focus | Status | Documents |
 |:---|:------|:-------|:----------|
-| **VS-000-SKE** | **The Walking Skeleton** | 🔄 In Progress | [→ spec](slices/vs0_skeleton.md) |
+| **VS-000-SKE** | **The Walking Skeleton** | ✅ Complete | [→ spec](slices/vs0_skeleton.md) |
 | **VS-001-WOZ** | **Wizard of Oz Prototype** | ⬚ Planned | [→ spec](slices/vs1_wizard.md) • [→ design](slices/vs1_design.md) |
 | **VS-002-MVP** | **Mobile Native Apps** | ⬚ Planned | [→ spec](slices/vs2_mobile.md) |
 | **VS-003-POL** | **Smart Cost & Polish** | ⬚ Planned | [→ spec](slices/vs3_polish.md) |
@@ -42,7 +42,7 @@ Reference format: `See D-003-ARC` or `Blocked by B-012-LTO`. AIs should use full
 > This section tracks the current slice being worked on. When a slice completes,
 > collapse it to status-only in the index above and move to the next one.
 
-### VS-000-SKE: The Walking Skeleton 🔄
+### VS-000-SKE: The Walking Skeleton ✅
 
 _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and requirements._
 
@@ -51,12 +51,12 @@ _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and req
 **Done when:**
 - [x] Monorepo builds without errors
 - [x] API server starts and health check responds (verified 2026-02-16)
-- [ ] Mobile app launches in Expo
-- [ ] WebSocket connection established between mobile and API
+- [x] WebSocket connection established and message exchange verified (wscat, 2026-02-16)
 - [x] At least one test passes in shared and API packages (8/8)
 - [x] Development workflow documented
+- _Deferred:_ Mobile app E2E via Expo Go — Hermes engine incompatible with web; core WebSocket proven via direct testing. Mobile UI testing will happen organically in VS-1.
 
-**Blocking decisions:** None — defer Retell AI and OpenAI integration to VS-1.
+**Blocking decisions:** None — all resolved.
 
 ---
 
@@ -77,7 +77,9 @@ _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and req
 
 **Critical Discovery:** Retell AI "Custom LLM" mode is **text-only**. All audio processing (ASR/TTS) happens within Retell. We receive text transcripts and send text responses.
 
-**Success:** User makes real business call, whispers text instructions mid-conversation (business doesn't hear), agent follows instruction naturally within 2 seconds.
+**Multi-language (first-class):** User whispers in their language, agent speaks to business in the selected target language. Language selector is a primary UI element, not buried in settings. LLM handles translation as part of whisper transformation — single pass, no extra latency.
+
+**Success:** User makes real business call, whispers text instructions mid-conversation (business doesn't hear), agent follows instruction naturally within 2 seconds. Optionally: whisper in English, agent responds to business in Spanish.
 
 **Documentation:**
 - [vs1_wizard.md](slices/vs1_wizard.md) — Feature tracking, phases, and test scenarios
@@ -115,7 +117,7 @@ _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and req
 - Call history with search and filtering (Supabase PostgreSQL + RLS)
 - Contacts integration (save businesses with context notes)
 - Smart cost optimization (auto-switch between "Parrot" ~$0.01/min and "Negotiator" ~$0.08/min)
-- Multi-language support (Spanish, French, Mandarin, Japanese)
+- Multi-language enhancements (language-specific phrase caching, accent/dialect preferences — core multi-language moved to VS-1)
 - Cost analytics dashboard (total spend, breakdown by tier, top contacts)
 - Settings & preferences (default persona, language, cost tier)
 

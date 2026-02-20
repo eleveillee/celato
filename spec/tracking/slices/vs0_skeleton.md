@@ -94,12 +94,12 @@ React Native (Expo) app that displays Celato title and connects to API.
 - [x] Basic API server (Fastify + WebSocket)
 - [x] Mobile app shell (Expo + React Native)
 - [x] Shared types package
-- [ ] Client-server WebSocket connection
-- [ ] Smoke tests for API health check and WebSocket
+- [x] Client-server WebSocket connection — verified via wscat 2026-02-16
+- [x] Smoke tests for API health check and WebSocket — 8/8 tests passing
 
 ### What's Out of Scope (Defer to Later Slices)
 - Retell AI integration (VS-1)
-- OpenAI Realtime API (VS-1)
+- OpenAI API / LLM integration (VS-1)
 - Audio handling and routing (VS-1)
 - Whisper button and controls (VS-1)
 - Call transcripts and logging (VS-2)
@@ -163,13 +163,13 @@ celato/
 
 Complete this checklist before moving to VS-001:
 
-- [ ] All features in VS-000-SKE are ✅ or explicitly deferred with rationale
-- [ ] The walking skeleton runs without errors
-- [ ] At least one smoke test passes
-- [ ] Success criteria above are all checked
-- [ ] Blocking decisions resolved (see above)
-- [ ] Update `spec/tracking/milestone.md` index to mark VS-000-SKE complete
-- [ ] Plan and document VS-001 focus (with 3-letter tag) before starting work
+- [x] All features in VS-000-SKE are ✅ or explicitly deferred with rationale
+- [x] The walking skeleton runs without errors
+- [x] At least one smoke test passes (8/8)
+- [x] Success criteria above are all checked
+- [x] Blocking decisions resolved (see above)
+- [x] Update `spec/tracking/milestone.md` index to mark VS-000-SKE complete
+- [x] Plan and document VS-001 focus (VS-001-WOZ: Wizard of Oz Prototype)
 
 ---
 

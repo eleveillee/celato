@@ -14,6 +14,8 @@ When an item gets promoted to a milestone, move it there and create a feature sp
 | BL-003-VOI | 🟡 Medium | Voice Clone | Let user train the agent to sound like them for more natural conversations | 2026-02-12 |
 | BL-004-CTX | 🟡 Medium | Context Library | Pre-built conversation templates (Doctor Visit, Job Interview, Tech Support, etc.) | 2026-02-12 |
 | BL-015-SPG | 🟢 Low | Speculative Response Generation | Pre-generate 2-3 likely responses in parallel while agent speaking. Use if conversation goes that direction (near-zero latency). Trade-off: 2-3x LLM cost, ~40-60% hit rate for simple confirmations. Best for Negotiator mode. | 2026-02-16 |
+| BL-018-SAF | 🟡 Medium | Fast Content Filter for Agent Output | Add ~50ms content filter to catch obvious violations (profanity, threats, PII leaks) before agent speech is sent to business. Catches LLM hallucinations in proxy mode. Add legal disclaimer in app TOS. | 2026-02-20 |
+| BL-020-GDP | 🟡 Medium | GDPR Compliance | Data export, right-to-deletion, consent management for EU users. Use Supabase EU region. Required before EU launch. | 2026-02-20 |
 
 _Example IDs: BL-008-DRK (Dark mode), BL-015-SPG (SPeculative Generation)_
 

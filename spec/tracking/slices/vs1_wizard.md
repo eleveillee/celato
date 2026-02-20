@@ -40,6 +40,7 @@ VS-001 is DONE when:
 | 11 | Call completes gracefully | "Hang up" button → call ends, transcript saved locally |
 | 12 | Transcript exportable | "Copy" button → full conversation in clipboard |
 | 13 | Platform abstraction interfaces defined | All 6 interfaces defined with TypeScript types, web implementations working |
+| 14 | Multi-language whisper translation works | Select Spanish → whisper in English → agent speaks Spanish to business |
 
 **Test scenario:**
 ```
@@ -156,6 +157,8 @@ Connect to Retell Custom LLM WebSocket for phone call management (text-only prot
 
 **Critical:** Retell AI is TEXT-ONLY. No audio routing. Business speech → text transcript → LLM → text response → TTS.
 
+**DTMF support:** Retell `digit_to_press` field in WebSocket responses sends DTMF tones into the call (for secure CC entry per D-021-CLR). **Caveat:** Retell docs don't explicitly state whether `digit_to_press` values appear in their transcript/dashboard logs. Needs verification during integration — test with a real call or contact Retell support.
+
 **See:**
 - [vs1_design.md § Retell WebSocket](vs1_design.md#retell-websocket-integration) for protocol implementation
 - [spec/integrations/retell-ai.md](../../integrations/retell-ai.md) for full protocol reference
@@ -164,7 +167,9 @@ Connect to Retell Custom LLM WebSocket for phone call management (text-only prot
 
 Core feature: inject hidden instructions mid-conversation without business hearing.
 
-**How it works:** User whisper → stored in conversation context → LLM transforms → natural agent speech → business hears only output.
+**How it works:** User whisper → stored in conversation context → LLM transforms → natural agent speech in target language → business hears only output.
+
+**Multi-language (first-class):** User whispers in their preferred language (e.g., English). Agent speaks to business in the call's target language (e.g., Spanish, Mandarin). The LLM translates as part of the whisper transformation — no separate translation step. This is a core whisper capability, not an add-on.
 
 **See:** [vs1_design.md § Whisper Loop](vs1_design.md#whisper-loop-implementation) for 13-step detailed flow.
 
@@ -174,6 +179,8 @@ GPT-4o-mini text-based chat completion for agent intelligence.
 
 **Cost:** ~$0.0002/min (vs GPT-4o audio $0.20/min). Latency: 200-400ms.
 
+**Multi-language support:** System prompt includes target language for agent output. LLM natively translates whisper instructions into the target language as part of response generation. No separate translation API call — single LLM pass handles context + instruction + language in one shot. Supported from VS-1 via language selector in pre-call UI.
+
 **See:** [vs1_design.md § LLM Integration](vs1_design.md#llm-integration) for prompt engineering and token tracking.
 
 ### F-004-WEB: Next.js Web Interface ⬚
@@ -181,6 +188,12 @@ GPT-4o-mini text-based chat completion for agent intelligence.
 Web UI for call control, whisper input, transcript display, cost tracking.
 
 **Tech:** Next.js 14 (App Router), TypeScript, Tailwind CSS, WebSocket client.
+
+**Pre-call UI includes:**
+- Phone number input (E.164)
+- Call purpose / context (text area)
+- Persona mode selector (Transparent / Proxy)
+- **Language selector** — target language for agent speech (English default, Spanish, French, Mandarin, Japanese, etc.). First-class UI element, not buried in settings.
 
 **See:** [vs1_design.md § Web UI](vs1_design.md#web-ui-implementation) for component breakdown.
 

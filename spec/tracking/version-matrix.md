@@ -32,6 +32,18 @@ _No upgrades planned yet. All dependencies are on latest stable versions._
 
 _Example IDs: UP-001-R19 (React 19 upgrade), UP-005-N22 (Node 22 migration)_
 
+## Third-Party Service Costs
+
+| Service | Usage | Cost | VS | Notes |
+|---------|-------|------|-----|-------|
+| Retell AI | Phone calls (outbound) | ~$0.07-0.12/min | VS-1 | Custom LLM mode; includes ASR + TTS |
+| OpenAI GPT-4o-mini | Whisper transformation | ~$0.15/1M input, $0.60/1M output | VS-1 | ~$0.0002/whisper |
+| Deepgram | Audio whisper transcription | ~$0.0043/min | VS-2 | Mobile audio → text; not needed for VS-1 (text whispers) |
+| Railway | API orchestrator hosting | ~$5-20/mo (usage-based) | VS-1 | Persistent WebSocket support; check connection limits |
+| Vercel | Next.js web hosting | Free tier (hobby) | VS-1 | Static/serverless; no WebSocket support |
+| Supabase | PostgreSQL + Auth | Free tier (50K MAU) | VS-3 | User data, call logs, transcripts |
+| EAS Build | Expo native builds | Free (2 builds/day), $29/mo (priority) | VS-2 | Required for iOS/Android binary builds |
+
 ## Compatibility Notes
 
 > Document known version conflicts, peer dependency issues, or migration gotchas here.

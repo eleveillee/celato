@@ -71,7 +71,7 @@ Instead of a simple "Mic on/off" interface, the user sees a **Live Conversation 
 *   **Mobile App:** React Native (Expo) - VoIP dialer and Director UI
 *   **Backend:** Node.js + Fastify - audio routing orchestrator
 *   **Telephony:** Retell AI - handles VAD, interruption, turn-taking
-*   **Intelligence:** OpenAI Realtime API (GPT-4o) - audio-to-audio agent
+*   **Intelligence:** OpenAI API (GPT-4o-mini) - text-based LLM (Retell handles ASR/TTS)
 *   **Database:** Supabase (PostgreSQL) - call logs, transcripts, user data
 *   **Logic:**
     *   System prompt separates "User Intent" from "Translation Output"

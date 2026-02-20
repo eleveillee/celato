@@ -60,6 +60,56 @@ Description of what this endpoint does.
 
 ---
 
+## Error Codes
+
+All error responses use the standard shape. These codes are shared across REST and WebSocket.
+
+### Client Errors (4xx)
+
+| Code | HTTP Status | When | Example |
+|------|-------------|------|---------|
+| `VALIDATION_ERROR` | 400 | Request body/params fail schema validation | Missing required field, wrong type |
+| `INVALID_PHONE_NUMBER` | 400 | Phone number not in E.164 format | "+1555" (too short) |
+| `INVALID_PERSONA_MODE` | 400 | Unknown persona mode | "stealth" (not transparent/proxy) |
+| `UNAUTHORIZED` | 401 | Missing or invalid auth token | Expired JWT, malformed token |
+| `FORBIDDEN` | 403 | Valid auth but insufficient permissions | Free tier accessing paid feature |
+| `NOT_FOUND` | 404 | Resource doesn't exist | Unknown call_id, unknown user |
+| `RATE_LIMIT_EXCEEDED` | 429 | Too many requests or calls | Free tier: >10 calls/day (D-019-ABS) |
+
+### Call State Errors
+
+| Code | When | Recovery |
+|------|------|----------|
+| `CALL_NOT_ACTIVE` | Whisper sent but call not in 'active' state | Wait for call to connect |
+| `CALL_ALREADY_ENDED` | Action on ended call | Start new call |
+| `CALL_CONNECT_FAILED` | Retell couldn't connect to phone number | Check number, retry |
+| `CALL_DURATION_EXCEEDED` | Call hit max duration limit | Call ends gracefully |
+
+### Integration Errors (5xx)
+
+| Code | HTTP Status | When | Recovery |
+|------|-------------|------|----------|
+| `RETELL_ERROR` | 502 | Retell API failure | Auto-retry (D-005-ERR) |
+| `LLM_ERROR` | 502 | OpenAI API failure | Fallback response "One moment..." |
+| `LLM_TIMEOUT` | 504 | LLM response >5s | Send fallback, retry |
+| `TRANSCRIPTION_ERROR` | 502 | Deepgram failure (VS-2) | Queue whisper, retry |
+| `INTERNAL_ERROR` | 500 | Unexpected server error | Log + alert, generic error to client |
+
+### WebSocket Error Messages
+
+```typescript
+// Server → Client error message
+{
+  type: "error",
+  code: string,       // Error code from tables above
+  message: string,    // Human-readable description
+  retryable: boolean, // Client should retry?
+  timestamp: number
+}
+```
+
+---
+
 ## Endpoints
 
 ### Health Check
@@ -236,6 +286,10 @@ _Will be defined in later vertical slices:_
 ---
 
 ## Third-Party Integrations
+
+> **CRITICAL:** Retell AI's "Custom LLM" mode is **TEXT-ONLY**. All audio processing
+> (ASR/TTS/VAD) happens within Retell's platform. Our orchestrator receives text
+> transcripts and sends text responses. We never handle raw audio.
 
 ### Retell AI Custom LLM WebSocket
 

@@ -12,7 +12,7 @@ A real-time collaborative voice agent for phone calls - the "Bionic Director" th
 | **API Orchestrator** | Node.js 22 + Fastify | Audio routing, session management, LLM context injection |
 | **Shared** | TypeScript types | API contracts, shared utilities |
 | **Telephony** | Retell AI | Phone calls, VAD, turn-taking |
-| **Intelligence** | OpenAI Realtime API (GPT-4o) | Voice agent brain (audio-to-audio) |
+| **Intelligence** | OpenAI API (GPT-4o-mini) | Voice agent brain (text-based LLM via Retell Custom LLM) |
 | **Database** | Supabase (PostgreSQL) | User data, call logs, prompts |
 | **Testing** | Vitest + Playwright | Unit + E2E testing |
 | **Linting** | Biome | Fast linting + formatting |
@@ -79,7 +79,8 @@ Celato progresses through **Vertical Slices (VS)** — complete, verifiable incr
 | Check dependency versions | @spec/tracking/version-matrix.md |
 | Track code quality debt | @spec/tracking/tech-debt.md |
 | Browse future ideas | @spec/tracking/backlog.md |
-| Check feature health & verification status | @spec/tracking/qa.md |
+| Understand database tables | @spec/database-schema.md |
+| Check legal/TOS requirements | @spec/legal/terms-of-service.md |
 
 ## ID Conventions
 All tracking items use **3-letter mnemonic tags**: `[Type]-[Number]-[TAG]`. Examples: `VS-000-SKE` (Skeleton), `F-012-INV` (Inventory), `D-005-ARC` (Architecture), `B-003-LTO` (Login TimeOut). See `milestone.md` and `workflow.md` for full reference and tag conventions.
@@ -88,7 +89,7 @@ All tracking items use **3-letter mnemonic tags**: `[Type]-[Number]-[TAG]`. Exam
 - Product vision docs in `spec/celato/` are READ-ONLY reference material. Don't edit unless the product direction changes.
 - Audio routing logic is critical - latency must stay under 1-2 seconds for whisper → agent → business loop.
 - Cost optimization is a first-class concern. Document cost implications when adding LLM calls.
-- Legal compliance: all agent interactions must announce AI identity at call start.
+- Legal compliance: transparent mode must announce AI identity at call start (see D-006-PER for persona modes).
 
 ## Session Start (Every Session)
 AI agents should do this at the start of every conversation:
