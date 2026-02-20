@@ -10,18 +10,22 @@ Update when adding, upgrading, or removing dependencies.
 | Dependency | Current | Target | Notes |
 |------------|---------|--------|-------|
 | Node.js | 22.0.0 | 22.x LTS | Native TypeScript support |
-| TypeScript | 5.8.3 | 5.8.x | erasableSyntaxOnly for Node type stripping |
+| TypeScript | 5.9.3 | 5.9.x | erasableSyntaxOnly for Node type stripping |
 | React Native | 0.76.6 | 0.76.x | Expo SDK 52 compatible |
-| Fastify | 5.2.0 | 5.x | Low overhead for WebSocket |
+| Fastify | 5.7.4 | 5.x | Low overhead for WebSocket |
 | Expo | 52.0.29 | 52.x | Latest stable |
+| Zod | 4.3.6 | 4.x | Schema validation (import from `zod/v4`) |
+| OpenAI SDK | 6.22.0 | 6.x | LLM integration |
+| Pino | 10.3.1 | 10.x | Structured logging |
 
 ## Dev Dependencies
 
 | Dependency | Current | Target | Notes |
 |------------|---------|--------|-------|
-| Biome | 2.0.0 | 2.x | Fast linting + formatting |
-| Vitest | 3.0.0 | 3.x | Native TS test runner |
+| Biome | 2.4.3 | 2.x | Fast linting + formatting |
+| Vitest | 4.0.18 | 4.x | Native TS test runner |
 | pnpm | 9.15.4 | 9.x | Monorepo package manager |
+| tsx | 4.21.0 | 4.x | Dev server (watch mode) |
 
 ## Upgrade Plan
 

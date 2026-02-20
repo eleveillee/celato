@@ -1,45 +1,49 @@
-import Fastify from "fastify";
-import websocket from "@fastify/websocket";
-import { pino } from "pino";
-import { AckMessageSchema, type AckMessage } from "@celato/shared";
+/**
+ * Celato API Orchestrator — Entry Point
+ *
+ * Registers routes, WebSocket handlers, and wires LLM provider.
+ * Retell integration is only enabled when OPENAI_API_KEY is set.
+ */
 
-const logger = pino({
-  level: process.env["LOG_LEVEL"] ?? "info",
-});
+import cors from "@fastify/cors";
+import websocket from "@fastify/websocket";
+import Fastify from "fastify";
+import { pino } from "pino";
+import { loadConfig } from "./config.js";
+import { healthRoutes } from "./routes/health.js";
+import { retellWsRoutes } from "./routes/retell-ws.js";
+import { userWsRoutes } from "./routes/user-ws.js";
+import { OpenAIProvider } from "./services/llm-service.js";
+
+const config = loadConfig();
+const logger = pino({ level: config.LOG_LEVEL });
 
 const server = Fastify({
-  logger: {
-    level: process.env["LOG_LEVEL"] ?? "info",
-  },
+  logger: { level: config.LOG_LEVEL },
 });
 
+await server.register(cors, {
+  origin: config.ALLOWED_ORIGINS.split(","),
+  credentials: true,
+});
 await server.register(websocket);
 
-server.get("/health", async () => {
-  return { status: "ok", service: "celato-api", version: "0.1.0" };
-});
+await server.register(healthRoutes);
+await server.register(userWsRoutes);
 
-server.get("/ws", { websocket: true }, (socket) => {
-	socket.on("message", (message) => {
-		logger.info({ message: message.toString() }, "Received WebSocket message");
+if (config.OPENAI_API_KEY) {
+  const llmProvider = new OpenAIProvider(config.OPENAI_API_KEY);
+  await server.register((instance) => retellWsRoutes(instance, llmProvider));
+  logger.info("Retell LLM WebSocket route registered");
+} else {
+  logger.warn("OPENAI_API_KEY not set — Retell integration disabled");
+}
 
-		// Create and validate ack response
-		const ackMessage: AckMessage = {
-			type: "ack",
-			timestamp: Date.now(),
-		};
-
-		// Validate before sending (catches type errors at runtime)
-		const validated = AckMessageSchema.parse(ackMessage);
-		socket.send(JSON.stringify(validated));
-	});
-});
-
-const port = Number(process.env["API_PORT"]) || 4000;
+const port = config.API_PORT;
 
 try {
   await server.listen({ port, host: "0.0.0.0" });
-  logger.info(`🚀 Celato API listening on http://localhost:${port}`);
+  logger.info(`Celato API listening on http://localhost:${port}`);
 } catch (err) {
   logger.error(err);
   process.exit(1);

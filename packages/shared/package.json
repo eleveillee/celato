@@ -12,6 +12,10 @@
     "./types": {
       "types": "./src/types/index.ts",
       "default": "./src/types/index.ts"
+    },
+    "./interfaces": {
+      "types": "./src/interfaces/index.ts",
+      "default": "./src/interfaces/index.ts"
     }
   },
   "scripts": {
@@ -20,9 +24,9 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "zod": "^3.24.1"
+    "zod": "^4.3.6"
   }
 }

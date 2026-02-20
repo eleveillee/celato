@@ -1,6 +1,6 @@
 # VS-001-WOZ: Wizard of Oz Prototype
 
-## Status: ⬚ Not Started
+## Status: 🔄 In Progress
 
 ## Philosophy
 
@@ -73,7 +73,7 @@ VS-001 is DONE when:
 
 VS-1 is organized into 3 sequential phases. Each phase builds on the previous one and has clear success criteria.
 
-### Phase 1: Core Validation ⬚ [0/4 features]
+### Phase 1: Core Validation ✅ [4/4 features]
 
 **Goal:** Prove the whisper concept works with real phone calls.
 
@@ -95,7 +95,7 @@ VS-1 is organized into 3 sequential phases. Each phase builds on the previous on
 
 ---
 
-### Phase 2: Production Features 🔄 [0/4 features]
+### Phase 2: Production Features ⬚ [0/4 features]
 
 **Goal:** Build usable web UI with full feature set.
 
@@ -137,7 +137,7 @@ VS-1 is organized into 3 sequential phases. Each phase builds on the previous on
 
 ## Feature Details
 
-### F-012-ABS: Platform Abstraction Interfaces ⬚
+### F-012-ABS: Platform Abstraction Interfaces ✅
 
 Define 6 core interfaces for future platform support (mobile, AR, desktop).
 
@@ -151,7 +151,7 @@ Define 6 core interfaces for future platform support (mobile, AR, desktop).
 
 **See:** [vs1_design.md § Platform Abstraction](vs1_design.md#platform-abstraction-interfaces) for full interface definitions and rationale.
 
-### F-005-RET: Retell AI Integration ⬚
+### F-005-RET: Retell AI Integration ✅
 
 Connect to Retell Custom LLM WebSocket for phone call management (text-only protocol).
 
@@ -163,7 +163,7 @@ Connect to Retell Custom LLM WebSocket for phone call management (text-only prot
 - [vs1_design.md § Retell WebSocket](vs1_design.md#retell-websocket-integration) for protocol implementation
 - [spec/integrations/retell-ai.md](../../integrations/retell-ai.md) for full protocol reference
 
-### F-006-WSP: Whisper Instruction System ⬚
+### F-006-WSP: Whisper Instruction System ✅
 
 Core feature: inject hidden instructions mid-conversation without business hearing.
 
@@ -173,7 +173,7 @@ Core feature: inject hidden instructions mid-conversation without business heari
 
 **See:** [vs1_design.md § Whisper Loop](vs1_design.md#whisper-loop-implementation) for 13-step detailed flow.
 
-### F-010-LLM: LLM Integration ⬚
+### F-010-LLM: LLM Integration ✅
 
 GPT-4o-mini text-based chat completion for agent intelligence.
 

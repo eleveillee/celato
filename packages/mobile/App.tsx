@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { useWebSocket } from "./src/hooks/useWebSocket";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ErrorBoundary } from "./src/components/ErrorBoundary";
+import { useWebSocket } from "./src/hooks/useWebSocket";
 
 // WebSocket URL configuration
 // For iOS Simulator:      ws://localhost:4000/ws
@@ -11,7 +11,7 @@ import { ErrorBoundary } from "./src/components/ErrorBoundary";
 const WS_URL = "ws://localhost:4000/ws";
 
 function AppContent() {
-	const { status, send, lastMessage, reconnect } = useWebSocket(WS_URL);
+  const { status, send, lastMessage, reconnect } = useWebSocket(WS_URL);
 
   const getStatusColor = () => {
     switch (status) {
@@ -40,17 +40,17 @@ function AppContent() {
         <Text style={styles.statusText}>{status}</Text>
       </View>
 
-			{status === "connected" && (
-				<TouchableOpacity style={styles.button} onPress={handleSendTest}>
-					<Text style={styles.buttonText}>Send Test Message</Text>
-				</TouchableOpacity>
-			)}
+      {status === "connected" && (
+        <TouchableOpacity style={styles.button} onPress={handleSendTest}>
+          <Text style={styles.buttonText}>Send Test Message</Text>
+        </TouchableOpacity>
+      )}
 
-			{(status === "error" || status === "disconnected") && (
-				<TouchableOpacity style={styles.retryButton} onPress={reconnect}>
-					<Text style={styles.buttonText}>Retry Connection</Text>
-				</TouchableOpacity>
-			)}
+      {(status === "error" || status === "disconnected") && (
+        <TouchableOpacity style={styles.retryButton} onPress={reconnect}>
+          <Text style={styles.buttonText}>Retry Connection</Text>
+        </TouchableOpacity>
+      )}
 
       {lastMessage && (
         <View style={styles.messageContainer}>
@@ -59,17 +59,17 @@ function AppContent() {
         </View>
       )}
 
-			<StatusBar style="auto" />
-		</View>
-	);
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
 export default function App() {
-	return (
-		<ErrorBoundary>
-			<AppContent />
-		</ErrorBoundary>
-	);
+  return (
+    <ErrorBoundary>
+      <AppContent />
+    </ErrorBoundary>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -106,20 +106,20 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textTransform: "capitalize",
   },
-	button: {
-		backgroundColor: "#3b82f6",
-		paddingHorizontal: 24,
-		paddingVertical: 12,
-		borderRadius: 8,
-		marginBottom: 24,
-	},
-	retryButton: {
-		backgroundColor: "#f59e0b",
-		paddingHorizontal: 24,
-		paddingVertical: 12,
-		borderRadius: 8,
-		marginBottom: 24,
-	},
+  button: {
+    backgroundColor: "#3b82f6",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginBottom: 24,
+  },
+  retryButton: {
+    backgroundColor: "#f59e0b",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginBottom: 24,
+  },
   buttonText: {
     color: "#fff",
     fontSize: 16,

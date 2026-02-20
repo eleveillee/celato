@@ -262,6 +262,7 @@ Call state change notification.
 {
   type: "state_update",
   state: "idle" | "connecting" | "active" | "holding" | "ended",
+  sessionId?: string,  // Present on "connecting" (call start)
   timestamp: number
 }
 ```

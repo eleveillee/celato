@@ -31,7 +31,7 @@ Reference format: `See D-003-ARC` or `Blocked by B-012-LTO`. AIs should use full
 | ID | Focus | Status | Documents |
 |:---|:------|:-------|:----------|
 | **VS-000-SKE** | **The Walking Skeleton** | ✅ Complete | [→ spec](slices/vs0_skeleton.md) |
-| **VS-001-WOZ** | **Wizard of Oz Prototype** | ⬚ Planned | [→ spec](slices/vs1_wizard.md) • [→ design](slices/vs1_design.md) |
+| **VS-001-WOZ** | **Wizard of Oz Prototype** | 🔄 Phase 1 Complete | [→ spec](slices/vs1_wizard.md) • [→ design](slices/vs1_design.md) |
 | **VS-002-MVP** | **Mobile Native Apps** | ⬚ Planned | [→ spec](slices/vs2_mobile.md) |
 | **VS-003-POL** | **Smart Cost & Polish** | ⬚ Planned | [→ spec](slices/vs3_polish.md) |
 
@@ -55,6 +55,34 @@ _See [slices/vs0_skeleton.md](slices/vs0_skeleton.md) for detailed tasks and req
 - [x] At least one test passes in shared and API packages (8/8)
 - [x] Development workflow documented
 - _Deferred:_ Mobile app E2E via Expo Go — Hermes engine incompatible with web; core WebSocket proven via direct testing. Mobile UI testing will happen organically in VS-1.
+
+**Blocking decisions:** None — all resolved.
+
+---
+
+### VS-001-WOZ: Wizard of Oz Prototype 🔄
+
+_See [slices/vs1_wizard.md](slices/vs1_wizard.md) for detailed tasks and requirements._
+
+**Goal:** Validate "whisper" interaction via web interface. User makes real business call, whispers text instructions mid-conversation, agent follows naturally within 2 seconds.
+
+**Phase 1: Core Validation ✅ (2026-02-20)**
+- [x] F-012-ABS: Platform abstraction interfaces defined (6 interfaces + 2 providers)
+- [x] F-005-RET: Retell Custom LLM WebSocket handler implemented
+- [x] F-006-WSP: Whisper instruction system + session management
+- [x] F-010-LLM: OpenAI GPT-4o-mini provider + prompt builder
+- [x] 76 tests passing across 7 test files
+- [x] E.164 phone validation, input length limits, schema consistency
+
+**Phase 2: Production Features ⬚**
+- [ ] F-004-WEB: Next.js web UI (call control, whisper input, transcript display)
+- [ ] F-007-PER: Persona toggle (Transparent/Proxy) in UI
+- [ ] F-008-CST: Real-time cost display
+- [ ] F-009-TRS: Transcript management + clipboard export
+
+**Phase 3: Polish & Deploy ⬚**
+- [ ] F-011-ERR: Error handling (auto-reconnect, LLM timeouts)
+- [ ] Production deployment (Railway + Vercel)
 
 **Blocking decisions:** None — all resolved.
 

@@ -1,94 +1,105 @@
 /**
- * Zod schemas for WebSocket message validation
+ * Zod schemas for WebSocket message validation.
+ * VS-1: Text-based whispers, start/end call, cost/transcript/state updates.
  */
 
-import { z } from "zod";
+import { z } from "zod/v4";
 
 // ============================================================================
-// VS-0: Current Implementation
+// Client → Server Messages
 // ============================================================================
 
-/**
- * Acknowledgment response sent by server after receiving a message
- */
-export const AckMessageSchema = z.object({
-	type: z.literal("ack"),
-	timestamp: z.number(),
-});
-
-export type AckMessage = z.infer<typeof AckMessageSchema>;
-
-// ============================================================================
-// Future Message Types (VS-1+)
-// ============================================================================
-
-/**
- * Whisper message sent by client (audio instruction to agent)
- */
 export const WhisperMessageSchema = z.object({
-	type: z.literal("whisper"),
-	audioData: z.instanceof(ArrayBuffer),
-	timestamp: z.number(),
+  type: z.literal("whisper"),
+  text: z.string().min(1).max(500),
+  timestamp: z.number(),
 });
+export type WhisperSchemaMessage = z.infer<typeof WhisperMessageSchema>;
 
-// Type is already exported from types/index.ts
-// Use: import type { WhisperMessage } from "@celato/shared"
+export const StartCallMessageSchema = z.object({
+  type: z.literal("start_call"),
+  phoneNumber: z.string().regex(/^\+[1-9]\d{1,14}$/, "Phone number must be in E.164 format"),
+  personaMode: z.enum(["transparent", "proxy"]),
+  targetLanguage: z.string().default("en"),
+  purpose: z.string().max(500).optional(),
+  userNotes: z.string().max(1000).optional(),
+  timestamp: z.number(),
+});
+export type StartCallMessage = z.infer<typeof StartCallMessageSchema>;
 
-/**
- * Mode change request from client
- */
+export const EndCallMessageSchema = z.object({
+  type: z.literal("end_call"),
+  timestamp: z.number(),
+});
+export type EndCallMessage = z.infer<typeof EndCallMessageSchema>;
+
 export const ModeChangeMessageSchema = z.object({
-	type: z.literal("mode_change"),
-	mode: z.enum(["standard", "whisper", "passthrough"]),
+  type: z.literal("mode_change"),
+  mode: z.enum(["standard", "whisper", "passthrough"]),
 });
-
 export type ModeChangeMessage = z.infer<typeof ModeChangeMessageSchema>;
 
-/**
- * Transcript message sent by server
- */
-export const TranscriptMessageSchema = z.object({
-	type: z.literal("transcript"),
-	speaker: z.enum(["business", "agent"]),
-	text: z.string(),
-	translatedText: z.string().optional(),
-	timestamp: z.number(),
-});
+export const ClientMessageSchema = z.discriminatedUnion("type", [
+  WhisperMessageSchema,
+  StartCallMessageSchema,
+  EndCallMessageSchema,
+  ModeChangeMessageSchema,
+]);
+export type ClientMessage = z.infer<typeof ClientMessageSchema>;
 
+// ============================================================================
+// Server → Client Messages
+// ============================================================================
+
+export const AckMessageSchema = z.object({
+  type: z.literal("ack"),
+  timestamp: z.number(),
+});
+export type AckMessage = z.infer<typeof AckMessageSchema>;
+
+export const TranscriptMessageSchema = z.object({
+  type: z.literal("transcript"),
+  speaker: z.enum(["business", "agent", "whisper", "system"]),
+  text: z.string(),
+  isHidden: z.boolean().default(false),
+  timestamp: z.number(),
+});
 export type TranscriptMessage = z.infer<typeof TranscriptMessageSchema>;
 
-/**
- * State update message sent by server
- */
 export const StateUpdateMessageSchema = z.object({
-	type: z.literal("state_update"),
-	state: z.enum(["idle", "connecting", "active", "holding", "ended"]),
-	timestamp: z.number(),
+  type: z.literal("state_update"),
+  state: z.enum(["idle", "connecting", "active", "holding", "ended"]),
+  sessionId: z.string().optional(),
+  timestamp: z.number(),
 });
-
 export type StateUpdateMessage = z.infer<typeof StateUpdateMessageSchema>;
 
-// ============================================================================
-// Union Types
-// ============================================================================
+export const CostUpdateMessageSchema = z.object({
+  type: z.literal("cost_update"),
+  totalCost: z.number(),
+  breakdown: z.object({
+    retell: z.number(),
+    llm: z.number(),
+    transcription: z.number().optional(),
+  }),
+  timestamp: z.number(),
+});
+export type CostUpdateMessage = z.infer<typeof CostUpdateMessageSchema>;
 
-/**
- * All possible server → client messages
- */
+export const ErrorMessageSchema = z.object({
+  type: z.literal("error"),
+  code: z.string(),
+  message: z.string(),
+  retryable: z.boolean(),
+  timestamp: z.number(),
+});
+export type ErrorMessage = z.infer<typeof ErrorMessageSchema>;
+
 export const ServerMessageSchema = z.discriminatedUnion("type", [
-	AckMessageSchema,
-	TranscriptMessageSchema,
-	StateUpdateMessageSchema,
+  AckMessageSchema,
+  TranscriptMessageSchema,
+  StateUpdateMessageSchema,
+  CostUpdateMessageSchema,
+  ErrorMessageSchema,
 ]);
-
 export type ServerMessage = z.infer<typeof ServerMessageSchema>;
-
-/**
- * All possible client → server messages
- */
-export const ClientMessageSchema = z.discriminatedUnion("type", [
-	WhisperMessageSchema,
-	ModeChangeMessageSchema,
-]);
-
-export type ClientMessage = z.infer<typeof ClientMessageSchema>;

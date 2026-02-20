@@ -8,9 +8,9 @@
 
 | Feature | Verified Date | Success Condition / Proof |
 |---------|---------------|---------------------------|
-| Monorepo Setup | 2026-02-12 | pnpm install completes, all packages build without errors, 8 tests passing |
-| TypeScript Compilation | 2026-02-12 | All packages (shared, api) build with strict mode, no errors |
-| Test Suite | 2026-02-12 | Vitest runs successfully, 8/8 tests pass (6 in shared, 2 in API) |
+| Monorepo Setup | 2026-02-12 | pnpm install completes, all packages build without errors |
+| TypeScript Compilation | 2026-02-20 | All 4 packages (shared, api, web, mobile) build with strict mode, no errors |
+| Test Suite | 2026-02-20 | Vitest runs successfully, 76/76 tests pass across 7 test files (shared: 33, api: 43) |
 | API Health Check | 2026-02-16 | `curl localhost:4000/health` returns `{"status":"ok","service":"celato-api","version":"0.1.0"}` |
 | WebSocket Connection | 2026-02-16 | `wscat -c ws://localhost:4000/ws` connects successfully, server accepts messages |
 | Message Exchange | 2026-02-16 | Client sends "test message" → Server responds `{"type":"ack","timestamp":...}` with Zod-validated structure |
@@ -35,8 +35,15 @@
 
 | Feature | Condition | Context |
 |---------|-----------|---------|
-| Mobile App Launch | Scan Expo QR code, verify app displays without errors | Code complete, Expo web has Metro bundler issue (Hermes on web), native testing deferred to VS-1 |
-| Mobile E2E WebSocket | Full mobile → API WebSocket flow via Expo Go | Core WebSocket verified via wscat; mobile UI testing optional for VS-0 |
+| Mobile App Launch | Scan Expo QR code, verify app displays without errors | Code complete, Expo web has Metro bundler issue (Hermes on web), native testing deferred to VS-2 |
+| Mobile E2E WebSocket | Full mobile → API WebSocket flow via Expo Go | Core WebSocket verified via wscat; mobile UI testing deferred to VS-2 |
+| Retell Custom LLM Integration | Start API with OPENAI_API_KEY set, Retell connects to `/llm-websocket/:call_id`, sends `call_details` → session activates, sends `response_required` → LLM responds with agent speech | Code complete, 9 unit tests passing. Needs real Retell call for E2E verification |
+| Whisper System | Send `start_call` via `/ws`, then `whisper` message → whisper stored in session context as `[DIRECTOR INSTRUCTION: ...]`, cleared after next LLM response | Code complete, 12 session manager tests + 9 retell handler tests passing. Needs real call to verify end-to-end |
+| Prompt Builder | System prompt includes persona mode (transparent/proxy), target language, purpose, user notes. Context windowed to last 10 turns. | 12 unit tests passing covering all prompt variations |
+| Cost Tracker | Tracks Retell time ($0.08/min) + LLM tokens ($0.15/1M in, $0.60/1M out). Freezes on endCall. | 6 unit tests with fake timers passing |
+| Platform Abstraction Interfaces | 6 interfaces (Audio, Input, Notification, Storage, Network, WebSocketClient) + 2 providers (LLM, Telephony) defined in `packages/shared/interfaces/` | Type-only interfaces, compile-time verified |
+| E.164 Phone Validation | `start_call` schema rejects non-E.164 phone numbers (missing +, too short, leading 0) | 2 schema tests passing |
+| Zod v4 WebSocket Schemas | All client→server and server→client message types validated with discriminated unions | 23 schema tests passing |
 
 ---
 

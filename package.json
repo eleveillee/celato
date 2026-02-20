@@ -24,13 +24,13 @@
     "prepare": "husky || true"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.0",
+    "@biomejs/biome": "^2.4.3",
     "@types/node": "^22.10.5",
-    "@vitest/coverage-v8": "^3.0.0",
+    "@vitest/coverage-v8": "^4.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.11",
-    "typescript": "^5.8.3",
-    "vitest": "^3.0.0"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   },
   "pnpm": {
     "overrides": {}
