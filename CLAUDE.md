@@ -77,6 +77,7 @@ Celato progresses through **Vertical Slices (VS)** — complete, verifiable incr
 | Record a lesson learned | @spec/tracking/learnings.md |
 | Make or review a decision | @spec/tracking/decisions.md |
 | Check dependency versions | @spec/tracking/version-matrix.md |
+| Compare LLM providers (cost, latency, quality) | @spec/integrations/llm-providers.md |
 | Track code quality debt | @spec/tracking/tech-debt.md |
 | Browse future ideas | @spec/tracking/backlog.md |
 | Understand database tables | @spec/database-schema.md |

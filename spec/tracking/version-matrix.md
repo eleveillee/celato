@@ -37,7 +37,7 @@ _Example IDs: UP-001-R19 (React 19 upgrade), UP-005-N22 (Node 22 migration)_
 | Service | Usage | Cost | VS | Notes |
 |---------|-------|------|-----|-------|
 | Retell AI | Phone calls (outbound) | ~$0.07-0.12/min | VS-1 | Custom LLM mode; includes ASR + TTS |
-| OpenAI GPT-4o-mini | Whisper transformation | ~$0.15/1M input, $0.60/1M output | VS-1 | ~$0.0002/whisper |
+| OpenAI GPT-4o-mini | Whisper transformation | ~$0.15/1M input, $0.60/1M output | VS-1 | ~$0.00017/whisper (930 in + 50 out). See [llm-providers.md](../../integrations/llm-providers.md) for full comparison |
 | Deepgram | Audio whisper transcription | ~$0.0043/min | VS-2 | Mobile audio → text; not needed for VS-1 (text whispers) |
 | Railway | API orchestrator hosting | ~$5-20/mo (usage-based) | VS-1 | Persistent WebSocket support; check connection limits |
 | Vercel | Next.js web hosting | Free tier (hobby) | VS-1 | Static/serverless; no WebSocket support |
