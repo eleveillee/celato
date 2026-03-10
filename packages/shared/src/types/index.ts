@@ -51,7 +51,7 @@ export type ConversationMessage = WhisperMessage | AgentMessage | BusinessMessag
 export interface CallSession {
   id: string;
   retellCallId?: string | undefined;
-  phoneNumber: string;
+  phoneNumber?: string | undefined;
   state: CallState;
   audioMode: AudioMode;
   personaMode: PersonaMode;

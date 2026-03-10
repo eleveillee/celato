@@ -3,7 +3,7 @@ import type { CallSession, PersonaMode } from "@celato/shared";
 import { SUPPORTED_LANGUAGES } from "@celato/shared";
 
 export interface CreateSessionParams {
-  phoneNumber: string;
+  phoneNumber?: string | undefined;
   personaMode: PersonaMode;
   targetLanguage?: string | undefined;
   purpose?: string | undefined;

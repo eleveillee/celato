@@ -9,8 +9,8 @@ import type {
   LanguageOption,
   PersonaMode,
   WhisperMessage,
-} from "./index.js";
-import { SUPPORTED_LANGUAGES } from "./index.js";
+} from "./index";
+import { SUPPORTED_LANGUAGES } from "./index";
 
 describe("Shared Types", () => {
   it("should create a valid WhisperMessage with text", () => {

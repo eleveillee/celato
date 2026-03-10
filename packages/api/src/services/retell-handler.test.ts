@@ -37,6 +37,7 @@ function makeMockSocket() {
 function makeMockLLMProvider(response?: Partial<LLMResponse>) {
   return {
     name: "test-provider",
+    model: "test-model",
     costPerInputToken: 0.15 / 1_000_000,
     costPerOutputToken: 0.6 / 1_000_000,
     complete: vi.fn().mockResolvedValue({
@@ -46,15 +47,22 @@ function makeMockLLMProvider(response?: Partial<LLMResponse>) {
       latencyMs: 150,
       ...response,
     }),
+    validateKey: vi.fn().mockResolvedValue(true),
   };
 }
 
-/** Extract the JSON sent in the first socket.send() call. */
-function getSentJSON(socket: import("ws").WebSocket): unknown {
+/** Extract the JSON sent in the Nth socket.send() call (0-indexed). */
+function getSentJSON(socket: import("ws").WebSocket, index = 0): unknown {
   const calls = (socket.send as ReturnType<typeof vi.fn>).mock.calls;
-  const firstCall = calls[0] as [string] | undefined;
-  if (!firstCall) throw new Error("socket.send was not called");
-  return JSON.parse(firstCall[0]);
+  const call = calls[index] as [string] | undefined;
+  if (!call) throw new Error(`socket.send was not called (index ${index})`);
+  return JSON.parse(call[0]);
+}
+
+/** Get all JSON messages sent via socket.send(). */
+function getAllSentJSON(socket: import("ws").WebSocket): unknown[] {
+  const calls = (socket.send as ReturnType<typeof vi.fn>).mock.calls;
+  return calls.map((call) => JSON.parse((call as [string])[0]));
 }
 
 describe("sendRetellConfig", () => {
@@ -98,7 +106,7 @@ describe("handleRetellMessage", () => {
     expect(session.state).toBe("active");
   });
 
-  it("should handle response_required by calling LLM and sending response", async () => {
+  it("should handle response_required by calling LLM and sending streamed response", async () => {
     const msg: RetellMessage = {
       interaction_type: "response_required",
       response_id: 1,
@@ -108,13 +116,22 @@ describe("handleRetellMessage", () => {
     await handleRetellMessage(msg, socket, session, costTracker, deps);
 
     expect(deps.llmProvider.complete).toHaveBeenCalledOnce();
-    expect(socket.send).toHaveBeenCalledOnce();
-    expect(getSentJSON(socket)).toMatchObject({
+
+    // Streaming sends a completion signal after the response
+    const sentMessages = getAllSentJSON(socket);
+    const completionMsg = sentMessages.find(
+      (m) => (m as Record<string, unknown>)["content_complete"] === true
+    );
+    expect(completionMsg).toMatchObject({
       response_type: "response",
       response_id: 1,
-      content: "I'm calling about a reservation.",
       content_complete: true,
     });
+
+    // Verify stream: true and onChunk were passed to LLM
+    const completeCall = (deps.llmProvider.complete as ReturnType<typeof vi.fn>).mock.calls[0]![0];
+    expect(completeCall.stream).toBe(true);
+    expect(typeof completeCall.onChunk).toBe("function");
   });
 
   it("should clear whisper queue after LLM response", async () => {

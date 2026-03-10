@@ -3,10 +3,17 @@
  * Handles whisper messages, call control, and broadcasts transcripts/costs.
  */
 
-import { EndCallMessageSchema, StartCallMessageSchema, WhisperMessageSchema } from "@celato/shared";
+import { StartCallMessageSchema, WhisperMessageSchema } from "@celato/shared";
 import type { FastifyInstance } from "fastify";
 import { pino } from "pino";
 import type { WebSocket } from "ws";
+import type { Config } from "../config.js";
+import {
+  registerUserSocket,
+  sendToUser,
+  unregisterUserSocket,
+} from "../services/connection-registry.js";
+import { createRetellCall, createRetellWebCall } from "../services/retell-service.js";
 import {
   addWhisper,
   createSession,
@@ -16,7 +23,7 @@ import {
 
 const logger = pino({ name: "user-ws" });
 
-function handleStartCall(socket: WebSocket, data: unknown): string {
+function handleStartCall(socket: WebSocket, data: unknown, config: Config): string {
   const parsed = StartCallMessageSchema.parse(data);
   const session = createSession({
     phoneNumber: parsed.phoneNumber,
@@ -31,6 +38,8 @@ function handleStartCall(socket: WebSocket, data: unknown): string {
     "Session created"
   );
 
+  registerUserSocket(session.id, socket);
+
   socket.send(
     JSON.stringify({
       type: "state_update",
@@ -39,6 +48,64 @@ function handleStartCall(socket: WebSocket, data: unknown): string {
       timestamp: Date.now(),
     })
   );
+
+  // Initiate Retell call if configured
+  if (config.RETELL_API_KEY && config.RETELL_AGENT_ID) {
+    const usePhoneCall = config.RETELL_FROM_NUMBER && parsed.phoneNumber;
+
+    if (usePhoneCall) {
+      // PSTN path (production) — requires KYC + purchased phone number
+      // Non-null safe: usePhoneCall is truthy only when both are defined
+      createRetellCall({
+        apiKey: config.RETELL_API_KEY,
+        agentId: config.RETELL_AGENT_ID,
+        toNumber: parsed.phoneNumber!,
+        fromNumber: config.RETELL_FROM_NUMBER,
+      })
+        .then((result) => {
+          session.retellCallId = result.callId;
+          logger.info({ sessionId: session.id, callId: result.callId }, "Retell phone call initiated");
+        })
+        .catch((err: unknown) => {
+          logger.error({ error: err, sessionId: session.id }, "Failed to create Retell phone call");
+          sendToUser(session.id, {
+            type: "error",
+            code: "CALL_CONNECT_FAILED",
+            message: "Failed to initiate phone call. Check Retell configuration.",
+            retryable: true,
+            timestamp: Date.now(),
+          });
+        });
+    } else {
+      // Web call path (dev/no KYC) — browser acts as the caller via Retell Web SDK
+      createRetellWebCall({
+        apiKey: config.RETELL_API_KEY,
+        agentId: config.RETELL_AGENT_ID,
+      })
+        .then((result) => {
+          session.retellCallId = result.callId;
+          logger.info({ sessionId: session.id, callId: result.callId }, "Retell web call initiated");
+          // Send access token to browser so it can connect via Retell Web SDK
+          sendToUser(session.id, {
+            type: "web_call_token",
+            accessToken: result.accessToken,
+            timestamp: Date.now(),
+          });
+        })
+        .catch((err: unknown) => {
+          logger.error({ error: err, sessionId: session.id }, "Failed to create Retell web call");
+          sendToUser(session.id, {
+            type: "error",
+            code: "CALL_CONNECT_FAILED",
+            message: "Failed to initiate web call. Check Retell configuration.",
+            retryable: true,
+            timestamp: Date.now(),
+          });
+        });
+    }
+  } else {
+    logger.warn("Retell not configured — call stays in connecting state (dev mode)");
+  }
 
   return session.id;
 }
@@ -64,17 +131,27 @@ function handleWhisper(socket: WebSocket, data: unknown, sessionId: string | nul
   addWhisper(session, parsed.text);
   logger.info({ sessionId, whisperLength: parsed.text.length }, "Whisper received");
 
+  // Send ack + transcript entry for the whisper (so UI shows it)
   socket.send(JSON.stringify({ type: "ack", timestamp: Date.now() }));
+  socket.send(
+    JSON.stringify({
+      type: "transcript",
+      speaker: "whisper",
+      text: parsed.text,
+      isHidden: true,
+      timestamp: Date.now(),
+    })
+  );
 }
 
-function handleEndCall(socket: WebSocket, data: unknown, sessionId: string | null): void {
-  EndCallMessageSchema.parse(data);
+function handleEndCall(socket: WebSocket, _data: unknown, sessionId: string | null): void {
   if (sessionId) {
     const session = getSession(sessionId);
     if (session) {
       session.state = "ended";
       session.endedAt = new Date();
     }
+    unregisterUserSocket(sessionId);
     deleteSession(sessionId);
     logger.info({ sessionId }, "Session ended");
   }
@@ -88,7 +165,7 @@ function handleEndCall(socket: WebSocket, data: unknown, sessionId: string | nul
   );
 }
 
-export async function userWsRoutes(server: FastifyInstance): Promise<void> {
+export async function userWsRoutes(server: FastifyInstance, config: Config): Promise<void> {
   server.get("/ws", { websocket: true }, (socket) => {
     let sessionId: string | null = null;
 
@@ -99,7 +176,7 @@ export async function userWsRoutes(server: FastifyInstance): Promise<void> {
 
         switch (msgType) {
           case "start_call":
-            sessionId = handleStartCall(socket, data);
+            sessionId = handleStartCall(socket, data, config);
             break;
 
           case "whisper":
@@ -131,6 +208,7 @@ export async function userWsRoutes(server: FastifyInstance): Promise<void> {
 
     socket.on("close", () => {
       if (sessionId) {
+        unregisterUserSocket(sessionId);
         deleteSession(sessionId);
         logger.info({ sessionId }, "Client disconnected, session cleaned up");
       }

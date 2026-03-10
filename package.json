@@ -13,6 +13,8 @@
     "dev": "pnpm --parallel -r dev",
     "dev:mobile": "pnpm --filter @celato/mobile dev",
     "dev:api": "pnpm --filter @celato/api dev",
+    "dev:web": "pnpm --filter @celato/web dev",
+    "dev:tunnel": "ngrok http 4000",
     "build": "pnpm -r build",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -29,6 +31,7 @@
     "@vitest/coverage-v8": "^4.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.11",
+    "retell-sdk": "^5.7.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },

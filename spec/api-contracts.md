@@ -202,13 +202,16 @@ User whispers an instruction to the agent (business does NOT hear this).
 - ✅ Business never hears the raw whisper text
 
 ##### `start_call` (VS-1)
-Initiate a new phone call.
+Initiate a new call. If `phoneNumber` is provided and `RETELL_FROM_NUMBER` is configured, creates a PSTN phone call. Otherwise creates a web call (no KYC required).
 
 ```typescript
 {
   type: "start_call",
-  phoneNumber: string,      // E.164 format (e.g., "+15551234567")
+  phoneNumber?: string,     // E.164 format (e.g., "+15551234567"). Optional — omit for web call.
   personaMode: "transparent" | "proxy",
+  targetLanguage?: string,  // ISO 639-1 code, defaults to "en"
+  purpose?: string,         // Pre-call context (max 500 chars)
+  userNotes?: string,       // Additional notes (max 1000 chars)
   timestamp: number
 }
 ```
@@ -231,13 +234,14 @@ Real-time conversation transcript.
 ```typescript
 {
   type: "transcript",
-  speaker: "business" | "agent" | "whisper",  // "whisper" for hidden user instructions
+  speaker: "business" | "agent" | "whisper" | "system",
   text: string,
+  isHidden?: boolean,       // Defaults to false. True for whisper instructions (hidden from business).
   timestamp: number
 }
 ```
 
-**Note:** `speaker: "whisper"` indicates a hidden instruction that business did NOT hear.
+**Note:** `speaker: "whisper"` with `isHidden: true` indicates a hidden instruction that business did NOT hear.
 
 ##### `cost_update` (VS-1)
 Real-time cost tracking update.
@@ -251,6 +255,17 @@ Real-time cost tracking update.
     llm: number,               // LLM cost (token usage)
     transcription?: number     // Deepgram cost (VS-2+, when whisper audio is used)
   },
+  timestamp: number
+}
+```
+
+##### `web_call_token` (VS-1)
+Sent when a web call is created (no phone number provided). Browser uses this token with the Retell Web SDK to start the voice call.
+
+```typescript
+{
+  type: "web_call_token",
+  accessToken: string,      // Pass to RetellWebClient.startCall({ accessToken })
   timestamp: number
 }
 ```

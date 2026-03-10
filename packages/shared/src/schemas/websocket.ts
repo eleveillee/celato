@@ -18,7 +18,10 @@ export type WhisperSchemaMessage = z.infer<typeof WhisperMessageSchema>;
 
 export const StartCallMessageSchema = z.object({
   type: z.literal("start_call"),
-  phoneNumber: z.string().regex(/^\+[1-9]\d{1,14}$/, "Phone number must be in E.164 format"),
+  phoneNumber: z
+    .string()
+    .regex(/^\+[1-9]\d{1,14}$/, "Phone number must be in E.164 format")
+    .optional(),
   personaMode: z.enum(["transparent", "proxy"]),
   targetLanguage: z.string().default("en"),
   purpose: z.string().max(500).optional(),
@@ -95,11 +98,19 @@ export const ErrorMessageSchema = z.object({
 });
 export type ErrorMessage = z.infer<typeof ErrorMessageSchema>;
 
+export const WebCallTokenMessageSchema = z.object({
+  type: z.literal("web_call_token"),
+  accessToken: z.string(),
+  timestamp: z.number(),
+});
+export type WebCallTokenMessage = z.infer<typeof WebCallTokenMessageSchema>;
+
 export const ServerMessageSchema = z.discriminatedUnion("type", [
   AckMessageSchema,
   TranscriptMessageSchema,
   StateUpdateMessageSchema,
   CostUpdateMessageSchema,
   ErrorMessageSchema,
+  WebCallTokenMessageSchema,
 ]);
 export type ServerMessage = z.infer<typeof ServerMessageSchema>;

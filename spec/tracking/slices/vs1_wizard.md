@@ -95,15 +95,15 @@ VS-1 is organized into 3 sequential phases. Each phase builds on the previous on
 
 ---
 
-### Phase 2: Production Features ⬚ [0/4 features]
+### Phase 2: Production Features ✅ [4/4 features]
 
 **Goal:** Build usable web UI with full feature set.
 
 **Features:**
-- F-004-WEB: Next.js Web Interface → [design](vs1_design.md#web-ui-implementation)
-- F-007-PER: Agent Persona System → [design](vs1_design.md#persona-system)
-- F-008-CST: Cost Tracking → [design](vs1_design.md#cost-tracking)
-- F-009-TRS: Transcript Management
+- F-004-WEB: Next.js Web Interface ✅ → [design](vs1_design.md#web-ui-implementation)
+- F-007-PER: Agent Persona System ✅ → [design](vs1_design.md#persona-system)
+- F-008-CST: Cost Tracking ✅ → [design](vs1_design.md#cost-tracking)
+- F-009-TRS: Transcript Management ✅
 
 **Success Criteria:**
 - User can initiate call from web UI
@@ -116,13 +116,13 @@ VS-1 is organized into 3 sequential phases. Each phase builds on the previous on
 
 ---
 
-### Phase 3: Polish & Deploy ⬚ [0/2 features]
+### Phase 3: Polish & Deploy 🔄 [1/2 features]
 
 **Goal:** Production deployment with error handling.
 
 **Features:**
-- F-011-ERR: Error Handling → [design](vs1_design.md#error-handling-strategy)
-- Deploy to Railway (API) + Vercel (web)
+- F-011-ERR: Error Handling ✅ → [design](vs1_design.md#error-handling-strategy)
+- Deploy to Railway (API) + Vercel (web) ⬚
 
 **Success Criteria:**
 - WebSocket auto-reconnects on disconnect
@@ -183,44 +183,61 @@ GPT-4o-mini text-based chat completion for agent intelligence.
 
 **See:** [vs1_design.md § LLM Integration](vs1_design.md#llm-integration) for prompt engineering and token tracking.
 
-### F-004-WEB: Next.js Web Interface ⬚
+### F-004-WEB: Next.js Web Interface ✅
 
 Web UI for call control, whisper input, transcript display, cost tracking.
 
-**Tech:** Next.js 14 (App Router), TypeScript, Tailwind CSS, WebSocket client.
+**Tech:** Next.js 16 (App Router), TypeScript, Tailwind CSS 4, WebSocket client.
 
-**Pre-call UI includes:**
-- Phone number input (E.164)
-- Call purpose / context (text area)
-- Persona mode selector (Transparent / Proxy)
-- **Language selector** — target language for agent speech (English default, Spanish, French, Mandarin, Japanese, etc.). First-class UI element, not buried in settings.
+**Implemented components:**
+- `call-app.tsx` — Main orchestrator (idle → connecting → active → ended lifecycle)
+- `pre-call-form.tsx` — Phone input (E.164 validation), persona toggle, language selector (10 languages), purpose/notes fields
+- `active-call-view.tsx` — Live call: status indicator, duration timer, transcript, whisper input, cost display, end call
+- `transcript.tsx` — Auto-scrolling, speaker-labeled transcript (business/agent/whisper/system)
+- `whisper-input.tsx` — Spacebar-activated text input with 500-char limit
+- `cost-display.tsx` — Real-time cost with Tel/LLM breakdown
+- `call-summary.tsx` — Post-call stats, transcript preview, Markdown/JSON clipboard export
+- `use-websocket.ts` — Hook with exponential backoff reconnection (max 5 attempts)
 
-**See:** [vs1_design.md § Web UI](vs1_design.md#web-ui-implementation) for component breakdown.
+**API wiring:**
+- `connection-registry.ts` — Maps session IDs to user WebSocket connections
+- `retell-service.ts` — Retell REST API client for outbound call creation
+- Updated `user-ws.ts` — Handles start_call, whisper, end_call; registers sockets; initiates Retell calls
+- Updated `retell-ws.ts` — Forwards transcript/cost/state events to user browser via connection registry
 
-### F-007-PER: Agent Persona System ⬚
+### F-007-PER: Agent Persona System ✅
 
-Toggle between Transparent (AI disclosure) and Proxy (speak as user) modes.
+Toggle between Transparent (AI disclosure) and Proxy (speak as user) modes in pre-call form.
 
 **Transparent:** "Hello, I'm an AI assistant calling on behalf of Eric..."
 **Proxy:** "Hi, I'm calling to check your store hours..."
 
-**See:** [vs1_design.md § Persona System](vs1_design.md#persona-system) for full system prompt design.
+Persona mode is sent as part of `start_call` message, used in session creation, and passed to the prompt builder.
 
-### F-008-CST: Cost Tracking ⬚
+### F-008-CST: Cost Tracking ✅
 
-Real-time cost display: Retell ($0.08/min) + LLM tokens.
+Real-time cost display: Retell ($0.08/min) + LLM tokens ($0.15/1M in, $0.60/1M out).
 
-**See:** [vs1_design.md § Cost Model](vs1_design.md#cost-model) for detailed breakdown.
+- Periodic cost updates (10s interval) during active calls via connection registry
+- Final cost snapshot sent when Retell WebSocket closes
+- Cost breakdown visible in both active call view and post-call summary
 
-### F-009-TRS: Transcript Management ⬚
+### F-009-TRS: Transcript Management ✅
 
-Local transcript storage and clipboard export (JSON or Markdown format).
+Live transcript display with speaker labels and auto-scrolling. Post-call export to clipboard in Markdown or JSON format.
 
-### F-011-ERR: Error Handling ⬚
+- Whisper entries marked with `isHidden: true` and styled distinctly (amber, italic)
+- Transcript includes timestamps, speaker labels, and full conversation history
 
-Auto-reconnect, LLM timeouts, rate limits, network failures.
+### F-011-ERR: Error Handling ✅
 
-**See:** [vs1_design.md § Error Handling](vs1_design.md#error-handling-strategy) for retry logic and fallbacks.
+Auto-reconnect, connection loss detection, graceful degradation.
+
+- WebSocket hook: exponential backoff reconnection (1s, 2s, 4s, 8s, 16s — max 5 attempts)
+- Mid-call reconnect detection: warns user when connection drops during active call, ends call on permanent disconnect
+- Server errors forwarded to UI with error banner (auto-dismiss for retryable errors)
+- Retell call failure sends `CALL_CONNECT_FAILED` error to user
+- Dev mode: graceful handling when Retell API keys not configured
 
 ---
 

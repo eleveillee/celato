@@ -10,7 +10,7 @@
 |---------|---------------|---------------------------|
 | Monorepo Setup | 2026-02-12 | pnpm install completes, all packages build without errors |
 | TypeScript Compilation | 2026-02-20 | All 4 packages (shared, api, web, mobile) build with strict mode, no errors |
-| Test Suite | 2026-02-20 | Vitest runs successfully, 76/76 tests pass across 7 test files (shared: 33, api: 43) |
+| Test Suite | 2026-03-09 | Vitest runs successfully, 100/100 tests pass across 8 test files (shared: 37, api: 63) |
 | API Health Check | 2026-02-16 | `curl localhost:4000/health` returns `{"status":"ok","service":"celato-api","version":"0.1.0"}` |
 | WebSocket Connection | 2026-02-16 | `wscat -c ws://localhost:4000/ws` connects successfully, server accepts messages |
 | Message Exchange | 2026-02-16 | Client sends "test message" → Server responds `{"type":"ack","timestamp":...}` with Zod-validated structure |
@@ -44,6 +44,14 @@
 | Platform Abstraction Interfaces | 6 interfaces (Audio, Input, Notification, Storage, Network, WebSocketClient) + 2 providers (LLM, Telephony) defined in `packages/shared/interfaces/` | Type-only interfaces, compile-time verified |
 | E.164 Phone Validation | `start_call` schema rejects non-E.164 phone numbers (missing +, too short, leading 0) | 2 schema tests passing |
 | Zod v4 WebSocket Schemas | All client→server and server→client message types validated with discriminated unions | 23 schema tests passing |
+| Web UI: Pre-Call Form | Open web app → enter phone number, select persona mode, choose language, fill optional purpose/notes → click Start Call → form validates E.164, sends `start_call` message, transitions to connecting view | Code complete. Run `pnpm dev:web` + `pnpm dev:api`, verify form renders and submits |
+| Web UI: Active Call View | Start a call → see status indicator (yellow connecting, green active), duration timer counting up, transcript auto-scrolling, cost display updating, whisper input via spacebar → End Call button ends call | Code complete. Needs live call with Retell to verify full flow |
+| Web UI: Whisper Input | During active call → press Space → text input appears → type instruction → Enter sends → whisper appears in transcript as amber/italic → close with Escape | Code complete. Keyboard interaction needs browser testing |
+| Web UI: Call Summary | After call ends → see duration/cost/whisper stats → transcript preview with speaker labels → Copy as Markdown/JSON buttons → New Call resets to idle | Code complete. Clipboard copy needs HTTPS context for full test |
+| Web UI: Error Handling | Disconnect WebSocket mid-call → see "Connection interrupted" error → on permanent disconnect → auto-transition to ended state → reconnect banner with status indicator | Code complete. Needs simulated network failure test |
+| Connection Registry | API registers user WebSocket on `start_call`, forwards Retell events (transcript, cost, state_update) back to user browser, unregisters on end_call or disconnect | Code complete. Verify by running API + web and initiating a call |
+| Retell Call Initiation | Set RETELL_API_KEY + RETELL_AGENT_ID → send `start_call` → API creates Retell outbound call → Retell connects to `/llm-websocket/:call_id` → user sees "active" state | Code complete. Needs real Retell API key to verify |
+| Web Call Mode (No KYC) | Select "Web Call" in pre-call form → click Start → API calls `create-web-call` → browser receives `web_call_token` → Retell Web SDK connects → user speaks via mic → agent responds via speakers → full whisper loop works without phone number | Code complete. Needs `RETELL_API_KEY` + `RETELL_AGENT_ID` to verify. No KYC required. |
 
 ---
 

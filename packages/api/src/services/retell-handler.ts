@@ -66,26 +66,49 @@ export async function handleRetellMessage(
       }
 
       const messages = buildLLMMessages(session, msg.transcript);
-      const llmResponse = await deps.llmProvider.complete({ messages });
+
+      // Stream chunks to Retell for lower TTFT (Retell starts TTS on first sentence)
+      const llmResponse = await deps.llmProvider.complete({
+        messages,
+        stream: true,
+        onChunk: (textDelta) => {
+          socket.send(
+            JSON.stringify({
+              response_type: "response",
+              response_id: msg.response_id,
+              content: textDelta,
+              content_complete: false,
+            })
+          );
+        },
+      });
+
+      // Signal stream complete
+      socket.send(
+        JSON.stringify({
+          response_type: "response",
+          response_id: msg.response_id,
+          content: "",
+          content_complete: true,
+        })
+      );
 
       costTracker.addLLMUsage(llmResponse.usage.inputTokens, llmResponse.usage.outputTokens);
+
+      // QoL 5: Log cost-per-whisper for easy cost monitoring
+      const whisperCost =
+        llmResponse.usage.inputTokens * deps.llmProvider.costPerInputToken +
+        llmResponse.usage.outputTokens * deps.llmProvider.costPerOutputToken;
 
       logger.info(
         {
           responseId: msg.response_id,
           latencyMs: llmResponse.latencyMs,
           tokens: llmResponse.usage,
+          costUsd: `$${whisperCost.toFixed(6)}`,
+          model: llmResponse.model,
         },
         "Sending agent response"
-      );
-
-      socket.send(
-        JSON.stringify({
-          response_type: "response",
-          response_id: msg.response_id,
-          content: llmResponse.content,
-          content_complete: true,
-        })
       );
 
       // Clear whisper queue after incorporated

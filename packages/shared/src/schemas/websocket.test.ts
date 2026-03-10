@@ -10,8 +10,9 @@ import {
   StartCallMessageSchema,
   StateUpdateMessageSchema,
   TranscriptMessageSchema,
+  WebCallTokenMessageSchema,
   WhisperMessageSchema,
-} from "./websocket.js";
+} from "./websocket";
 
 describe("Client → Server Schemas", () => {
   describe("WhisperMessageSchema", () => {
@@ -109,6 +110,30 @@ describe("Client → Server Schemas", () => {
         phoneNumber: "+15551234567",
         personaMode: "transparent",
         purpose: "x".repeat(501),
+        timestamp: Date.now(),
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("should accept start_call without phoneNumber (web call mode)", () => {
+      const result = StartCallMessageSchema.safeParse({
+        type: "start_call",
+        personaMode: "transparent",
+        timestamp: Date.now(),
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.phoneNumber).toBeUndefined();
+      }
+    });
+
+    it("should still reject invalid phone numbers when provided", () => {
+      const result = StartCallMessageSchema.safeParse({
+        type: "start_call",
+        phoneNumber: "not-a-number",
+        personaMode: "transparent",
         timestamp: Date.now(),
       });
 
@@ -286,6 +311,27 @@ describe("Server → Client Schemas", () => {
     });
   });
 
+  describe("WebCallTokenMessageSchema", () => {
+    it("should validate web_call_token message", () => {
+      const result = WebCallTokenMessageSchema.safeParse({
+        type: "web_call_token",
+        accessToken: "abc-123-token",
+        timestamp: Date.now(),
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("should reject missing accessToken", () => {
+      const result = WebCallTokenMessageSchema.safeParse({
+        type: "web_call_token",
+        timestamp: Date.now(),
+      });
+
+      expect(result.success).toBe(false);
+    });
+  });
+
   describe("ServerMessageSchema (discriminated union)", () => {
     it("should accept all valid server message types", () => {
       const messages = [
@@ -305,6 +351,7 @@ describe("Server → Client Schemas", () => {
           retryable: true,
           timestamp: Date.now(),
         },
+        { type: "web_call_token", accessToken: "token-xyz", timestamp: Date.now() },
       ];
 
       for (const msg of messages) {

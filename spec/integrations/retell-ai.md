@@ -445,6 +445,50 @@ socket.on('close', () => {
 
 ---
 
+## KYC & Development Testing
+
+### What KYC Blocks
+
+KYC (via Persona / withpersona.com) is required to **purchase phone numbers** and **make/receive PSTN calls**. It does NOT block development or web-based testing.
+
+| Feature | KYC Required? | Notes |
+|---------|---------------|-------|
+| Web call testing (dashboard "Test" button) | No | Browser ↔ agent voice call |
+| Web Call SDK (`create_web_call` API) | No | Deploy voice agent to your own site |
+| Custom LLM WebSocket (`/llm-websocket/:call_id`) | No | Your orchestrator works regardless |
+| LLM Playground (text-based prompt testing) | No | Test prompts without voice |
+| Batch simulation testing (LLM-to-LLM) | No | Automated test scenarios |
+| Purchase phone number | **Yes** | Blocked until KYC approved |
+| Outbound PSTN calls | **Yes** | Blocked until KYC approved |
+| Inbound PSTN calls | **Yes** | Blocked until KYC approved |
+
+### Testing the Celato Web App Without KYC
+
+The **Web Call SDK** lets you test the full whisper loop without a phone number:
+
+1. **API creates a web call** via Retell's `create_web_call` endpoint (returns an `access_token`)
+2. **Browser connects** to Retell using their Web Call SDK with that token
+3. **Retell connects** to your `/llm-websocket/:call_id` endpoint (same as PSTN calls)
+4. **Full loop works:** user speaks in browser → Retell ASR → your orchestrator → LLM → Retell TTS → user hears agent
+
+The browser acts as "the business" — you're talking to your own agent. This validates the entire whisper pipeline (orchestrator, LLM transformation, transcript display, cost tracking, error handling) without needing a real phone number.
+
+**Limitation:** No real third-party business on the line. True three-way dynamic (user + agent + business) requires PSTN calls and KYC.
+
+**Auto-detection logic:** If `RETELL_FROM_NUMBER` is set AND the user provides a phone number, the API uses PSTN calls (`create-phone-call`). Otherwise, it falls back to web calls (`create-web-call`). No code changes needed to switch — just set the env var when KYC is approved.
+
+**Status:** ✅ Implemented. See `retell-service.ts` (`createRetellWebCall`), `user-ws.ts` (auto-detection), `call-app.tsx` (Retell Web SDK integration).
+
+**Docs:** https://docs.retellai.com/deploy/web-call
+
+### KYC Troubleshooting
+
+**Known issue:** Persona verification fails when document country (e.g., Canada) doesn't match IP country (e.g., Europe). The geolocation mismatch triggers Persona's fraud detection. VPNs make it worse (Persona detects them).
+
+**Resolution:** Email `support@retellai.com` requesting manual KYC verification. Retell staff have confirmed manual review is available when Persona fails.
+
+---
+
 ## Official Resources
 
 - **Documentation:** https://docs.retellai.com/api-references/llm-websocket
@@ -519,5 +563,5 @@ server.listen({ port: 4000 });
 
 ---
 
-**Last updated:** 2026-02-16
+**Last updated:** 2026-03-09
 **Researched by:** AI agent analysis of official Retell AI documentation and demo codebases

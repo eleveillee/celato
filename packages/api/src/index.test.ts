@@ -13,7 +13,14 @@ describe("API Server", () => {
     await server.register(cors, { origin: true });
     await server.register(websocket);
     await server.register(healthRoutes);
-    await server.register(userWsRoutes);
+    const testConfig = {
+      API_PORT: 0,
+      LOG_LEVEL: "error" as const,
+      NODE_ENV: "test" as const,
+      ALLOWED_ORIGINS: "http://localhost:3000",
+      LLM_PROVIDER: "openai" as const,
+    };
+    await server.register((instance) => userWsRoutes(instance, testConfig));
 
     await server.listen({ port: 0 });
   });

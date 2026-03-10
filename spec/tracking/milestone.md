@@ -74,14 +74,14 @@ _See [slices/vs1_wizard.md](slices/vs1_wizard.md) for detailed tasks and require
 - [x] 76 tests passing across 7 test files
 - [x] E.164 phone validation, input length limits, schema consistency
 
-**Phase 2: Production Features ⬚**
-- [ ] F-004-WEB: Next.js web UI (call control, whisper input, transcript display)
-- [ ] F-007-PER: Persona toggle (Transparent/Proxy) in UI
-- [ ] F-008-CST: Real-time cost display
-- [ ] F-009-TRS: Transcript management + clipboard export
+**Phase 2: Production Features ✅ (2026-02-20)**
+- [x] F-004-WEB: Next.js web UI (call control, whisper input, transcript display)
+- [x] F-007-PER: Persona toggle (Transparent/Proxy) in UI
+- [x] F-008-CST: Real-time cost display with Tel/LLM breakdown
+- [x] F-009-TRS: Transcript management + Markdown/JSON clipboard export
 
-**Phase 3: Polish & Deploy ⬚**
-- [ ] F-011-ERR: Error handling (auto-reconnect, LLM timeouts)
+**Phase 3: Polish & Deploy 🔄**
+- [x] F-011-ERR: Error handling (auto-reconnect, connection loss detection, graceful degradation)
 - [ ] Production deployment (Railway + Vercel)
 
 **Blocking decisions:** None — all resolved.

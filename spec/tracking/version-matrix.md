@@ -16,7 +16,9 @@ Update when adding, upgrading, or removing dependencies.
 | Expo | 52.0.29 | 52.x | Latest stable |
 | Zod | 4.3.6 | 4.x | Schema validation (import from `zod/v4`) |
 | OpenAI SDK | 6.22.0 | 6.x | LLM integration |
+| Anthropic SDK | 0.78.0 | 0.x | Claude LLM provider (D-013-LLM) |
 | Pino | 10.3.1 | 10.x | Structured logging |
+| Retell Client JS SDK | 2.0.7 | 2.x | Web call integration (browser ↔ Retell agent) |
 
 ## Dev Dependencies
 

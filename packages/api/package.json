@@ -12,6 +12,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@celato/shared": "workspace:*",
     "@fastify/cors": "^11.0.0",
     "@fastify/websocket": "^11.2.0",

@@ -158,6 +158,17 @@ requiring Anthropic's 7x higher pricing.
 - **Streaming:** `stream: true` on chat completions
 - **Prompt caching:** Automatic for repeated system prompts (50% discount, no code changes)
 - **Auth:** Bearer token via `OPENAI_API_KEY` env var
+- **Status:** ✅ Implemented (`OpenAIProvider` in `packages/api/src/services/llm-service.ts`)
+
+### Anthropic Claude (Implemented)
+- **SDK:** `@anthropic-ai/sdk` npm package
+- **Streaming:** `stream: true` on messages.create (not yet wired — non-streaming for VS-1)
+- **Prompt caching:** 90% discount on cached input — requires explicit cache breakpoints
+- **Auth:** API key via `ANTHROPIC_API_KEY` env var
+- **Model:** Claude Haiku 4.5 (`claude-haiku-4-5-20251001`)
+- **Config:** Set `LLM_PROVIDER=anthropic` to use as primary (default: `openai`)
+- **Note:** System messages are extracted to top-level `system` param (Anthropic API requirement). Auto-fallback: if `LLM_PROVIDER=anthropic` but no `ANTHROPIC_API_KEY`, falls back to OpenAI if available.
+- **Status:** ✅ Implemented (`AnthropicProvider` in `packages/api/src/services/llm-service.ts`)
 
 ### Google Gemini (Planned Failover)
 - **SDK:** `@google/generative-ai` npm package
